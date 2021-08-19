@@ -1,0 +1,22 @@
+# git folder
+.git
+
+# npm
+node_modules
+npm-debug.log
+
+# package
+
+
+# mac
+.DS_Store
+
+# cache
+.cache
+
+# personal env
+.env
+.vercel
+
+# yarn
+yarn.lock

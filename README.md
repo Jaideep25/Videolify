@@ -7,7 +7,7 @@
 [//]: https://img.shields.io/badge/<LABEL>-<MESSAGE>-<COLOR>
 
 [![Author](https://img.shields.io/badge/Author-Jaideep25-brightgreen.svg)](https://www.github.com/Jaideep25/Videolify/)
-![License: CC-NC](https://img.shields.io/badge/License-CCNC-blue.svg)
+![License: AGPLv3](https://img.shields.io/badge/License-AGPLv3-blue.svg)
 [![Repo Link](https://img.shields.io/badge/Repo-Link-black.svg)](https://github.com/Jaideep25/videolify)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?)](https://github.com/prettier/prettier) [![Join the chat at https://gitter.im/Videolify/community](https://badges.gitter.im/Videolify/community.svg)](https://gitter.im/Videolify/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 

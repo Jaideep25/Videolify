@@ -12,7 +12,7 @@
     "url": "git+https://git.heroku.com/videolify.git"
   },
   "author": "Jaideep25",
-  "license": "CC-BY-NC-ND-4.0",
+  "license": "AGPLv3",
   "homepage": "https://videolify.up.railway.app/",
   "dependencies": {
     "compression": "^1.7.4",

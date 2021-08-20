@@ -61,25 +61,25 @@
 
   /* neon theme default */
   --body-bg: black;
-  --msger-bg: black;
+  --msger-bg: rgb(76, 0, 255);
   --msger-private-bg: black;
-  --left-msg-bg: #da05f3;
-  --private-msg-bg: #f77070;
-  --right-msg-bg: #579ffb;
-  --box-shadow: 3px 3px 6px #0500ff, -3px -3px 6px #da05f3;
-  --btn-bg: white;
-  --btn-color: black;
+  --left-msg-bg: #a00b87;
+  --private-msg-bg: #f700ff;
+  --right-msg-bg: #063e88;
+  --box-shadow: 3px 3px 6px #011ffd, -3px -3px 6px #ffd300;
+  --btn-bg: rgb(44, 48, 85);
+  --btn-color: rgb(0, 255, 149);
   --btn-opc: 1;
   --btns-left: 20px;
   --wb-bg: #000000;
-  --wb-hbg: #000000;
+  --wb-hbg: #ff6600;
   --my-settings-label-color: rgb(0, 140, 255);
 
   /* dark theme
   --body-bg: #16171b;
-  --msger-bg: #16171b;
-  --msger-private-bg: black;
-  --left-msg-bg: #222328;
+  --msger-bg: #242323;
+  --msger-private-bg: rgb(18, 82, 141);
+  --left-msg-bg: #474953;
   --private-msg-bg: #f77070;
   --right-msg-bg: #0a0b0c;
   --box-shadow: 3px 3px 6px #0a0b0c, -3px -3px 6px #222328; 
@@ -90,16 +90,16 @@
   --wb-bg: #000000;
   --wb-hbg: #000000;
   --my-settings-label-color: limegreen;
-  */
+*/
 
-  /* forest theme
+  /* forest theme*/
   --body-bg: black;
-  --msger-bg: black;
+  --msger-bg: rgb(15, 88, 39);
   --msger-private-bg: black;
-  --left-msg-bg: #2e3500;
-  --private-msg-bg: #f77070;
-  --right-msg-bg: #004b1c;
-  --box-shadow: 3px 3px 6px #27944f, -3px -3px 6px #14843d;
+  --left-msg-bg: #4d8051;
+  --private-msg-bg: #008cff;
+  --right-msg-bg: #2f7210;
+  --box-shadow: 3px 3px 6px #00ff5e, -3px -3px 6px #5eff00;
   --btn-bg: white;
   --btn-color: black;
   --btn-opc: 1;
@@ -107,24 +107,7 @@
   --wb-bg: #000000;
   --wb-hbg: #000000;
   --my-settings-label-color: limegreen;
-  */
-
-  /* sky theme
-  --body-bg: black;
-  --msger-bg: black;
-  --msger-private-bg: black;
-  --left-msg-bg: #0c95b7;
-  --private-msg-bg: #f77070;
-  --right-msg-bg: #012a5f;
-  --box-shadow: 3px 3px 6px #03a5ce, -3px -3px 6px #03a5ce;
-  --btn-bg: white;
-  --btn-color: black;
-  --btn-opc: 1;
-  --btns-left: 20px;
-  --wb-bg: #000000;
-  --wb-hbg: #000000;
-  --my-settings-label-color: #03a5ce;
-  */
+  
 
   /* ghost theme
   --body-bg: #16171b;
@@ -422,8 +405,29 @@ button#counttimebuttonatpalette {
 }
 
 button#myHandBtn {
-  color: #204d0e;
+  color: #48ff00;
 }
+
+button#whiteboardCleanBtn {
+  color: #ff0000;
+}
+
+button#whiteboardSaveBtn {
+  color: #1100ff;
+}
+
+button#whiteboardEraserBtn {
+  color: #102f49;
+}
+
+button#whiteboardCloseBtn {
+  color: #000000;
+}
+
+button#whiteboardFsBtn {
+  color: #000000;
+}
+
 .fa-microphone-slash,
 .fa-video-slash {
   color: #e74c3c !important;
@@ -599,10 +603,12 @@ button#myHandBtn {
 .msg-info-name {
   margin-right: 10px;
   font-weight: bold;
+  color: #ffd000;
 }
 
 .msg-info-time {
   font-size: 0.85em;
+  color: aqua;
 }
 
 .msg-text {
@@ -742,9 +748,12 @@ button#myHandBtn {
 #msgerEmojiPicker {
   z-index: 13;
   display: none;
+  box-shadow: var(--box-shadow);
+  /* center */
   position: absolute;
-  width: var(--msger-width);
-  height: var(--msger-height);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   /* fade in */
   -webkit-animation: fadeIn ease-in 1;
   -moz-animation: fadeIn ease-in 1;
@@ -758,9 +767,28 @@ button#myHandBtn {
   overflow: hidden;
 }
 
+#msgerEmojiHeader {
+  background: rgb(0, 0, 0);
+  cursor: move;
+}
+
+#msgerCloseEmojiBtn {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background: rgb(0, 0, 0);
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  transition: all 0.3s ease-in-out;
+}
+
+#msgerCloseEmojiBtn:hover {
+  color: rgb(0, 180, 50);
+  transform: var(--btns-hover-scale);
+  transition: all 0.3s ease-in-out;
+}
 emoji-picker {
-  width: 100%;
-  height: 100%;
   --num-columns: 9;
   --emoji-size: 1.5rem;
   --background: var(--msger-bg);

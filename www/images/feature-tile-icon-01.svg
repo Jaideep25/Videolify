@@ -10,7 +10,7 @@
             </feMerge>
         </filter>
     </defs>
-    <g filter="url(#a)" fill="#FFF">
+    <g filter="url(#a)" fill="#000">
         <path d="M28 25h19l-3 6H25z" />
         <path opacity=".64" d="M28 33h19l-3 6H25z" />
         <path d="M28 41h19l-3 6H25z" />

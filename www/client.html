@@ -131,92 +131,25 @@ access to use this app.
         </header>
 
         <!-- public messages example -->
-
         <main id="msgerChat" class="msger-chat">
           <div class="msg left-msg">
             <div
               class="msg-img"
-              style="
-                background-image: url('https://eu.ui-avatars.com/api?name=Friends Name&size=24&background=random&rounded=true');
-              "
+              style="background-image: url('/images/sphere.png'); border-radius: 50%;"
             ></div>
 
-            <div class="msg-bubble">
+           <div class="msg-bubble" style="
+    background: deeppink;
+">
               <div class="msg-info">
-                <div class="msg-info-name">Friends Name</div>
+                <div class="msg-info-name">Sphere Bot</div>
                 <div class="msg-info-time">00:00:00</div>
               </div>
 
-              <div class="msg-text">Public message example</div>
+              <div class="msg-text">Welcome to the Chat !</div>
             </div>
-          </div>
 
-          <div class="msg right-msg">
-            <div
-              class="msg-img"
-              style="
-                background-image: url('https://eu.ui-avatars.com/api?name=Your Name&size=24&background=random&rounded=true');
-              "
-            ></div>
-
-            <div class="msg-bubble">
-              <div class="msg-info">
-                <div class="msg-info-name">Your Name</div>
-                <div class="msg-info-time">00:00:00</div>
-              </div>
-
-              <div class="msg-text">Public message example</div>
-            </div>
-          </div>
-
-          <!-- private message example -->
-
-          <div class="msg left-msg">
-            <div
-              class="msg-img"
-              style="
-                background-image: url('https://eu.ui-avatars.com/api?name=Friends Name&size=24&background=random&rounded=true');
-              "
-            ></div>
-
-            <div class="private-msg-bubble">
-              <div class="msg-info">
-                <div class="msg-info-name">Friends Name</div>
-                <div class="msg-info-time">00:00:00</div>
-              </div>
-
-              <div class="msg-text">Private message example</div>
-            </div>
-          </div>
-
-          <div class="msg right-msg">
-            <div
-              class="msg-img"
-              style="
-                background-image: url('https://eu.ui-avatars.com/api?name=Your Name&size=24&background=random&rounded=true');
-              "
-            ></div>
-
-            <div class="private-msg-bubble">
-              <div class="msg-info">
-                <div class="msg-info-name">Your Name</div>
-                <div class="msg-info-time">00:00:00</div>
-              </div>
-
-              <div class="msg-text">Private message example</div>
-            </div>
-          </div>
-        </main>
-        <!-- Start emoji picker 
-                https://github.com/nolanlawson/emoji-picker-element ] 
-                -->
-
-                <section id="msgerEmojiPicker">
-                  <emoji-picker class="dark"></emoji-picker>
-                  <!-- <emoji-picker class="light"></emoji-picker> -->
-              </section>
-
-              <!-- End emoji picker -->
+            </main>
 
         <div class="msger-inputarea">
           <input
@@ -262,6 +195,20 @@ access to use this app.
     </section>
 
     <!-- End chat room -->
+
+     <!-- Start emoji picker 
+        https://github.com/nolanlawson/emoji-picker-element ] 
+        -->
+
+        <section id="msgerEmojiPicker">
+          <header id="msgerEmojiHeader">
+              <button id="msgerCloseEmojiBtn" class="fas fa-times"></button>
+          </header>
+          <emoji-picker class="dark"></emoji-picker>
+          <!-- <emoji-picker class="light"></emoji-picker> -->
+      </section>
+
+      <!-- End emoji picker -->
 
     <!-- Start my settings -->
 
@@ -368,7 +315,6 @@ access to use this app.
             <option value="neon">🟣 Neon</option>
             <option value="dark">⚫️ Dark</option>
             <option value="forest">🟢 Forest</option>
-            <option value="sky">🔵 Sky</option>
             <option value="ghost">⚪️ Ghost</option>
           </select>
         </div>

@@ -145,6 +145,8 @@ let msgerCPCloseBtn;
 let msgerCPList;
 // chat room emoji picker
 let msgerEmojiPicker;
+let msgerEmojiHeader;
+let msgerCloseEmojiBtn;
 let emojiPicker;
 // my settings
 let mySettings;
@@ -262,6 +264,8 @@ function getHtmlElementsById() {
     msgerCPList = getId('msgerCPList');
     // chat room emoji picker
     msgerEmojiPicker = getId('msgerEmojiPicker');
+    msgerEmojiHeader = getId('msgerEmojiHeader');
+    msgerCloseEmojiBtn = getId('msgerCloseEmojiBtn');
     emojiPicker = getSl('emoji-picker');
     // my settings
     mySettings = getId('mySettings');
@@ -392,6 +396,11 @@ function setButtonsTitle() {
     });
     tippy(msgerSendBtn, {
         content: 'Send',
+    });
+
+    // emoji picker
+    tippy(msgerCloseEmojiBtn, {
+        content: 'Close emoji',
     });
 
     // settings
@@ -980,7 +989,7 @@ function handleRemovePeer(config) {
 }
 
 /**
- * Set videolify theme neon | dark | forest | sky | ghost | ...
+ * Set videolify theme neon | dark | forest | ghost | ...
  * @param {*} theme
  */
 function setTheme(theme) {
@@ -992,27 +1001,27 @@ function setTheme(theme) {
             // neon theme
             swalBackground = 'rgba(0, 0, 0)';
             document.documentElement.style.setProperty('--body-bg', '#000000');
-            document.documentElement.style.setProperty('--msger-bg', 'linear-gradient(to bottom, #0500ff, #da05f3)');
+            document.documentElement.style.setProperty('--msger-bg', 'rgb(76, 0, 255)');
             document.documentElement.style.setProperty('--msger-private-bg', 'black');
-            document.documentElement.style.setProperty('--left-msg-bg', '#da05f3');
-            document.documentElement.style.setProperty('--private-msg-bg', '#f77070');
-            document.documentElement.style.setProperty('--right-msg-bg', '#579ffb');
+            document.documentElement.style.setProperty('--left-msg-bg', '#a00b87');
+            document.documentElement.style.setProperty('--private-msg-bg', '#f700ff');
+            document.documentElement.style.setProperty('--right-msg-bg', '#063e88');
             document.documentElement.style.setProperty('--wb-bg', '#FFFFFF');
-            document.documentElement.style.setProperty('--wb-hbg', '#000000');
-            document.documentElement.style.setProperty('--btn-bg', 'white');
-            document.documentElement.style.setProperty('--btn-color', 'black');
+            document.documentElement.style.setProperty('--wb-hbg', '#ff6600');
+            document.documentElement.style.setProperty('--btn-bg', 'rgb(44, 48, 85)');
+            document.documentElement.style.setProperty('--btn-color', 'rgb(0, 255, 149)');
             document.documentElement.style.setProperty('--btn-opc', '1');
             document.documentElement.style.setProperty('--btns-left', '20px');
             document.documentElement.style.setProperty('--my-settings-label-color', 'rgb(0, 140, 255)');
-            document.documentElement.style.setProperty('--box-shadow', '3px 3px 6px #0500ff, -3px -3px 6px #da05f3');
+            document.documentElement.style.setProperty('--box-shadow', '3px 3px 6px #011ffd, -3px -3px 6px #ffd300');
             break;
         case 'dark':
             // dark theme
             swalBackground = 'rgba(0, 0, 0)';
             document.documentElement.style.setProperty('--body-bg', '#16171b');
-            document.documentElement.style.setProperty('--msger-bg', '#16171b');
-            document.documentElement.style.setProperty('--msger-private-bg', '#16171b');
-            document.documentElement.style.setProperty('--left-msg-bg', '#222328');
+            document.documentElement.style.setProperty('--msger-bg', '#242323');
+            document.documentElement.style.setProperty('--msger-private-bg', 'rgb(18, 82, 141)');
+            document.documentElement.style.setProperty('--left-msg-bg', '#474953');
             document.documentElement.style.setProperty('--private-msg-bg', '#f77070');
             document.documentElement.style.setProperty('--right-msg-bg', '#0a0b0c');
             document.documentElement.style.setProperty('--wb-bg', '#FFFFFF');
@@ -1028,11 +1037,11 @@ function setTheme(theme) {
             // forest theme
             swalBackground = 'rgba(0, 0, 0)';
             document.documentElement.style.setProperty('--body-bg', 'black');
-            document.documentElement.style.setProperty('--msger-bg', 'linear-gradient(to top, rgba(0, 255, 0, 0.781), rgb(2, 116, 82))');
+            document.documentElement.style.setProperty('--msger-bg', 'rgb(15, 88, 39)');
             document.documentElement.style.setProperty('--msger-private-bg', 'black');
-            document.documentElement.style.setProperty('--left-msg-bg', '#2e3500');
-            document.documentElement.style.setProperty('--private-msg-bg', '#f77070');
-            document.documentElement.style.setProperty('--right-msg-bg', '#004b1c');
+            document.documentElement.style.setProperty('--left-msg-bg', '#4d8051');
+            document.documentElement.style.setProperty('--private-msg-bg', '#008cff');
+            document.documentElement.style.setProperty('--right-msg-bg', '#2f7210');
             document.documentElement.style.setProperty('--wb-bg', '#FFFFFF');
             document.documentElement.style.setProperty('--wb-hbg', '#000000');
             document.documentElement.style.setProperty('--btn-bg', 'white');
@@ -1040,25 +1049,7 @@ function setTheme(theme) {
             document.documentElement.style.setProperty('--btn-opc', '1');
             document.documentElement.style.setProperty('--btns-left', '20px');
             document.documentElement.style.setProperty('--my-settings-label-color', 'limegreen');
-            document.documentElement.style.setProperty('--box-shadow', '3px 3px 6px #27944f, -3px -3px 6px #14843d');
-            break;
-        case 'sky':
-            // sky theme
-            swalBackground = 'rgba(0, 0, 0)';
-            document.documentElement.style.setProperty('--body-bg', 'black');
-            document.documentElement.style.setProperty('--msger-bg', 'linear-gradient(to top, rgba(0, 255, 242, 0.781), rgb(76, 0, 255))');
-            document.documentElement.style.setProperty('--msger-private-bg', 'black');
-            document.documentElement.style.setProperty('--left-msg-bg', '#0c95b7');
-            document.documentElement.style.setProperty('--private-msg-bg', '#f77070');
-            document.documentElement.style.setProperty('--right-msg-bg', '#012a5f');
-            document.documentElement.style.setProperty('--wb-bg', '#FFFFFF');
-            document.documentElement.style.setProperty('--wb-hbg', '#000000');
-            document.documentElement.style.setProperty('--btn-bg', 'white');
-            document.documentElement.style.setProperty('--btn-color', 'black');
-            document.documentElement.style.setProperty('--btn-opc', '1');
-            document.documentElement.style.setProperty('--btns-left', '20px');
-            document.documentElement.style.setProperty('--my-settings-label-color', '#03a5ce');
-            document.documentElement.style.setProperty('--box-shadow', '3px 3px 6px #03a5ce, -3px -3px 6px #03a5ce');
+            document.documentElement.style.setProperty('--box-shadow', '3px 3px 6px #00ff5e, -3px -3px 6px #5eff00');
             break;
         case 'ghost':
             // ghost theme
@@ -1811,18 +1802,31 @@ function setChatRoomBtn() {
  * Emoji picker chat room button click event
  */
  function setChatEmojiBtn() {
-    msgerEmojiBtn.addEventListener('click', (e) => {
-        // prevent refresh page
-        e.preventDefault();
-        hideShowEmojiPicker();
-    });
+    if (isMobileDevice) {
+        // mobile already have it
+        msgerEmojiBtn.style.display = 'none';
+    } else {
+        // make emoji picker draggable for desktop
+        dragElement(msgerEmojiPicker, msgerEmojiHeader);
 
-    emojiPicker.addEventListener('emoji-click', (e) => {
-        //console.log(e.detail);
-        //console.log(e.detail.emoji.unicode);
-        msgerInput.value += e.detail.emoji.unicode;
-        hideShowEmojiPicker();
-    });
+        msgerEmojiBtn.addEventListener('click', (e) => {
+            // prevent refresh page
+            e.preventDefault();
+            hideShowEmojiPicker();
+        });
+
+        msgerCloseEmojiBtn.addEventListener('click', (e) => {
+            // prevent refresh page
+            e.preventDefault();
+            hideShowEmojiPicker();
+        });
+
+        emojiPicker.addEventListener('emoji-click', (e) => {
+            //console.log(e.detail);
+            //console.log(e.detail.emoji.unicode);
+            msgerInput.value += e.detail.emoji.unicode;
+        });
+    }
 }
 
 /**
@@ -2851,6 +2855,7 @@ function setRecordButtonUi() {
     recordStreamBtn.style.setProperty('background-color', 'white');
     if (videolifyTheme == 'ghost') recordStreamBtn.style.setProperty('background-color', 'transparent');
     else if(videolifyTheme == 'dark') recordStreamBtn.style.setProperty('background-color', 'black');
+    else if(videolifyTheme == 'neon') recordStreamBtn.style.setProperty('background-color', 'rgb(44, 48, 85)');recordStreamBtn.style.setProperty('color', 'rgb(0, 255, 149);');
 }
 
 /**
@@ -4585,7 +4590,7 @@ function getAbout() {
             <img alt="Github" src="../images/github.png"></a><br/><br/>
         </div>
         </br>
-        <div id="author">Authors : <a href="https://github.com/Jaideep25/" target="_blank"> Jaideep25</a> & <a href="https://www.linkedin.com/in/miroslav-pejic-976a07101/" target="_blank"> Miroslav Pejic</a></div>
+        <div id="author">Authors : <a href="https://github.com/Jaideep25/" target="_blank"> Jaideep25</a> & <a href="https://github.com/miroslavpejic85" target="_blank"> Miroslav Pejic</a></div>
         `,
         showClass: {
             popup: 'animate__animated animate__fadeInDown',

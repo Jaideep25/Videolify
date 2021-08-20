@@ -4,18 +4,23 @@
 ██      ██      ██ █████   ██ ██  ██    ██    
 ██      ██      ██ ██      ██  ██ ██    ██    
  ██████ ███████ ██ ███████ ██   ████    ██   
+
 Videolify Browser Client
 Copyright (C) 2021 Jaideep25 <jaidepech@outlook.com>
+
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
 by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
+
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
+
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 */
 
 'use strict'; // https://www.w3schools.com/js/js_strict.asp
@@ -400,7 +405,7 @@ function setButtonsTitle() {
 
     // emoji picker
     tippy(msgerCloseEmojiBtn, {
-        content: 'Close emoji',
+        content: 'Close',
     });
 
     // settings
@@ -1303,7 +1308,7 @@ function loadRemoteMediaStream(stream, peers, peer_id) {
     remoteAudioStatusIcon.setAttribute('id', peer_id + '_audioStatus');
     remoteAudioStatusIcon.className = 'fas fa-microphone';
     tippy(remoteAudioStatusIcon, {
-        content: 'Participant mic is unmuted',
+        content: 'Participant mic is ON',
     });
     // remote peer YouTube video
     remoteYoutubeBtnBtn.setAttribute('id', peer_id + '_youtube');
@@ -1926,7 +1931,7 @@ function setMySettingsBtn() {
  */
 function setAboutBtn() {
     aboutBtn.addEventListener('click', (e) => {
-        getAbout();
+        showAbout();
     });
 }
 
@@ -3447,17 +3452,6 @@ function handlePeerStatus(config) {
 }
 
 /**
- * Send YouTube video to specific peer
- * @param {*} peer_id
- */
- function handlePeerYouTube(peer_id) {
-    let peerYoutubeBtn = getId(peer_id + '_youtube');
-    peerYoutubeBtn.onclick = () => {
-        sendVideoUrl(peer_id);
-    };
-}
-
-/**
  * Set Participant Hand Status Icon and Title
  * @param {*} peer_id
  * @param {*} peer_name
@@ -3545,6 +3539,17 @@ function handlePeerPrivateMsg(peer_id, toPeerName) {
                 userLog('toast', 'Message sent to ' + toPeerName + ' 👍');
             }
         });
+    };
+}
+
+/**
+ * Send YouTube video to specific peer
+ * @param {*} peer_id
+ */
+function handlePeerYouTube(peer_id) {
+    let peerYoutubeBtn = getId(peer_id + '_youtube');
+    peerYoutubeBtn.onclick = () => {
+        sendVideoUrl(peer_id);
     };
 }
 
@@ -4319,7 +4324,7 @@ function endDownload() {
         Swal.fire({
             allowOutsideClick: false,
             background: swalBackground,
-            imageAlt: 'File-download-Button',
+            imageAlt: 'File Download Button',
             imageUrl: fileSharingImg,
             position: 'center',
             title: 'Received file',
@@ -4361,8 +4366,9 @@ function saveBlobToFile(blob, file) {
 
 /**
  * Opend and send Video URL to all peers in the room
+ *
  */
-function sendVideoUrl() {
+function sendVideoUrl(peer_id = null) {
     playSound('newMessage');
 
     Swal.fire({
@@ -4573,7 +4579,7 @@ function handleKickedOut(config) {
 /**
  * Videolify about info
  */
-function getAbout() {
+function showAbout() {
     playSound('newMessage');
 
     Swal.fire({

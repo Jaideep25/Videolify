@@ -3,19 +3,21 @@ http://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=Server
 ███████ ███████ ██████  ██    ██ ███████ ██████  
 ██      ██      ██   ██ ██    ██ ██      ██   ██ 
 ███████ █████   ██████  ██    ██ █████   ██████  
-     ██ ██      ██   ██  ██  ██  ██      ██   ██ 
+     ██ ██      ██   ██  ██  ██  ██      ██   ██ 
 ███████ ███████ ██   ██   ████   ███████ ██   ██                                           
 dependencies: {
     compression : https://www.npmjs.com/package/compression
+    cors        : https://www.npmjs.com/package/cors
     dotenv      : https://www.npmjs.com/package/dotenv
     express     : https://www.npmjs.com/package/express
     ngrok       : https://www.npmjs.com/package/ngrok
     socket.io   : https://www.npmjs.com/package/socket.io
     swagger     : https://www.npmjs.com/package/swagger-ui-express
+    uuid        : https://www.npmjs.com/package/uuid
     yamljs      : https://www.npmjs.com/package/yamljs
 }
 Videolify Signaling Server
-Copyright (C) 2021 Jaideep25 <jaideepch@outlook.com>
+Copyright (C) 2021 Miroslav Pejic <miroslav.pejic.85@gmail.com>
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
 by the Free Software Foundation, either version 3 of the License, or
@@ -34,9 +36,11 @@ require('dotenv').config();
 
 const compression = require('compression');
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const app = express();
 
+app.use(cors()); // Enable All CORS Requests for all origins
 app.use(compression()); // Compress all HTTP responses using GZip
 
 const http = require('http');
@@ -48,6 +52,7 @@ const ngrok = require('ngrok');
 const yamlJS = require('yamljs');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = yamlJS.load(path.join(__dirname + '/api/swagger.yaml'));
+const { v4: uuidV4 } = require('uuid');
 
 const port = process.env.PORT || 3000; // must be the same to client.js signalingServerPort
 
@@ -134,7 +139,7 @@ app.get('/join/*', (req, res) => {
 });
 
 /**
-    VIDEOLIFY API v1
+    Videolify API v1
     The response will give you a entrypoint / Room URL for your meeting.
     For api docs we use: https://swagger.io/
 */
@@ -147,7 +152,7 @@ app.post([apiBasePath + '/meeting'], (req, res) => {
     // check if user was authorized for the api call
     let authorization = req.headers.authorization;
     if (authorization != api_key_secret) {
-        log.debug('Videolify get meeting - Unauthorized', {
+        log.debug('Vieolify get meeting - Unauthorized', {
             header: req.headers,
             body: req.body,
         });
@@ -155,7 +160,7 @@ app.post([apiBasePath + '/meeting'], (req, res) => {
     }
     // setup meeting URL
     let host = req.headers.host;
-    let meetingURL = getMeetingURL(host) + '/join/' + makeId(15);
+    let meetingURL = getMeetingURL(host) + '/join/' + uuidV4();
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ meeting: meetingURL }));
 
@@ -176,20 +181,6 @@ function getMeetingURL(host) {
     return 'http' + (host.includes('localhost') ? '' : 's') + '://' + host;
 }
 
-/**
- * Generate random Id
- * @param {*} length int
- * @returns random id
- */
-function makeId(length) {
-    let result = '';
-    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-}
 // end of Videolify API v1
 
 /**

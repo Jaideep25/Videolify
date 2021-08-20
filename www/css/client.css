@@ -72,10 +72,10 @@
   --btn-opc: 1;
   --btns-left: 20px;
   --wb-bg: #000000;
-  --wb-hbg: #ff6600;
+  --wb-hbg: #171933;
   --my-settings-label-color: rgb(0, 140, 255);
 
-  /* dark theme
+  /* dark theme*/
   --body-bg: #16171b;
   --msger-bg: #242323;
   --msger-private-bg: rgb(18, 82, 141);
@@ -90,7 +90,6 @@
   --wb-bg: #000000;
   --wb-hbg: #000000;
   --my-settings-label-color: limegreen;
-*/
 
   /* forest theme*/
   --body-bg: black;
@@ -101,15 +100,15 @@
   --right-msg-bg: #2f7210;
   --box-shadow: 3px 3px 6px #00ff5e, -3px -3px 6px #5eff00;
   --btn-bg: white;
-  --btn-color: black;
+  --btn-color: rgb(255, 251, 0);
   --btn-opc: 1;
   --btns-left: 20px;
-  --wb-bg: #000000;
+  --wb-bg: #5c964e;
   --wb-hbg: #000000;
   --my-settings-label-color: limegreen;
   
 
-  /* ghost theme
+  /* ghost theme*/
   --body-bg: #16171b;
   --msger-bg: transparent;
   --msger-private-bg: black;
@@ -124,7 +123,6 @@
   --wb-bg: transparent;
   --wb-hbg: #000000;
   --my-settings-label-color: limegreen;
-  */
 
   /* https://developer.mozilla.org/it/docs/Web/CSS/object-fit */
   --video-object-fit: cover;
@@ -413,11 +411,11 @@ button#whiteboardCleanBtn {
 }
 
 button#whiteboardSaveBtn {
-  color: #1100ff;
+  color: #000000;
 }
 
 button#whiteboardEraserBtn {
-  color: #102f49;
+  color: #000000;
 }
 
 button#whiteboardCloseBtn {

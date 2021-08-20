@@ -1007,7 +1007,7 @@ function setTheme(theme) {
             document.documentElement.style.setProperty('--private-msg-bg', '#f700ff');
             document.documentElement.style.setProperty('--right-msg-bg', '#063e88');
             document.documentElement.style.setProperty('--wb-bg', '#FFFFFF');
-            document.documentElement.style.setProperty('--wb-hbg', '#ff6600');
+            document.documentElement.style.setProperty('--wb-hbg', '#4e7596');
             document.documentElement.style.setProperty('--btn-bg', 'rgb(44, 48, 85)');
             document.documentElement.style.setProperty('--btn-color', 'rgb(0, 255, 149)');
             document.documentElement.style.setProperty('--btn-opc', '1');
@@ -1025,7 +1025,7 @@ function setTheme(theme) {
             document.documentElement.style.setProperty('--private-msg-bg', '#f77070');
             document.documentElement.style.setProperty('--right-msg-bg', '#0a0b0c');
             document.documentElement.style.setProperty('--wb-bg', '#FFFFFF');
-            document.documentElement.style.setProperty('--wb-hbg', '#000000');
+            document.documentElement.style.setProperty('--wb-hbg', '#102f49');
             document.documentElement.style.setProperty('--btn-bg', 'black');
             document.documentElement.style.setProperty('--btn-color', 'white');
             document.documentElement.style.setProperty('--btn-opc', '1');
@@ -1043,7 +1043,7 @@ function setTheme(theme) {
             document.documentElement.style.setProperty('--private-msg-bg', '#008cff');
             document.documentElement.style.setProperty('--right-msg-bg', '#2f7210');
             document.documentElement.style.setProperty('--wb-bg', '#FFFFFF');
-            document.documentElement.style.setProperty('--wb-hbg', '#000000');
+            document.documentElement.style.setProperty('--wb-hbg', '#5c964e');
             document.documentElement.style.setProperty('--btn-bg', 'white');
             document.documentElement.style.setProperty('--btn-color', 'black');
             document.documentElement.style.setProperty('--btn-opc', '1');
@@ -1058,7 +1058,7 @@ function setTheme(theme) {
             document.documentElement.style.setProperty('--msger-bg', 'transparent');
             document.documentElement.style.setProperty('--msger-private-bg', 'black');
             document.documentElement.style.setProperty('--wb-bg', '#FFFFFF');
-            document.documentElement.style.setProperty('--wb-hbg', '#000000');
+            document.documentElement.style.setProperty('--wb-hbg', '#102f49');
             document.documentElement.style.setProperty('--btn-bg', 'transparent');
             document.documentElement.style.setProperty('--btn-color', 'white');
             document.documentElement.style.setProperty('--btn-opc', '0.7');

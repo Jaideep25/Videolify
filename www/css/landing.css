@@ -3520,3 +3520,7 @@ img.has-shadow {
   }
 }
 /*Pulse Button*/
+.features-tiles-item-image.mb-16 {
+  width: 72px;
+  height: 72px;
+}

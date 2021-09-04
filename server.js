@@ -17,7 +17,7 @@ dependencies: {
     yamljs      : https://www.npmjs.com/package/yamljs
 }
 Videolify Signaling Server
-Copyright (C) 2021 Miroslav Pejic <miroslav.pejic.85@gmail.com>
+Copyright (C) 2021 Jaideep25 <jaideepch@outlook.com>
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
 by the Free Software Foundation, either version 3 of the License, or
@@ -34,6 +34,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 require('dotenv').config();
 
+const { Server } = require('socket.io');
+const http = require('http');
+const https = require('https');
 const compression = require('compression');
 const express = require('express');
 const cors = require('cors');
@@ -43,10 +46,25 @@ const app = express();
 app.use(cors()); // Enable All CORS Requests for all origins
 app.use(compression()); // Compress all HTTP responses using GZip
 
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require('socket.io');
-const io = new Server().listen(server);
+const isHttps = false; // must be the same to client.js isHttps
+const port = process.env.PORT || 3000; // must be the same to client.js signalingServerPort
+
+let io, server, host;
+
+if (isHttps) {
+    const fs = require('fs');
+    const options = {
+        key: fs.readFileSync(path.join(__dirname, '/ssl/key.pem'), 'utf-8'),
+        cert: fs.readFileSync(path.join(__dirname, '/ssl/cert.pem'), 'utf-8'),
+    };
+    server = https.createServer(options, app);
+    io = new Server().listen(server);
+    host = 'https://' + 'localhost' + ':' + port;
+} else {
+    server = http.createServer(app);
+    io = new Server().listen(server);
+    host = 'http://' + 'localhost' + ':' + port;
+}
 
 const ngrok = require('ngrok');
 const yamlJS = require('yamljs');
@@ -54,11 +72,8 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = yamlJS.load(path.join(__dirname + '/api/swagger.yaml'));
 const { v4: uuidV4 } = require('uuid');
 
-const port = process.env.PORT || 3000; // must be the same to client.js signalingServerPort
-
-const localHost = 'http://' + 'localhost' + ':' + port; // http
 const apiBasePath = '/api/v1'; // api endpoint path
-const api_docs = localHost + apiBasePath + '/docs'; // api docs
+const api_docs = host + apiBasePath + '/docs'; // api docs
 const api_key_secret = process.env.API_KEY_SECRET || 'videolify_default_secret';
 const ngrokEnabled = process.env.NGROK_ENABLED;
 const ngrokAuthToken = process.env.NGROK_AUTH_TOKEN;
@@ -152,7 +167,7 @@ app.post([apiBasePath + '/meeting'], (req, res) => {
     // check if user was authorized for the api call
     let authorization = req.headers.authorization;
     if (authorization != api_key_secret) {
-        log.debug('Vieolify get meeting - Unauthorized', {
+        log.debug('Videolify get meeting - Unauthorized', {
             header: req.headers,
             body: req.body,
         });
@@ -219,8 +234,8 @@ async function ngrokStart() {
         let tunnelHttps = pu0.startsWith('https') ? pu0 : pu1;
         // server settings
         log.debug('settings', {
-            http: localHost,
-            https: tunnelHttps,
+            server: host,
+            server_tunnel: tunnelHttps,
             api_docs: api_docs,
             api_key_secret: api_key_secret,
             iceServers: iceServers,
@@ -231,6 +246,7 @@ async function ngrokStart() {
         });
     } catch (err) {
         console.error('[Error] ngrokStart', err);
+        process.exit(1);
     }
 }
 
@@ -256,7 +272,7 @@ server.listen(port, null, () => {
     } else {
         // server settings
         log.debug('settings', {
-            http: localHost,
+            server: host,
             api_docs: api_docs,
             api_key_secret: api_key_secret,
             iceServers: iceServers,

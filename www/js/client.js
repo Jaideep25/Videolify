@@ -64,6 +64,7 @@ let callElapsedTime;
 let recStartTime;
 let recElapsedTime;
 let videolifyTheme = 'neon'; // neon - dark - forest - ghost ...
+let style = 'vert';
 let swalBackground = 'rgba(0, 0, 0)'; // black - #16171b - transparent ...
 let peerGeo;
 let peerConnection;
@@ -169,6 +170,7 @@ let videoQualitySelect;
 let videoFpsSelect;
 let screenFpsSelect;
 let themeSelect;
+let styleSelect;
 let selectors;
 // my video element
 let myVideo;
@@ -288,6 +290,7 @@ function getHtmlElementsById() {
     videoFpsSelect = getId('videoFps');
     screenFpsSelect = getId('screenFps');
     themeSelect = getId('videolifyTheme');
+    styleSelect = getId('style');
     // my conference name, hand, video - audio status
     myVideoParagraph = getId('myVideoParagraph');
     myHandStatusIcon = getId('myHandStatusIcon');
@@ -557,7 +560,7 @@ function thereIsPeerConnections() {
  */
 function initClientPeer() {
     setTheme(videolifyTheme);
-
+    setStyle(style);
     if (!isWebRTCSupported) {
         userLog('error', 'This browser seems not supported WebRTC!');
         return;
@@ -1080,7 +1083,26 @@ function setTheme(theme) {
             console.log('No theme found');
     }
 }
-
+function setStyle(stylee){
+    if(!stylee) return;
+    style = stylee;
+    switch(style){
+        case 'vert' :
+            document.documentElement.style.setProperty('--top', '50%');
+            document.documentElement.style.setProperty('--left', '20px');
+            document.documentElement.style.setProperty('--width', '40px');
+            document.documentElement.style.setProperty('--flex-direction', 'column');
+            break;
+        case 'hori' :
+            document.documentElement.style.setProperty('--top', '80%');
+            document.documentElement.style.setProperty('--left', '30%');
+            document.documentElement.style.setProperty('--width', '600px');
+            document.documentElement.style.setProperty('--flex-direction', 'row');
+             break;
+        default:
+            console.log('No theme found');
+    }
+}
 /**
  * Setup local media stuff. Ask user for permission to use the computers microphone and/or camera,
  * attach it to an <audio> or <video> tag if they give us access.
@@ -2017,6 +2039,9 @@ function setupMySettings() {
     themeSelect.addEventListener('change', (e) => {
         setTheme(themeSelect.value);
         setRecordButtonUi();
+    });
+    styleSelect.addEventListener('change',(e) => {
+        setStyle(styleSelect.value);
     });
     // room actions
     muteEveryoneBtn.addEventListener('click', (e) => {

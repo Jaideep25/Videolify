@@ -311,8 +311,8 @@ button#counttimebuttonatpalette {
   z-index: 12;
   display: none;
   position: absolute;
-  left: var(--btns-left);
-  top: 50%;
+  left: var(--left);
+  top: var(--top);
   -webkit-transform: translate(0%, -50%);
   -ms-transform: translate(0%, -50%);
   transform: translate(0%, -50%);
@@ -320,10 +320,10 @@ button#counttimebuttonatpalette {
   background: transparent;
   box-shadow: var(--box-shadow);
   padding: 15px;
-  flex-direction: column;
+  flex-direction: var(--flex-direction);
   justify-content: space-around;
   grid-gap: 0.3rem;
-  width: 40px;
+  width: var(--width);
   -webkit-animation: fadeIn ease-in 1;
   -moz-animation: fadeIn ease-in 1;
   animation: fadeIn ease-in 1;
@@ -335,6 +335,37 @@ button#counttimebuttonatpalette {
   animation-duration: 1s;
   overflow: hidden;
 }
+/*#leftButtons {
+  z-index: 12;
+  display: none;
+  position: fixed;
+  left: 30%;
+  top: 80%;
+  -webkit-transform: translate(0%, -50%);
+  -ms-transform: translate(0%, -50%);
+  transform: translate(0%, -50%);
+  background: transparent;
+  padding: 15px;
+  flex-direction: row;
+  justify-content: space-evenly;
+  grid-gap: 0.3rem;
+  width: 600px;
+  -webkit-animation: fadeIn ease-in 1;
+  -moz-animation: fadeIn ease-in 1;
+  animation: fadeIn ease-in 1;
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  animation-duration: 1s;
+  overflow: hidden;
+  background: rgba(255,255,255,.5);
+  box-shadow: 0 5px 15px rgb(0 0 0 / 16%), 0 1px 4px rgb(0 0 0 / 16%);
+  margin: auto;
+  border-radius: 1rem;
+  transition: opacity 250ms;
+}*/
 
 #leftButtons button {
   border: none;

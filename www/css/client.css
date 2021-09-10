@@ -310,7 +310,7 @@ button#counttimebuttonatpalette {
 #leftButtons {
   z-index: 12;
   display: none;
-  position: absolute;
+  position: fixed;
   left: var(--left);
   top: var(--top);
   -webkit-transform: translate(0%, -50%);

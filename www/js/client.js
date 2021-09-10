@@ -1083,24 +1083,24 @@ function setTheme(theme) {
             console.log('No theme found');
     }
 }
-function setStyle(stylee){
-    if(!stylee) return;
-    style = stylee;
-    switch(style){
-        case 'vert' :
-            document.documentElement.style.setProperty('--top', '50%');
-            document.documentElement.style.setProperty('--left', '20px');
-            document.documentElement.style.setProperty('--width', '40px');
-            document.documentElement.style.setProperty('--flex-direction', 'column');
-            break;
-        case 'hori' :
-            document.documentElement.style.setProperty('--top', '80%');
-            document.documentElement.style.setProperty('--left', '30%');
-            document.documentElement.style.setProperty('--width', '600px');
-            document.documentElement.style.setProperty('--flex-direction', 'row');
-             break;
-        default:
-            console.log('No theme found');
+    function setStyle(stylee) {
+        if (!stylee) return;
+        style = stylee;
+        switch (style) {
+            case 'vert':
+                document.documentElement.style.setProperty('--top', '50%');
+                document.documentElement.style.setProperty('--left', '20px');
+                document.documentElement.style.setProperty('--width', '40px');
+                document.documentElement.style.setProperty('--flex-direction', 'column');
+                break;
+            case 'hori':
+                document.documentElement.style.setProperty('--top', '80%');
+                document.documentElement.style.setProperty('--left', '30%');
+                document.documentElement.style.setProperty('--width', '600px');
+                document.documentElement.style.setProperty('--flex-direction', 'row');
+                break;
+            default:
+                console.log('No style is found');
     }
 }
 /**
@@ -1829,7 +1829,7 @@ function setChatRoomBtn() {
 /**
  * Emoji picker chat room button click event
  */
- function setChatEmojiBtn() {
+function setChatEmojiBtn() {
     if (isMobileDevice) {
         // mobile already have it
         msgerEmojiBtn.style.display = 'none';
@@ -2040,7 +2040,7 @@ function setupMySettings() {
         setTheme(themeSelect.value);
         setRecordButtonUi();
     });
-    styleSelect.addEventListener('change',(e) => {
+    styleSelect.addEventListener('change', (e) => {
         setStyle(styleSelect.value);
     });
     // room actions
@@ -2885,8 +2885,8 @@ function stopStreamRecording() {
 function setRecordButtonUi() {
     recordStreamBtn.style.setProperty('background-color', 'white');
     if (videolifyTheme == 'ghost') recordStreamBtn.style.setProperty('background-color', 'transparent');
-    else if(videolifyTheme == 'dark') recordStreamBtn.style.setProperty('background-color', 'black');
-    else if(videolifyTheme == 'neon') recordStreamBtn.style.setProperty('background-color', 'rgb(44, 48, 85)');recordStreamBtn.style.setProperty('color', 'rgb(0, 255, 149);');
+    else if (videolifyTheme == 'dark') recordStreamBtn.style.setProperty('background-color', 'black');
+    else if (videolifyTheme == 'neon') recordStreamBtn.style.setProperty('background-color', 'rgb(44, 48, 85)'); recordStreamBtn.style.setProperty('color', 'rgb(0, 255, 149);');
 }
 
 /**

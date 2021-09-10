@@ -562,7 +562,7 @@ function initClientPeer() {
     setTheme(videolifyTheme);
     setStyle(style);
     if (!isWebRTCSupported) {
-        userLog('error', 'This browser seems not supported WebRTC!');
+        userLog('error', 'Please use a WebRTC supported browser');
         return;
     }
 
@@ -1558,7 +1558,7 @@ function handleVideoPlayerFs(videoId, videoFullScreenBtnId, peer_id = null) {
     }
 
     function showMsg() {
-        userLog('toast', 'Full screen mode work when video is on');
+        userLog('toast', 'Full screen mode works only when video is ON');
     }
 
     function handleFSVideo() {
@@ -1765,7 +1765,7 @@ function setChatRoomBtn() {
     // show msger participants section
     msgerCPBtn.addEventListener('click', (e) => {
         if (!thereIsPeerConnections()) {
-            userLog('info', 'No participants detected');
+            userLog('info', 'No participants, except you detected');
             return;
         }
         msgerCP.style.display = 'flex';
@@ -2040,9 +2040,13 @@ function setupMySettings() {
         setTheme(themeSelect.value);
         setRecordButtonUi();
     });
-    styleSelect.addEventListener('change', (e) => {
-        setStyle(styleSelect.value);
-    });
+    if (isMobileDevice) {
+        styleSelect.disabled = true;
+    } else {
+        styleSelect.addEventListener('change',(e) => {
+                setStyle(styleSelect.value);
+        });
+    }
     // room actions
     muteEveryoneBtn.addEventListener('click', (e) => {
         disableAllPeers('audio');
@@ -2167,7 +2171,7 @@ function setLocalMaxFps(maxFrameRate) {
         })
         .catch((err) => {
             console.error('setLocalMaxFps', err);
-            userLog('error', "Your device doesn't support the selected fps, please select the another one.");
+            userLog('error', "Your device doesn't support the selected FPS, please select the another option.");
         });
 }
 
@@ -2184,7 +2188,7 @@ function setLocalVideoQuality() {
         })
         .catch((err) => {
             console.error('setLocalVideoQuality', err);
-            userLog('error', "Your device doesn't support the selected video quality, please select the another one.");
+            userLog('error', "Your device doesn't support the selected video quality, please select the another option.");
         });
 }
 
@@ -2295,7 +2299,7 @@ function handleError(err) {
         case 'OverconstrainedError':
             userLog(
                 'error',
-                "GetUserMedia: Your device doesn't support the selected video quality or fps, please select the another one.",
+                "GetUserMedia: Your device doesn't support the selected Video quality or FPS, please select the another option.",
             );
             break;
         default:
@@ -2348,7 +2352,7 @@ async function shareRoomUrl() {
         try {
             // not add title and description to load metadata from url
             await navigator.share({ url: myRoomUrl });
-            userLog('toast', 'Room Shared successfully!');
+            userLog('toast', 'Room link Shared successfully!');
         } catch (err) {
             errorNavigatorShare = true;
             /*
@@ -2769,7 +2773,7 @@ function startStreamRecording() {
                 })
                 .catch((err) => {
                     console.error('[Error] Unable to recording the screen + audio', err);
-                    userLog('error', 'Unable to recording the screen + audio ' + err);
+                    userLog('error', 'Not able to record the screen + audio ' + err);
                 });
         }
     } catch (err) {
@@ -2906,7 +2910,7 @@ function downloadRecordedStream() {
                 🔴 Recording Info <br/>
                 FILE: ${recFileName} <br/>
                 SIZE: ${blobFileSize} <br/>
-                Please wait to be processed, then will be downloaded to your ${currentDevice} device.
+                Please wait for the recording to be processed, then it will be downloaded to your ${currentDevice} device.
             </div>`,
         );
 

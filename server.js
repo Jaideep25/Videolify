@@ -198,6 +198,11 @@ function getMeetingURL(host) {
 
 // end of Videolify API v1
 
+// not match any of page before, so 404 not found
+app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, '../../', 'www/404.html'));
+});
+
 /**
  * You should probably use a different stun-turn server
  * doing commercial stuff, also see:
@@ -655,9 +660,15 @@ io.sockets.on('connect', (socket) => {
     /**
      * Whiteboard actions for all user in the same room
      */
-    socket.on('wb', (config) => {
+     socket.on('wbCanvasToJson', (config) => {
         let room_id = config.room_id;
-        sendToRoom(room_id, socket.id, 'wb', config);
+        sendToRoom(room_id, socket.id, 'wbCanvasToJson', config);
+    });
+
+    socket.on('whiteboardAction', (config) => {
+        log.debug('Whiteboard', config);
+        let room_id = config.room_id;
+        sendToRoom(room_id, socket.id, 'whiteboardAction', config);
     });
 }); // end [sockets.on-connect]
 

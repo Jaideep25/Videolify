@@ -638,7 +638,7 @@ function initClientPeer() {
     signalingSocket.on('peerName', handlePeerName);
     signalingSocket.on('peerStatus', handlePeerStatus);
     signalingSocket.on('peerAction', handlePeerAction);
-    ignalingSocket.on('wbCanvasToJson', handleJsonToWbCanvas);
+    signalingSocket.on('wbCanvasToJson', handleJsonToWbCanvas);
     signalingSocket.on('whiteboardAction', handleWhiteboardAction);
     signalingSocket.on('kickOut', handleKickedOut);
     signalingSocket.on('fileInfo', handleFileInfo);

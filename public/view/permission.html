@@ -19,24 +19,15 @@
 
     <!-- Title and Icon -->
 
-    <title>Videolify ~ Security.</title>
-    <link rel="shortcut icon" href="images/favicon.png" />
-    <link rel="apple-touch-icon" href="images/favicon.png" />
+    <title>Videolify ~ Permissions.</title>
+    <link rel="shortcut icon" href="../images/favicon.png" />
+    <link rel="apple-touch-icon" href="../images/favicon.png" />
 
     <!-- Meta Information -->
 
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <meta
-      name="description"
-      content="Videolify. Powerful ~ Easy to use ~ Secure"
-    />
-    <meta
-      name="keywords"
-      content="webrtc, RTCICECandidates, RTCSessionDescription, RTCDataChannel, real-time communications, webrtc stun, webrtc turn, video meeting, video chat, video conference, multi video chat, multi video conference, peer to peer, p2p, zoom, rtc, teams"
-    />
 
     <!-- https://ogp.me -->
 
@@ -54,7 +45,7 @@
 <meta property="og:url" content="https://videolify.up.railway.app/">
 <meta property="og:title" content="Videolify">
 <meta property="og:description" content="Click the link to feel the power of the new revolution~!!">
-<meta property="og:image" content="/images/preview.png">
+<meta property="og:image" content="../images/preview.png">
 <meta
       name="keywords"
       content="webrtc, webrtc stun, webrtc turn, video meeting, video chat, multi video chat, peer to peer, p2p, zoom"
@@ -65,15 +56,19 @@
 <meta property="twitter:url" content="https://videolify.up.railway.app/">
 <meta property="twitter:title" content="Videolify">
 <meta property="twitter:description" content="Click the link to feel the power of the new revolution~!!">
-<meta property="twitter:image" content="/images/preview.png">
+<meta property="twitter:image" content="../images/preview.png">
 <meta
       name="keywords"
       content="webrtc, webrtc stun, webrtc turn, video meeting, video chat, multi video chat, peer to peer, p2p, zoom"
     />
 
+    <meta
+      name="keywords"
+      content="webrtc, webrtc stun, webrtc turn, video meeting, video chat, multi video chat, peer to peer, p2p, zoom"
+    />
     <!-- StyleSheet -->
 
-    <link rel="stylesheet" href="css/landing.css" />
+    <link rel="stylesheet" href="../css/landing.css" />
   </head>
   <body class="has-animations">
     <div class="body-wrap">
@@ -84,7 +79,7 @@
               <div class="m-0">
                 <a href="/"
                   ><img
-                    src="images/favicon.png"
+                    src="../images/favicon.png"
                     alt="Neon"
                     width="32"
                     height="32"
@@ -111,70 +106,34 @@
                       class="mt-0 mb-16 reveal-from-bottom"
                       data-reveal-delay="150"
                     >
-                      Privacy Policy
+                      Access denied.
                     </h1>
+                    <p
+                      id="getUserMediaError"
+                      class="mt-0 mb-32 reveal-from-bottom"
+                      data-reveal-delay="300"
+                    ></p>
                     <p
                       class="mt-0 mb-32 reveal-from-bottom"
                       data-reveal-delay="300"
                     >
-                      We limit ourselves to collect the smallest amount of user
-                      data that we need in order to create a seamless experience
-                      when using
-                      <strong>Videolify</strong>. <br /><br />
-                      This data includes mainly:
-                      <a
-                        href="https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate"
-                        target="_blank"
-                        >RTCICECandidates</a
-                      >
-                      &
-                      <a
-                        href="https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescription"
-                        target="_blank"
-                        >RTCSessionDescription</a
-                      >
-                      which is needed to establish the video call using WebRTC.
-                      RTCICECandidates, RTCSessionDescription is not stored in
-                      any persistent database, it's removed from the server as
-                      soon as the user leave the call by closing the browser
-                      window. The media streams are encrypted using Secure
-                      Real-time Transport Protocol (SRTP).
-                      <br /><br />
-                      For Chat messaging and File Sharing, we using WebRTC's
-                      <a
-                        href="https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel"
-                        target="_blank"
-                        >RTCDataChannel</a
-                      >
-                      to transfer data directly from one peer to another. With
-                      RTCDataChannel, all data is secured with
-                      <a
-                        href="https://en.wikipedia.org/wiki/Datagram_Transport_Layer_Security"
-                        target="_blank"
-                        >Datagram Transport Layer Security</a
-                      >
-                      (DTLS). DTLS is a derivative of SSL, meaning your data
-                      will be as secure as using any standard SSL-based
-                      connection.
-                      <br /><br />
-                      If you record a meeting, the recording of the meeting is
-                      temporarily stored on <strong>Your browser</strong>
-                      <a
-                        href="https://developer.mozilla.org/en-US/docs/Web/API/Blob"
-                        target="_blank"
-                        >Blob</a
-                      >, then will be downloaded on Your PC/Mobile Device.
-                      <br /><br />
-                      <strong>Videolify</strong> is purely peer-to-peer, which
-                      means the user's video, audio, chat and file is not sent
-                      to our server at all. <br /><br />
-                      We use Google Analytics to track aggregated usage
-                      statistics in order to improve our service. The maker of
-                      <strong>Videolify</strong> has no intention of using
-                      personally or selling any of the above-mentioned data.
+                      This app will not work without camera/microphone access.
+                      Please Try again and allow it.
                     </p>
+                    <script>
+                      let qs = new URLSearchParams(window.location.search);
+                      let roomId = qs.get("roomId");
+                      let getUserMediaError = qs.get("getUserMediaError");
+                      console.log("Allow Camera && Audio", {
+                        roomId: roomId,
+                        getUserMediaError: getUserMediaError,
+                      });
+                      // print getUserMedia error
+                      document.getElementById("getUserMediaError").innerHTML =
+                        getUserMediaError;
+                    </script>
                     <div class="reveal-from-bottom" data-reveal-delay="450">
-                      <a
+                      <button
                         class="button button-primary button-wide-mobile pulse"
                         style="
                           border: 0;
@@ -185,9 +144,10 @@
                             #ffee00 100%
                           );
                         "
-                        href="/newcall"
-                        >AGREE</a
+                        onclick="roomId ? window.location.href = '/join/' + roomId : window.location.href = '/newcall';"
                       >
+                        Try again
+                      </button>
                     </div>
                   </div>
                   <style>
@@ -210,7 +170,7 @@
             <div class="footer-top space-between text-xxs">
               <div class="brand">
                 <a href="/"
-                  ><img src="images/favicon.png" alt="Videolify logo" width="32px" height="32px"
+                  ><img src="../images/favicon.png" alt="Videolify logo" width="32px" height="32px"
                 /></a>
               </div>
               <div class="footer-social">
@@ -255,6 +215,6 @@
         </div>
       </footer>
     </div>
-    <script defer src="js/landing.js"></script>
+    <script defer src="../js/landing.js"></script>
   </body>
 </html>

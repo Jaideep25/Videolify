@@ -69,7 +69,7 @@ if (isHttps) {
 const ngrok = require('ngrok');
 const yamlJS = require('yamljs');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = yamlJS.load(path.join(__dirname + '/api/swagger.yaml'));
+const swaggerDocument = yamlJS.load(path.join(__dirname + '/../api/swagger.yaml'));
 const { v4: uuidV4 } = require('uuid');
 
 const apiBasePath = '/api/v1'; // api endpoint path
@@ -115,27 +115,27 @@ app.use((err, req, res, next) => {
 
 /*
 app.get(["/"], (req, res) => {
-    res.sendFile(path.join(__dirname, "www/client.html"))
+    res.sendFile(path.join(__dirname, "public/view/client.html"))
 }); */
 
 // all start from here
 app.get(['/'], (req, res) => {
-    res.sendFile(path.join(__dirname, 'www/landing.html'));
+    res.sendFile(path.join(__dirname,'../../', 'public/view/landing.html'));
 });
 
 // set new room name and join
 app.get(['/newcall'], (req, res) => {
-    res.sendFile(path.join(__dirname, 'www/newcall.html'));
+    res.sendFile(path.join(__dirname,'../../', 'public/view/newcall.html'));
 });
 
 // if not allow video/audio
 app.get(['/permission'], (req, res) => {
-    res.sendFile(path.join(__dirname, 'www/permission.html'));
+    res.sendFile(path.join(__dirname, '../../public/view/permission.html'));
 });
 
 // privacy policy
 app.get(['/privacy'], (req, res) => {
-    res.sendFile(path.join(__dirname, 'www/privacy.html'));
+    res.sendFile(path.join(__dirname, '../../public/view/privacy.html'));
 });
 
 // no room name specified to join
@@ -149,7 +149,7 @@ app.get('/join/*', (req, res) => {
         log.debug('redirect:' + req.url + ' to ' + url.parse(req.url).pathname);
         res.redirect(url.parse(req.url).pathname);
     } else {
-        res.sendFile(path.join(__dirname, 'www/client.html'));
+        res.sendFile(path.join(__dirname, '../../public/view/client.html'));
     }
 });
 
@@ -200,7 +200,7 @@ function getMeetingURL(host) {
 
 // not match any of page before, so 404 not found
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../../', 'www/404.html'));
+    res.sendFile(path.join(__dirname, '../../', 'public/view/404.html'));
 });
 
 /**

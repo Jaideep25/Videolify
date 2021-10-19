@@ -19,9 +19,9 @@
 
     <!-- Title and Icon -->
 
-    <title>Videolify ~ Permissions.</title>
-    <link rel="shortcut icon" href="images/favicon.png" />
-    <link rel="apple-touch-icon" href="images/favicon.png" />
+    <title>Videolify ~ Making a room.</title>
+    <link rel="shortcut icon" href="../images/favicon.png" />
+    <link rel="apple-touch-icon" href="../images/favicon.png" />
 
     <!-- Meta Information -->
 
@@ -29,9 +29,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <meta
+      name="description"
+      content="Videolify. Powerful ~ Fast ~ Easy to use ~ Secure."
+    />
+    <meta
+      name="keywords"
+      content="webrtc, self hosted, voip, sip, real-time communications, chat, messaging, meet, webrtc stun, webrtc turn, video meeting, video chat, video conference, multi video chat, multi video conference, peer to peer, p2p, rtc, alternative to, zoom, microsoft teams, google meet, jitsi, meeting"
+    />
+
     <!-- https://ogp.me -->
 
-    <!-- Primary Meta Tags -->
+    <<!-- Primary Meta Tags -->
 <title>Videolify ~ The new revolution</title>
 <meta name="title" content="Videolify">
 <meta name="description" content="Click the link to feel the power of the new revolution~!!">
@@ -45,7 +54,7 @@
 <meta property="og:url" content="https://videolify.up.railway.app/">
 <meta property="og:title" content="Videolify">
 <meta property="og:description" content="Click the link to feel the power of the new revolution~!!">
-<meta property="og:image" content="/images/preview.png">
+<meta property="og:image" content="../images/preview.png">
 <meta
       name="keywords"
       content="webrtc, webrtc stun, webrtc turn, video meeting, video chat, multi video chat, peer to peer, p2p, zoom"
@@ -56,19 +65,16 @@
 <meta property="twitter:url" content="https://videolify.up.railway.app/">
 <meta property="twitter:title" content="Videolify">
 <meta property="twitter:description" content="Click the link to feel the power of the new revolution~!!">
-<meta property="twitter:image" content="/images/preview.png">
+<meta property="twitter:image" content="../images/preview.png">
 <meta
       name="keywords"
       content="webrtc, webrtc stun, webrtc turn, video meeting, video chat, multi video chat, peer to peer, p2p, zoom"
     />
 
-    <meta
-      name="keywords"
-      content="webrtc, webrtc stun, webrtc turn, video meeting, video chat, multi video chat, peer to peer, p2p, zoom"
-    />
     <!-- StyleSheet -->
 
-    <link rel="stylesheet" href="css/landing.css" />
+    <link rel="stylesheet" href="../css/landing.css" />
+    <link rel="stylesheet" href="../css/newcall.css" />
   </head>
   <body class="has-animations">
     <div class="body-wrap">
@@ -79,7 +85,7 @@
               <div class="m-0">
                 <a href="/"
                   ><img
-                    src="images/favicon.png"
+                    src="../images/favicon.png"
                     alt="Neon"
                     width="32"
                     height="32"
@@ -106,49 +112,17 @@
                       class="mt-0 mb-16 reveal-from-bottom"
                       data-reveal-delay="150"
                     >
-                      Access denied.
+                      Pick name. <br />
+                      Share URL. <br />
+                      Start conference.
                     </h1>
-                    <p
-                      id="getUserMediaError"
-                      class="mt-0 mb-32 reveal-from-bottom"
-                      data-reveal-delay="300"
-                    ></p>
                     <p
                       class="mt-0 mb-32 reveal-from-bottom"
                       data-reveal-delay="300"
                     >
-                      This app will not work without camera/microphone access.
-                      Please Try again and allow it.
+                      Each room has its own disposable URL. Just pick a room
+                      name and share your custom URL. It's really that easy.
                     </p>
-                    <script>
-                      let qs = new URLSearchParams(window.location.search);
-                      let roomId = qs.get("roomId");
-                      let getUserMediaError = qs.get("getUserMediaError");
-                      console.log("Allow Camera && Audio", {
-                        roomId: roomId,
-                        getUserMediaError: getUserMediaError,
-                      });
-                      // print getUserMedia error
-                      document.getElementById("getUserMediaError").innerHTML =
-                        getUserMediaError;
-                    </script>
-                    <div class="reveal-from-bottom" data-reveal-delay="450">
-                      <button
-                        class="button button-primary button-wide-mobile pulse"
-                        style="
-                          border: 0;
-                          background: linear-gradient(
-                            10deg,
-                            #376df9 0,
-                            #09ff00 75%,
-                            #ffee00 100%
-                          );
-                        "
-                        onclick="roomId ? window.location.href = '/join/' + roomId : window.location.href = '/newcall';"
-                      >
-                        Try again
-                      </button>
-                    </div>
                   </div>
                   <style>
                     @media (min-width: 641px) {
@@ -162,6 +136,40 @@
             </div>
           </div>
         </section>
+
+        <section class="cta section center-content-mobile reveal-from-bottom">
+          <div class="container">
+            <div class="cta-inner section-inner cta-split">
+              <div class="cta-slogan">
+                <h3 class="m-0">
+                  Pick a room name.<br />
+                  How about this one?
+                </h3>
+              </div>
+              <div class="cta-action">
+                <div class="mb-24">
+                  <label class="form-label screen-reader" for="roomName"
+                    >videolify</label
+                  >
+                  <div class="form-group-desktop">
+                    <input
+                      class="form-input"
+                      type="text"
+                      id="roomName"
+                      value="videolify"
+                    />
+                    <button
+                      class="button button-primary pulse"
+                      onclick="{window.location.href = '/join/' + document.getElementById('roomName').value}"
+                    >
+                      Join to room
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <footer class="site-footer center-content-mobile">
@@ -170,7 +178,7 @@
             <div class="footer-top space-between text-xxs">
               <div class="brand">
                 <a href="/"
-                  ><img src="images/favicon.png" alt="Videolify logo" width="32px" height="32px"
+                  ><img src="../images/favicon.png" alt="Videolify logo" width="32px" height="32px"
                 /></a>
               </div>
               <div class="footer-social">
@@ -215,6 +223,7 @@
         </div>
       </footer>
     </div>
-    <script defer src="/js/landing.js"></script>
+    <script defer src="../js/landing.js"></script>
+    <script defer src="../js/newroom.js"></script>
   </body>
 </html>

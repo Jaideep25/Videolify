@@ -2,9 +2,9 @@
   "name": "videolify",
   "version": "1.0.0",
   "description": "A free WebRTC browser-based video call",
-  "main": "server.js",
+  "main": "app/src/server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node app/src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

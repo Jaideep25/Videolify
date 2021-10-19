@@ -54,8 +54,8 @@ let io, server, host;
 if (isHttps) {
     const fs = require('fs');
     const options = {
-        key: fs.readFileSync(path.join(__dirname, '/ssl/key.pem'), 'utf-8'),
-        cert: fs.readFileSync(path.join(__dirname, '/ssl/cert.pem'), 'utf-8'),
+        key: fs.readFileSync(path.join(__dirname, '../ssl/key.pem'), 'utf-8'),
+        cert: fs.readFileSync(path.join(__dirname, '../ssl/cert.pem'), 'utf-8'),
     };
     server = https.createServer(options, app);
     io = new Server().listen(server);
@@ -90,7 +90,7 @@ let sockets = {}; // collect sockets
 let peers = {}; // collect peers info grp by channels
 
 // Use all static files from the www folder
-app.use(express.static(path.join(__dirname, 'www')));
+app.use(express.static(path.join(__dirname, '../../','public')));
 
 // Api parse body data as json
 app.use(express.json());
@@ -120,7 +120,7 @@ app.get(["/"], (req, res) => {
 
 // all start from here
 app.get(['/'], (req, res) => {
-    res.sendFile(path.join(__dirname,'../../', 'public/view/landing.html'));
+    res.sendFile(path.join(__dirname, '../../','public/view/landing.html'));
 });
 
 // set new room name and join
@@ -130,12 +130,12 @@ app.get(['/newcall'], (req, res) => {
 
 // if not allow video/audio
 app.get(['/permission'], (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/view/permission.html'));
+    res.sendFile(path.join(__dirname, '../../','public/view/permission.html'));
 });
 
 // privacy policy
 app.get(['/privacy'], (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/view/privacy.html'));
+    res.sendFile(path.join(__dirname, '../../','public/view/privacy.html'));
 });
 
 // no room name specified to join
@@ -149,7 +149,7 @@ app.get('/join/*', (req, res) => {
         log.debug('redirect:' + req.url + ' to ' + url.parse(req.url).pathname);
         res.redirect(url.parse(req.url).pathname);
     } else {
-        res.sendFile(path.join(__dirname, '../../public/view/client.html'));
+        res.sendFile(path.join(__dirname, '../../','public/view/client.html'));
     }
 });
 

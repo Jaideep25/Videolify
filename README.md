@@ -15,15 +15,15 @@ Powered by `WebRTC` using google Stun and [numb](http://numb.viagenie.ca/) Turn.
 
 Open the app in one of following **supported browser**
 
-[//]: #![webrtc](www/images/webrtc.png)
+[//]: #![webrtc](public/images/webrtc.png)
 
-[![Foo](www/images/browsers.png)](https://videolify.herokuapp.com/)
+[![Foo](public/images/browsers.png)](https://videolify.herokuapp.com/)
 
 ## https://videolify.herokuapp.com/
 
 <br>
 
-[![videolify](www/images/preview.png)](https://videolify.herokuapp.com/)
+[![videolify](public/images/preview.png)](https://videolify.herokuapp.com/)
 
 ## Features
 

@@ -1143,24 +1143,24 @@ function setTheme(theme) {
             console.log('No theme found');
     }
 }
-    function setStyle(stylee) {
-        if (!stylee) return;
-        style = stylee;
-        switch (style) {
-            case 'vert':
-                document.documentElement.style.setProperty('--top', '50%');
-                document.documentElement.style.setProperty('--left', '20px');
-                document.documentElement.style.setProperty('--width', '40px');
-                document.documentElement.style.setProperty('--flex-direction', 'column');
-                break;
-            case 'hori':
-                document.documentElement.style.setProperty('--top', '80%');
-                document.documentElement.style.setProperty('--left', '30%');
-                document.documentElement.style.setProperty('--width', '600px');
-                document.documentElement.style.setProperty('--flex-direction', 'row');
-                break;
-            default:
-                console.log('No style is found');
+function setStyle(stylee) {
+    if (!stylee) return;
+    style = stylee;
+    switch (style) {
+        case 'vert':
+            document.documentElement.style.setProperty('--top', '50%');
+            document.documentElement.style.setProperty('--left', '20px');
+            document.documentElement.style.setProperty('--width', '40px');
+            document.documentElement.style.setProperty('--flex-direction', 'column');
+            break;
+        case 'hori':
+            document.documentElement.style.setProperty('--top', '80%');
+            document.documentElement.style.setProperty('--left', '30%');
+            document.documentElement.style.setProperty('--width', '600px');
+            document.documentElement.style.setProperty('--flex-direction', 'row');
+            break;
+        default:
+            console.log('No style is found');
     }
 }
 /**
@@ -1929,7 +1929,7 @@ function setMyHandBtn() {
 /**
  * Whiteboard : https://github.com/fabricjs/fabric.js
  */
- function setMyWhiteboardBtn() {
+function setMyWhiteboardBtn() {
     dragElement(whiteboard, whiteboardHeader);
 
     setupWhiteboard();
@@ -2125,8 +2125,8 @@ function setupMySettings() {
     if (isMobileDevice) {
         styleSelect.disabled = true;
     } else {
-        styleSelect.addEventListener('change',(e) => {
-                setStyle(styleSelect.value);
+        styleSelect.addEventListener('change', (e) => {
+            setStyle(styleSelect.value);
         });
     }
     // room actions
@@ -3920,7 +3920,7 @@ function handleRoomLocked() {
 /**
  * Whiteboard: Show-Hide
  */
- function toggleWhiteboard() {
+function toggleWhiteboard() {
     if (!wbIsOpen) playSound('newMessage');
     whiteboard.classList.toggle('show');
     whiteboard.style.top = '50%';

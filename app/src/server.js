@@ -3,7 +3,7 @@ http://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=Server
 ███████ ███████ ██████  ██    ██ ███████ ██████  
 ██      ██      ██   ██ ██    ██ ██      ██   ██ 
 ███████ █████   ██████  ██    ██ █████   ██████  
-     ██ ██      ██   ██  ██  ██  ██      ██   ██ 
+     ██ ██      ██   ██  ██  ██  ██      ██   ██ 
 ███████ ███████ ██   ██   ████   ███████ ██   ██                                           
 dependencies: {
     compression : https://www.npmjs.com/package/compression
@@ -90,7 +90,7 @@ let sockets = {}; // collect sockets
 let peers = {}; // collect peers info grp by channels
 
 // Use all static files from the www folder
-app.use(express.static(path.join(__dirname, '../../','public')));
+app.use(express.static(path.join(__dirname, '../../', 'public')));
 
 // Api parse body data as json
 app.use(express.json());
@@ -120,22 +120,22 @@ app.get(["/"], (req, res) => {
 
 // all start from here
 app.get(['/'], (req, res) => {
-    res.sendFile(path.join(__dirname, '../../','public/view/landing.html'));
+    res.sendFile(path.join(__dirname, '../../', 'public/view/landing.html'));
 });
 
 // set new room name and join
 app.get(['/newcall'], (req, res) => {
-    res.sendFile(path.join(__dirname,'../../', 'public/view/newcall.html'));
+    res.sendFile(path.join(__dirname, '../../', 'public/view/newcall.html'));
 });
 
 // if not allow video/audio
 app.get(['/permission'], (req, res) => {
-    res.sendFile(path.join(__dirname, '../../','public/view/permission.html'));
+    res.sendFile(path.join(__dirname, '../../', 'public/view/permission.html'));
 });
 
 // privacy policy
 app.get(['/privacy'], (req, res) => {
-    res.sendFile(path.join(__dirname, '../../','public/view/privacy.html'));
+    res.sendFile(path.join(__dirname, '../../', 'public/view/privacy.html'));
 });
 
 // no room name specified to join
@@ -149,7 +149,7 @@ app.get('/join/*', (req, res) => {
         log.debug('redirect:' + req.url + ' to ' + url.parse(req.url).pathname);
         res.redirect(url.parse(req.url).pathname);
     } else {
-        res.sendFile(path.join(__dirname, '../../','public/view/client.html'));
+        res.sendFile(path.join(__dirname, '../../', 'public/view/client.html'));
     }
 });
 
@@ -660,7 +660,7 @@ io.sockets.on('connect', (socket) => {
     /**
      * Whiteboard actions for all user in the same room
      */
-     socket.on('wbCanvasToJson', (config) => {
+    socket.on('wbCanvasToJson', (config) => {
         let room_id = config.room_id;
         sendToRoom(room_id, socket.id, 'wbCanvasToJson', config);
     });

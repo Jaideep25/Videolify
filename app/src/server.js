@@ -3,7 +3,7 @@ http://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=Server
 ███████ ███████ ██████  ██    ██ ███████ ██████  
 ██      ██      ██   ██ ██    ██ ██      ██   ██ 
 ███████ █████   ██████  ██    ██ █████   ██████  
-     ██ ██      ██   ██  ██  ██  ██      ██   ██ 
+     ██ ██      ██   ██  ██  ██  ██      ██   ██ 
 ███████ ███████ ██   ██   ████   ███████ ██   ██                                           
 dependencies: {
     compression : https://www.npmjs.com/package/compression
@@ -89,7 +89,7 @@ let channels = {}; // collect channels
 let sockets = {}; // collect sockets
 let peers = {}; // collect peers info grp by channels
 
-// Use all static files from the www folder
+// Use all static files from the public folder
 app.use(express.static(path.join(__dirname, '../../', 'public')));
 
 // Api parse body data as json
@@ -140,6 +140,21 @@ app.get(['/privacy'], (req, res) => {
 
 // no room name specified to join
 app.get('/join/', (req, res) => {
+    if (Object.keys(req.query).length > 0) {
+        log.debug('Request Query', req.query);
+        /* 
+            http://localhost:3000/join?room=test&name=videolify&audio=1&video=1
+            all params are mandatory for the direct room join 
+        */
+        let roomName = req.query.room;
+        let peerName = req.query.name;
+        let peerAudio = req.query.audio;
+        let peerVideo = req.query.video;
+        if (roomName && peerName && peerAudio && peerVideo) {
+            res.sendFile(path.join(__dirname, '../../', 'public/view/client.html'));
+            return;
+        }
+    }
     res.redirect('/');
 });
 
@@ -662,6 +677,7 @@ io.sockets.on('connect', (socket) => {
      */
     socket.on('wbCanvasToJson', (config) => {
         let room_id = config.room_id;
+        // log.debug('Whiteboard send canvas', config);
         sendToRoom(room_id, socket.id, 'wbCanvasToJson', config);
     });
 

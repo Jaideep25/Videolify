@@ -3133,7 +3133,7 @@ function showChatRoomDraggable() {
     }
     chatRoomBtn.className = 'fas fa-comment-slash';
     msgerDraggable.style.top = '50%';
-    msgerDraggable.style.left = '25%';
+    msgerDraggable.style.left = isMobileDevice ? '50%' : '25%';
     msgerDraggable.style.display = 'flex';
     isChatRoomVisible = true;
     // only for desktop
@@ -3154,6 +3154,7 @@ function showCaptionDraggable() {
     captionBtn.className = 'far fa-closed-captioning';
     captionDraggable.style.top = '50%';
     captionDraggable.style.left = '75%';
+    captionDraggable.style.left = isMobileDevice ? '50' : '75%';
     captionDraggable.style.display = 'flex';
     isCaptionBoxVisible = true;
     // only for desktop

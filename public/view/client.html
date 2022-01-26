@@ -196,8 +196,11 @@ access to use this app.
 
             <main id="captionChat" class="msger-chat"></main>
             <div class="msger-inputarea">
-                <i class="fas fa-microphone-alt"></i><label>Speech recognition</label>
-                <button type="button" id="speechRecognitionStart" class="fas fa-play" ;"><label>&nbsp; Start</label></button>
+                <i class="fas fa-microphone-alt"></i>
+                <select id="recognitionLanguage"></select>
+                <select id="recognitionDialect"></select>
+                <button type="button" id="speechRecognitionStart" class="fas fa-play" ;"><label>&nbsp;
+                        Start</label></button>
                 <button type="button" id="speechRecognitionStop" class="fas fa-stop"><label>&nbsp; Stop</label></button>
             </div>
         </section>
@@ -324,9 +327,9 @@ access to use this app.
             <div id="whiteboardTitle" class="whiteboard-header-title"></div>
             <div class="whiteboard-header-options">
                 pencil
-                <input id="wbDrawingColorEl" class="whiteboardColorPicker" type="color" value="#FFFFFF" />
+                <input id="wbDrawingColorEl" class="whiteboardColorPicker" type="color" value="#000000" />
                 background
-                <input id="wbBackgroundColorEl" class="whiteboardColorPicker" type="color" value="#000000" />
+                <input id="wbBackgroundColorEl" class="whiteboardColorPicker" type="color" value="#FFFFFF" />
                 <button id="whiteboardPencilBtn" class="fas fa-pencil-alt"></button>
                 <button id="whiteboardObjectBtn" class="fas fa-mouse-pointer"></button>
                 <button id="whiteboardUndoBtn" class="fas fa-undo"></button>
@@ -381,7 +384,7 @@ access to use this app.
             <button id="videoUrlCloseBtn" class="fas fa-times"></button>
         </div>
         <br />
-        <iframe id="videoUrlIframe" title="Video Url Player" src="https://www.youtube.com/embed/RT6_Id5-7-s"
+        <iframe id="videoUrlIframe" title="Video Url Player" src=""
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen></iframe>

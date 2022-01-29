@@ -84,7 +84,7 @@ let callStartTime;
 let callElapsedTime;
 let recStartTime;
 let recElapsedTime;
-let videolifyTheme = "golden"; // golden - dark - forest - ghost ...
+let videolifyTheme = "neon"; // neon - dark - forest - ghost ...
 let mirotalkBtnsBar = "vertical"; // vertical - horizontal
 let swalBackground = "rgba(0, 0, 0, 0.7)"; // black - #16171b - transparent ...
 let peerGeo;
@@ -1087,7 +1087,7 @@ function handleRemovePeer(config) {
 }
 
 /**
- * Set videolify theme golden | dark | forest | sky | ghost | ...
+ * Set videolify theme neon | dark | forest | sky | ghost | ...
  * @param {*} theme
  */
 function setTheme(theme) {
@@ -1095,8 +1095,8 @@ function setTheme(theme) {
 
   videolifyTheme = theme;
   switch (videolifyTheme) {
-    case "golden":
-      // golden theme
+    case "neon":
+      // neon theme
       swalBackground = "rgba(0, 0, 0)";
       document.documentElement.style.setProperty("--body-bg", "#000000");
       document.documentElement.style.setProperty("--msger-bg", "#0038a8");
@@ -1663,11 +1663,11 @@ function setPeerAvatarImgName(videoAvatarImageId, peerName) {
   videoAvatarImageElement.setAttribute(
     "src",
     avatarApiUrl +
-      "?name=" +
-      peerName +
-      "&size=" +
-      avatarImgSize +
-      "&background=random&rounded=true"
+    "?name=" +
+    peerName +
+    "&size=" +
+    avatarImgSize +
+    "&background=random&rounded=true"
   );
 }
 
@@ -2843,7 +2843,7 @@ function handleAudio(e, init, force = null) {
   force != null
     ? (e.className = "fas fa-microphone" + (myAudioStatus ? "" : "-slash"))
     : (e.target.className =
-        "fas fa-microphone" + (myAudioStatus ? "" : "-slash"));
+      "fas fa-microphone" + (myAudioStatus ? "" : "-slash"));
   if (init) {
     audioBtn.className = "fas fa-microphone" + (myAudioStatus ? "" : "-slash");
     if (!isMobileDevice) {
@@ -3290,7 +3290,7 @@ function setRecordButtonUi() {
     recordStreamBtn.style.setProperty("background-color", "transparent");
   else if (videolifyTheme == "dark")
     recordStreamBtn.style.setProperty("background-color", "black");
-  else if (videolifyTheme == "golden")
+  else if (videolifyTheme == "neon")
     recordStreamBtn.style.setProperty("background-color", "rgb(44, 48, 85)");
   recordStreamBtn.style.setProperty("color", "rgb(0, 255, 149);");
 }
@@ -4940,11 +4940,11 @@ function handleDataChannelFileSharing(data) {
 function sendFileData() {
   console.log(
     "Send file " +
-      fileToSend.name +
-      " size " +
-      bytesToSize(fileToSend.size) +
-      " type " +
-      fileToSend.type
+    fileToSend.name +
+    " size " +
+    bytesToSize(fileToSend.size) +
+    " type " +
+    fileToSend.type
   );
 
   sendInProgress = true;

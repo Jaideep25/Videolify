@@ -1042,7 +1042,7 @@ function handleIceCandidate(config) {
  * Tear down all of our peer connections and remove all the media divs.
  */
 function handleDisconnect(reason) {
-  console.log('Disconnected from signaling server', { reason: reason });
+  console.log("Disconnected from signaling server", { reason: reason });
   for (let peer_id in peerMediaElements) {
     document.body.removeChild(peerMediaElements[peer_id].parentNode);
     resizeVideos();
@@ -3418,7 +3418,7 @@ function cleanMessages() {
       }
       // clean object
       chatMessages = [];
-      playSound('delete');
+      playSound("delete");
     }
   });
 }
@@ -3822,7 +3822,7 @@ function downloadChatMsgs() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  playSound('ok');
+  playSound("ok");
 }
 
 /**
@@ -3838,7 +3838,7 @@ function downloadCaptions() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  playSound('ok');
+  playSound("ok");
 }
 
 /**
@@ -4771,7 +4771,7 @@ function wbCanvasSaveImg() {
   const dataNow = getDataTimeString();
   const fileName = `${dataNow} ~ Wb.png`;
   saveDataToFile(dataURL, fileName);
-  playSound('ok');
+  playSound("ok");
 }
 
 /**
@@ -5628,7 +5628,7 @@ function handleMyVolume(data) {
  */
 function userLog(type, message) {
   switch (type) {
-    case "warning" :
+    case "warning":
     case "error":
       Swal.fire({
         background: swalBackground,

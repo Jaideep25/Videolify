@@ -1041,8 +1041,8 @@ function handleIceCandidate(config) {
  * Disconnected from Signaling Server.
  * Tear down all of our peer connections and remove all the media divs.
  */
-function handleDisconnect() {
-  console.log("Disconnected from signaling server");
+function handleDisconnect(reason) {
+  console.log('Disconnected from signaling server', { reason: reason });
   for (let peer_id in peerMediaElements) {
     document.body.removeChild(peerMediaElements[peer_id].parentNode);
     resizeVideos();
@@ -1302,7 +1302,7 @@ function setupLocalMedia(callback, errorback) {
     })
     .catch((err) => {
       console.error("Access denied for audio/video", err);
-      playSound("error");
+      playSound("alert");
       openURL(
         `/permission?roomId=${roomId}&getUserMediaError=${err.toString()} <br/> Check the common getusermedia errors <a href="https://blog.addpipe.com/common-getusermedia-errors" target="_blank">here<a/>`
       );
@@ -1855,7 +1855,7 @@ function takeSnapshot(video) {
   context.drawImage(video, 0, 0, width, height);
   dataURL = canvas.toDataURL("image/png"); // or image/jpeg
   console.log(dataURL);
-  saveDataToFile(dataURL, getDataTimeString() + "-SNAPSHOT.png");
+  saveDataToFile(dataURL, getDataTimeString() + "~ Snap.png");
 }
 /**
  * Start talk time
@@ -3393,6 +3393,7 @@ function showCaptionDraggable() {
  * Clean chat messages
  */
 function cleanMessages() {
+  playSound("newMessage");
   Swal.fire({
     background: swalBackground,
     position: "center",
@@ -3417,6 +3418,7 @@ function cleanMessages() {
       }
       // clean object
       chatMessages = [];
+      playSound('delete');
     }
   });
 }
@@ -3425,6 +3427,7 @@ function cleanMessages() {
  * Clean captions
  */
 function cleanCaptions() {
+  playSound("newMessage");
   Swal.fire({
     background: swalBackground,
     position: "center",
@@ -3449,6 +3452,7 @@ function cleanCaptions() {
       }
       // clean object
       transcripts = [];
+      playSound("delete");
     }
   });
 }
@@ -3818,6 +3822,7 @@ function downloadChatMsgs() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+  playSound('ok');
 }
 
 /**
@@ -3833,6 +3838,7 @@ function downloadCaptions() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+  playSound('ok');
 }
 
 /**
@@ -4763,8 +4769,9 @@ function wbCanvasSaveImg() {
     format: "png",
   });
   const dataNow = getDataTimeString();
-  const fileName = `whiteboard-${dataNow}.png`;
+  const fileName = `${dataNow} ~ Wb.png`;
   saveDataToFile(dataURL, fileName);
+  playSound('ok');
 }
 
 /**
@@ -5621,37 +5628,24 @@ function handleMyVolume(data) {
  */
 function userLog(type, message) {
   switch (type) {
+    case "warning" :
     case "error":
       Swal.fire({
         background: swalBackground,
         position: "center",
-        icon: "error",
-        title: "Oops...",
+        icon: type,
+        title: type,
         text: message,
       });
-      playSound("error");
+      playSound("alert");
       break;
     case "info":
-      Swal.fire({
-        background: swalBackground,
-        position: "center",
-        icon: "info",
-        title: "Info",
-        text: message,
-        showClass: {
-          popup: "animate__animated animate__fadeInDown",
-        },
-        hideClass: {
-          popup: "animate__animated animate__fadeOutUp",
-        },
-      });
-      break;
     case "success":
       Swal.fire({
         background: swalBackground,
         position: "center",
-        icon: "success",
-        title: "Success",
+        icon: type,
+        title: type,
         text: message,
         showClass: {
           popup: "animate__animated animate__fadeInDown",

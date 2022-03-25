@@ -38,28 +38,37 @@
 
 :root {
   /* common */
-  --bg: linear-gradient(to left, #363434, #000000);
+  --status-menu-bg: linear-gradient(#363434, #000000);
+  --body-bg: radial-gradient(#393939, #000000);
+  --border: 1px solid rgb(255 255 255 / 32%);
+
   --msger-top: 50%;
   --msger-left: 50%;
   --msger-height: 680px;
   --msger-width: 420px;
+
   /* video iframe */
   --iframe-width: 640px;
   --iframe-height: 480px;
+
   /* whiteboard resize */
   --wb-width: 800px;
   --wb-height: 600px;
-  --wb-bg: linear-gradient(to left, #1f1e1e, #000000);
+
   /* my settings */
   --mySettings-select-w: 100%;
+
   /* btns hover scale 110% zoom */
   --btns-hover-scale: scale(1.1);
+  --hover-color: grey;
+
   /* video elem border color */
-  --elem-border-color: grey 1px solid;
+  --elem-border-color: none;
+
   /* left buttons bar vertical default */
   --btns-top: 50%;
   --btns-right: 0%;
-  --btns-left: 20px;
+  --btns-left: 15px;
   --btns-margin-left: 0px;
   --btns-width: 40px;
   --btns-flex-direction: column;
@@ -151,6 +160,8 @@
     --wb-hbg: #000000;
     --my-settings-label-color: white;
     */
+    /* volume detected */
+    --volume-up: 0px 8px 16px 0px rgb(249, 253, 0);
   /* https://developer.mozilla.org/it/docs/Web/CSS/object-fit */
   --video-object-fit: cover;
 }
@@ -160,37 +171,16 @@
   font-family: "Josefin Sans";
 }
 
-html {
-  min-height: 100%;
-}
-
 /*--------------------------------------------------------------
-# Body setup
+# Body Html setup
 --------------------------------------------------------------*/
 
+html,
 body {
-  background: var(--body-bg);
-  background-image: url("../images/bg.svg");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  margin: 0;
-  padding: 0;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  opacity: 0;
-  /* make things invisible upon start */
-  -webkit-animation: fadeIn ease-in 1;
-  -moz-animation: fadeIn ease-in 1;
-  animation: fadeIn ease-in 1;
-  -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
-  animation-fill-mode: forwards;
-  -webkit-animation-duration: 0.3s;
-  -moz-animation-duration: 0.3s;
-  animation-duration: 0.3s;
-  overflow: hidden;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--body-bg);
 }
 
 /*--------------------------------------------------------------
@@ -198,136 +188,18 @@ body {
 --------------------------------------------------------------*/
 
 #loadingDiv {
-  position: relative;
-  color: white;
-  top: 40%;
-  left: 60%;
-  transform: translate(-50%, -50%);
+    color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    background: var(--body-bg);
 }
-
 #loadingDiv h1 {
-  font-size: 70px;
+    font-size: 60px;
 }
-
 #loadingDiv pre {
-  font-size: 15px;
-}
-
-/*--------------------------------------------------------------
-# Pulse class effect
---------------------------------------------------------------*/
-
-.pulsate {
-  animation: pulsate 3s ease-out;
-  animation-iteration-count: infinite;
-  -webkit-animation: pulsate 3s ease-out;
-  -webkit-animation-iteration-count: infinite;
-  opacity: 0.5;
-}
-
-@-webkit-keyframes pulsate {
-  0% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.5;
-  }
-}
-
-@keyframes pulsate {
-  0% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.5;
-  }
-}
-
-@-webkit-keyframes pulsate {
-  0% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.5;
-  }
-}
-
-/*--------------------------------------------------------------
-# Status menù (time-name-audio-video)
---------------------------------------------------------------*/
-
-.statusMenu {
-  z-index: 7;
-  display: none;
-  position: absolute;
-  padding: 10px;
-  background: var(--bg);
-  font-size: small;
-  /* 4 mobile */
-  font-weight: bold;
-  text-align: center;
-  width: 100%;
-  cursor: default;
-  /* center */
-  top: 18px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  overflow: hidden;
-}
-
-.statusMenu i,
-.statusMenu p,
-.statusMenu h4 {
-  color: white;
-  display: inline;
-  border: none;
-  margin-right: 10px;
-}
-.statusMenu button {
-  float: right;
-  margin-right: 3px;
-  color: white;
-  background: transparent;
-  display: inline;
-  border: none;
-}
-.statusMenu p:hover,
-.statusMenu h4:hover,
-.statusMenu button:hover {
-  color: rgb(0, 102, 255);
-  transition: all 0.3s ease-in-out;
-}
-
-/*--------------------------------------------------------------
-# Avatar Image on video OFF
---------------------------------------------------------------*/
-
-button#counttimebuttonatpalette {
-  font-size: 16px;
-  color: #ff914d;
-  font-weight: 900;
-  font-family: "Comfortaa", cursive;
-}
-
-.videoAvatarImage {
-  z-index: 8;
-  display: none;
-  position: absolute;
-  /*center*/
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    padding: 5px;
+    
+    
 }
 
 /*--------------------------------------------------------------
@@ -335,45 +207,51 @@ button#counttimebuttonatpalette {
 --------------------------------------------------------------*/
 
 #buttonsBar {
-  z-index: 12;
-  display: none;
-  position: absolute;
-  padding: 15px;
-  top: var(--btns-top);
-  right: var(--btns-right);
-  left: var(--btns-left);
-  margin-left: var(--btns-margin-left);
-  width: var(--btns-width);
-  flex-direction: var(--btns-flex-direction);
-  justify-content: space-around;
-  grid-gap: 0.4rem;
-  -webkit-transform: translate(0%, -50%);
-  -ms-transform: translate(0%, -50%);
-  transform: translate(0%, -50%);
-  border-radius: 20px;
-  background: transparent;
-  box-shadow: var(--box-shadow);
-  overflow: hidden;
+    z-index: 12;
+    display: none;
+    position: fixed;
+    padding: 5px;
+
+    top: var(--btns-top);
+    right: var(--btns-right);
+    left: var(--btns-left);
+    margin-left: var(--btns-margin-left);
+    width: var(--btns-width);
+    flex-direction: var(--btns-flex-direction);
+
+    justify-content: space-around;
+    grid-gap: 0.4rem;
+
+    -webkit-transform: translate(0%, -50%);
+    -ms-transform: translate(0%, -50%);
+    transform: translate(0%, -50%);
+
+    /* background: var(--body-bg); */
+    /*box-shadow: 0px 8px 16px 0px rgb(33 33 33);*/
+    border: var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    background: transparent;
+    box-shadow: var(--box-shadow);
 }
 
 #buttonsBar button {
-  border: none;
-  font-size: 1.5rem;
-  transition: all 0.3s ease-in-out;
-  background: var(--btn-bg);
-  padding: 4px;
-  border-radius: 5px;
-  opacity: var(--btn-opc);
-  color: var(--btn-color);
+    border: none;
+    font-size: 1.5rem;
+    transition: all 0.3s ease-in-out;
+    background: #fff;
+    padding: 4px;
+    border-radius: 5px;
+    color: #000;
 }
 
 #buttonsBar button:hover {
-  color: var(--hover-color);
-  transform: var(--btns-hover-scale);
+    color: var(--hover-color);
+    transform: var(--btns-hover-scale);
 }
 
 #buttonsBar button:focus {
-  outline: none;
+    outline: none;
 }
 
 #initAudioBtn,
@@ -437,7 +315,7 @@ button#whiteboardCleanBtn {
 }
 
 button#whiteboardSaveBtn {
-  color: #000000;
+  color: #188461;
 }
 
 button#whiteboardEraserBtn {
@@ -445,11 +323,11 @@ button#whiteboardEraserBtn {
 }
 
 button#whiteboardCloseBtn {
-  color: #000000;
+  color: #00eeff;
 }
 
 button#whiteboardFsBtn {
-  color: #000000;
+  color: #5acfc0;
 }
 #buttonsBar #leaveRoomBtn:hover {
   color: red;
@@ -515,19 +393,22 @@ button#whiteboardFsBtn {
   color: #666;
 }
 
+.msger-header-title button,
 .msger-header-options button {
-  border: none;
-  font-size: 1.2rem;
-  transition: all 0.3s ease-in-out;
-  background: rgb(0, 0, 0);
-  color: #fff;
-  border-radius: 5px;
-  transition: background 0.23s;
+    border: none;
+    font-size: 1.2rem;
+    background: rgb(0, 0, 0);
+    color: #fff;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    transition: background 0.23s;
 }
+
+.msger-header-title button:hover,
 .msger-header-options button:hover {
-  color: rgb(0, 180, 50);
-  transform: var(--btns-hover-scale);
-  transition: all 0.3s ease-in-out;
+    color: var(--hover-color);
+    transform: var(--btns-hover-scale);
+    transition: all 0.3s ease-in-out;
 }
 
 /*--------------------------------------------------------------
@@ -784,123 +665,6 @@ emoji-picker {
 }
 
 /*--------------------------------------------------------------
-# Video Grid
---------------------------------------------------------------*/
-
-#myVideo.mirror {
-  -webkit-transform: rotateY(180deg);
-  -moz-transform: rotateY(180deg);
-  transform: rotateY(180deg);
-}
-
-video {
-  width: 100%;
-  height: 100%;
-  object-fit: var(--video-object-fit);
-  cursor: pointer;
-}
-
-video:fullscreen {
-  object-fit: contain;
-  /* cover; */
-  border: var(--elem-border-color);
-}
-
-.video {
-  float: left;
-  width: 25vw;
-  height: 50vh;
-  overflow: hidden;
-  position: relative;
-}
-
-.video.one {
-  width: 100vw;
-  height: 100vh;
-}
-
-.video.two {
-  width: 49.6vw;
-  height: 99vh;
-  --video-object-fit: cover;
-  border: var(--elem-border-color);
-  /* --video-object-fit: contain; */
-}
-
-.video.three {
-  /* width: 33vw;
-  height: 99vh; */
-  width: 49.6vw;
-  --video-object-fit: cover;
-  border: var(--elem-border-color);
-}
-
-.video.four {
-  width: 49.6vw;
-  height: 49vh;
-  --video-object-fit: cover;
-  border: var(--elem-border-color);
-}
-
-.video.five {
-  width: 33vw;
-  height: 49vh;
-  --video-object-fit: cover;
-  border: var(--elem-border-color);
-}
-
-.video.six {
-  width: 33vw;
-  height: 49vh;
-  --video-object-fit: cover;
-  border: var(--elem-border-color);
-}
-
-/*--------------------------------------------------------------
-# Handle video elements on screen resize
---------------------------------------------------------------*/
-
-@media only screen and (max-width: 720px) {
-  /* 960px */
-  .video {
-    float: left;
-    width: 50vw;
-    height: 25vh;
-    overflow: hidden;
-  }
-  .video.two {
-    width: 99vw;
-    height: 49vh;
-    --video-object-fit: cover;
-    border: var(--elem-border-color);
-  }
-  .video.three {
-    width: 99vw;
-    height: 33vh;
-    --video-object-fit: cover;
-    border: var(--elem-border-color);
-  }
-  .video.four {
-    width: 49vw;
-    height: 49vh;
-    --video-object-fit: cover;
-    border: var(--elem-border-color);
-  }
-  .video.five {
-    width: 49vw;
-    height: 33vh;
-    --video-object-fit: cover;
-    border: var(--elem-border-color);
-  }
-  .video.six {
-    width: 49vw;
-    height: 33vh;
-    --video-object-fit: cover;
-    border: var(--elem-border-color);
-  }
-}
-
-/*--------------------------------------------------------------
 # Room QR
 --------------------------------------------------------------*/
 
@@ -998,7 +762,6 @@ video:fullscreen {
 
 .tab {
   overflow: hidden;
-  border: 1px solid rgb(0, 0, 0);
   background-color: rgba(0, 0, 0);
 }
 
@@ -1034,7 +797,6 @@ video:fullscreen {
 .tabcontent {
   display: none;
   padding: 6px 12px;
-  border: 1px solid rgb(0, 0, 0);
   border-top: none;
 }
 

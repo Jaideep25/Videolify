@@ -71,6 +71,7 @@
     <!-- StyleSheet -->
 
     <link rel="stylesheet" href="../css/client.css" />
+    <link rel="stylesheet" href="../css/videoGrid.css" />
     <link rel="stylesheet" href="../css/whiteboard.css" />
 
     <!-- https://animate.style 4 using for swal fadeIn-Out -->
@@ -89,12 +90,12 @@
 
     <!-- show this before to join -->
 
-    <div id="loadingDiv">
-        <h1 class="pulsate">Loading...</h1>
+    <div id="loadingDiv" class="center pulsate">
+        <h1>Loading...</h1>
         <pre>
-Please allow camera & microphone
+Please allow the camera or microphone
 access to use this app.
-            </pre>
+        </pre>
     </div>
 
     <!-- Start buttons bar
@@ -125,75 +126,81 @@ access to use this app.
         https://getemoji.com
         -->
 
-    <section id="msgerDraggable" class="msger-draggable fadein">
-        <section id="msger" class="msger">
-            <header id="msgerHeader" class="msger-header">
-                <div class="msger-header-title"><i class="fas fa-comment-alt"></i> Chat</div>
-                <div class="msger-header-options">
-                    <button id="msgerClean" class="fas fa-trash"></button>
-                    <button id="msgerSaveBtn" class="fas fa-save"></button>
-                    <button id="msgerClose" class="fas fa-times"></button>
-                </div>
-            </header>
+        <section id="msgerDraggable" class="msger-draggable fadein">
+            <section id="msger" class="msger">
+                <header id="msgerHeader" class="msger-header">
+                    <div class="msger-header-title"><button id="msgerClose" class="fas fa-times" ></button>
+                        </div>
+                    <div class="msger-header-options">
+                        <button id="msgerClean" class="fas fa-trash"></button>
+                        <button id="msgerSaveBtn" class="fas fa-save"></button>
+                    </div>
+                </header>
 
-            <main id="msgerChat" class="msger-chat"></main>
+                <main id="msgerChat" class="msger-chat"></main>
 
-            <!-- Start emoji picker 
+                <!-- Start emoji picker 
                 https://github.com/nolanlawson/emoji-picker-element ] 
                 -->
 
-            <section id="msgerEmojiPicker" class="hidden fadein">
-                <emoji-picker class="dark"></emoji-picker>
-                <!-- <emoji-picker class="light"></emoji-picker> -->
+                <section id="msgerEmojiPicker" class="hidden fadein">
+                    <emoji-picker class="dark"></emoji-picker>
+                    <!-- <emoji-picker class="light"></emoji-picker> -->
+                </section>
+
+                <!-- End emoji picker -->
+
+                <div class="msger-inputarea">
+                    <button id="msgerEmojiBtn" class="fas fa-smile"></button>
+                    <input id="msgerInput" class="msger-input" type="text" placeholder="💬 Enter your message..." />
+                    <button id="msgerVideoUrlBtn" class="fab fa-youtube"></button>
+                    <button id="msgerCPBtn" class="fas fa-users"></button>
+                    <button id="msgerSendBtn" class="fas fa-paper-plane"></button>
+                </div>
             </section>
 
-            <!-- End emoji picker -->
+            <!-- Start private msg -->
 
-            <div class="msger-inputarea">
-                <input id="msgerInput" class="msger-input" type="text" placeholder="💬 Enter your message..." />
-                <button id="msgerVideoUrlBtn" class="fab fa-youtube"></button>
-                <button id="msgerEmojiBtn" class="fas fa-smile"></button>
-                <button id="msgerCPBtn" class="fas fa-users"></button>
-                <button id="msgerSendBtn" class="fas fa-paper-plane"></button>
-            </div>
-        </section>
-
-        <!-- Start private msg -->
-
-        <section id="msgerCP" class="center fadein">
-            <section id="msgerCPSec" class="msger">
-                <header id="msgerCPHeader" class="msger-private-header">
-                    <div class="msger-header-title"><i class="fas fa-comment-alt"></i> Send Private messages</div>
-                    <div class="msger-header-options">
-                        <button id="msgerCPCloseBtn" class="fas fa-times"></button>
-                    </div>
-                </header>
-                <main id="msgerCPChat" class="msger-chat">
-                    <div class="search-container">
-                        <input id="searchPeerBarName" type="text" placeholder=" 🔍 Search peer by name..." name="search"
-                            onkeyup="searchPeer()" />
-                    </div>
-                    <br />
-                    <div id="msgerCPList"></div>
-                </main>
+            <section id="msgerCP" class="center fadein">
+                <section id="msgerCPSec" class="msger">
+                    <header id="msgerCPHeader" class="msger-private-header">
+                        <div class="msger-header-title"><i class="fas fa-comment-alt"></i> Send Private messages</div>
+                        <div class="msger-header-options">
+                            <button id="msgerCPCloseBtn" class="fas fa-times"></button>
+                        </div>
+                    </header>
+                    <main id="msgerCPChat" class="msger-chat">
+                        <div class="search-container">
+                            <input
+                                id="searchPeerBarName"
+                                type="text"
+                                placeholder=" 🔍 Search peer by name..."
+                                name="search"
+                                onkeyup="searchPeer()"
+                            />
+                        </div>
+                        <br />
+                        <div id="msgerCPList"></div>
+                    </main>
+                </section>
             </section>
+
+            <!-- End private msg -->
         </section>
 
-        <!-- End private msg -->
-    </section>
-
-    <!-- End chat room -->
+        <!-- End chat room -->
 
     <!-- Start of caption section -->
 
     <section id="captionDraggable" class="msger-draggable fadein">
         <section id="caption" class="msger">
             <header id="captionHeader" class="msger-header">
-                <div class="msger-header-title"><i class="fas fa-comment-alt"></i> Captions</div>
+                <div class="msger-header-title">
+                    <button id="captionClose" class="fas fa-times" style="color: rgb(255, 255, 255); background-color: black;"></button>
+                </div>
                 <div class="msger-header-options">
                     <button id="captionClean" class="fas fa-trash"></button>
                     <button id="captionSaveBtn" class="fas fa-save"></button>
-                    <button id="captionClose" class="fas fa-times"></button>
                 </div>
             </header>
 
@@ -311,6 +318,15 @@ access to use this app.
                     <option value="ghost">⚪️ Ghost</option>
                 </select>
                 <br /><br />
+                <label>Video fit:</label>
+                    <br />
+                    <select id="videoObjFitSelect">
+                        <option value="fill"> Fill</option>
+                        <option value="contain"> Contain</option>
+                        <option value="cover"> Cover - Default</option>
+                        <option value="scale-down"> Scale Down</option>
+                    </select>
+                    <br /><br />
                 <label for="BtnsBar">Buttons bar</label>
                 <br />
                 <select id="BtnsBar">
@@ -323,15 +339,15 @@ access to use this app.
 
     <!-- End my settings -->
 
-    <!-- Start whiteboard -->
+     <!-- Start whiteboard -->
 
-    <section id="whiteboard" class="hidden">
+     <section id="whiteboard" class="hidden">
         <header id="whiteboardHeader" class="whiteboard-header">
-            <div id="whiteboardTitle" class="whiteboard-header-title"></div>
+            <div id="whiteboardTitle" class="whiteboard-header-title">
+                <button id="whiteboardCloseBtn" class="fas fa-times"></button>
+            </div>
             <div class="whiteboard-header-options">
-                pencil
                 <input id="wbDrawingColorEl" class="whiteboardColorPicker" type="color" value="#000000" />
-                background
                 <input id="wbBackgroundColorEl" class="whiteboardColorPicker" type="color" value="#FFFFFF" />
                 <button id="whiteboardPencilBtn" class="fas fa-pencil-alt"></button>
                 <button id="whiteboardObjectBtn" class="fas fa-mouse-pointer"></button>
@@ -346,7 +362,6 @@ access to use this app.
                 <button id="whiteboardSaveBtn" class="fas fa-save"></button>
                 <button id="whiteboardEraserBtn" class="fas fa-eraser"></button>
                 <button id="whiteboardCleanBtn" class="fas fa-trash"></button>
-                <button id="whiteboardCloseBtn" class="fas fa-times"></button>
             </div>
         </header>
         <main>
@@ -394,6 +409,14 @@ access to use this app.
 
     <!-- End Youtube Iframe -->
 
+    <!-- Start Video container -->
+
+    <div id="videoMediaContainer">
+        <!-- <div class="Camera"></div> -->
+    </div>
+
+    <!-- End Video container -->
+
     <!-- Js scripts -->
 
     <script defer src="https://kit.fontawesome.com/d2f1016e6f.js" crossorigin="anonymous"></script>
@@ -409,6 +432,7 @@ access to use this app.
     <script defer src="../js/client.js"></script>
     <script defer src="../js/detectSpeaking.js"></script>
     <script defer src="../js/speechRecognition.js"></script>
+    <script defer src="../js/videoGrid.js"></script>
 
     <!-- end of Js scripts -->
 

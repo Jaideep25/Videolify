@@ -188,7 +188,8 @@ let videoSelect;
 let videoQualitySelect;
 let videoFpsSelect;
 let screenFpsSelect;
-let themeSelect;
+let selectheme;
+let vidobselec;
 let btnsBarSelect;
 let selectors;
 // my video element
@@ -334,7 +335,8 @@ function getHtmlElementsById() {
   videoQualitySelect = getId("videoQuality");
   videoFpsSelect = getId("videoFps");
   screenFpsSelect = getId("screenFps");
-  themeSelect = getId("videolifyTheme");
+  selectheme = getId("videolifyTheme");
+  vidobselec = getId("videoObjFitSelect");
   btnsBarSelect = getId("BtnsBar");
   // my conference name, hand, video - audio status
   myVideoParagraph = getId("myVideoParagraph");
@@ -399,13 +401,13 @@ function setButtonsToolTip() {
   setTippy(screenShareBtn, "START screen sharing", "right-start");
   setTippy(recordStreamBtn, "START recording", "right-start");
   setTippy(fullScreenBtn, "VIEW full screen", "right-start");
-  setTippy(chatRoomBtn, "OPEN the chat", "right-start");
-  setTippy(captionBtn, "OPEN the caption", "right-start");
-  setTippy(myHandBtn, "RAISE your hand", "right-start");
-  setTippy(whiteboardBtn, "OPEN the whiteboard", "right-start");
-  setTippy(fileShareBtn, "SHARE the file", "right-start");
-  setTippy(mySettingsBtn, "Show settings", "right-start");
-  setTippy(aboutBtn, "Show about", "right-start");
+  setTippy(chatRoomBtn, "Open the Chat", "right-start");
+  setTippy(captionBtn, "Open Text-To-Speech", "right-start");
+  setTippy(myHandBtn, "Raise ur hand", "right-start");
+  setTippy(whiteboardBtn, "Open the whiteboard", "right-start");
+  setTippy(fileShareBtn, "Share a file", "right-start");
+  setTippy(mySettingsBtn, "Show Settings", "right-start");
+  setTippy(aboutBtn, "Show About", "right-start");
   setTippy(leaveRoomBtn, "Leave this room", "right-start");
   // chat room buttons
   setTippy(msgerCPBtn, "Private messages", "top");
@@ -419,7 +421,7 @@ function setButtonsToolTip() {
   setTippy(captionSaveBtn, "Save messages", "top");
   // settings
   setTippy(mySettingsCloseBtn, "Close settings", "top");
-  setTippy(myPeerNameSetBtn, "Change name", "top");
+  setTippy(myPeerNameSetBtn, "Change my name", "top");
   // tab btns
   setTippy(tabDevicesBtn, "Devices", "top");
   setTippy(tabBandwidthBtn, "Bandwidth", "top");
@@ -427,20 +429,20 @@ function setButtonsToolTip() {
   setTippy(tabStylingBtn, "Styling", "top");
   // whiteboard btns
   setTippy(wbDrawingColorEl, "DRAWING color", "bottom");
-  setTippy(wbBackgroundColorEl, "BACKGROUND color", "bottom");
+  setTippy(wbBackgroundColorEl, "BG color", "bottom");
   setTippy(whiteboardPencilBtn, "DRAWING mode", "bottom");
   setTippy(whiteboardObjectBtn, "OBJECT mode", "bottom");
-  setTippy(whiteboardUndoBtn, "UNDO the board", "bottom");
-  setTippy(whiteboardRedoBtn, "REDO the board", "bottom");
-  setTippy(whiteboardImgFileBtn, "ADD image from file", "bottom");
-  setTippy(whiteboardImgUrlBtn, "ADD image from URL", "bottom");
-  setTippy(whiteboardTextBtn, "ADD the text", "bottom");
-  setTippy(whiteboardLineBtn, "ADD the line", "bottom");
-  setTippy(whiteboardRectBtn, "ADD the rectangle", "bottom");
-  setTippy(whiteboardCircleBtn, "ADD the circle", "bottom");
+  setTippy(whiteboardUndoBtn, "UNDO", "bottom");
+  setTippy(whiteboardRedoBtn, "REDO", "bottom");
+  setTippy(whiteboardImgFileBtn, "Insert image from file", "bottom");
+  setTippy(whiteboardImgUrlBtn, "Insert image from URL", "bottom");
+  setTippy(whiteboardTextBtn, "Insert text", "bottom");
+  setTippy(whiteboardLineBtn, "Insert line", "bottom");
+  setTippy(whiteboardRectBtn, "Insert rectangle", "bottom");
+  setTippy(whiteboardCircleBtn, "Insert circle", "bottom");
   setTippy(whiteboardSaveBtn, "SAVE the board", "bottom");
-  setTippy(whiteboardEraserBtn, "ERASE the object", "bottom");
-  setTippy(whiteboardCleanBtn, "CLEAN the board", "bottom");
+  setTippy(whiteboardEraserBtn, "ERASE object", "bottom");
+  setTippy(whiteboardCleanBtn, "CLEAN board", "bottom");
   setTippy(whiteboardCloseBtn, "CLOSE the board", "bottom");
   // room actions btn
   setTippy(muteEveryoneBtn, "MUTE everyone except yourself", "top");
@@ -449,8 +451,8 @@ function setButtonsToolTip() {
   setTippy(sendAbortBtn, "ABORT file transfer", "right-start");
   setTippy(receiveHideBtn, "HIDE file transfer", "right-start");
   // video URL player
-  setTippy(videoUrlCloseBtn, "Close the videoPlayer");
-  setTippy(msgerVideoUrlBtn, "Share YouTube video to all participants");
+  setTippy(videoUrlCloseBtn, "Close the Player");
+  setTippy(msgerVideoUrlBtn, "Share the video to all peers");
 }
 
 /**
@@ -716,11 +718,7 @@ function checkPeerAudioVideo() {
  * Room and Peer name are ok Join Channel
  */
 function whoAreYouJoin() {
-  document.body.style.backgroundImage = "none";
   myVideoWrap.style.display = "inline";
-  logStreamSettingsInfo("localMediaStream", localMediaStream);
-  attachMediaStream(myVideo, localMediaStream);
-  resizeVideos();
   myVideoParagraph.innerHTML = myPeerName + " (me)";
   setPeerAvatarImgName("myVideoAvatarImage", myPeerName);
   setPeerChatAvatarImgName("right", myPeerName);
@@ -1044,8 +1042,10 @@ function handleIceCandidate(config) {
 function handleDisconnect(reason) {
   console.log("Disconnected from signaling server", { reason: reason });
   for (let peer_id in peerMediaElements) {
-    document.body.removeChild(peerMediaElements[peer_id].parentNode);
-    resizeVideos();
+    peerMediaElements[peer_id].parentNode.removeChild(
+      peerMediaElements[peer_id]
+    );
+    adaptAspectRatio();
   }
   for (let peer_id in peerConnections) {
     peerConnections[peer_id].close();
@@ -1071,8 +1071,10 @@ function handleRemovePeer(config) {
   let peer_id = config.peer_id;
 
   if (peer_id in peerMediaElements) {
-    document.body.removeChild(peerMediaElements[peer_id].parentNode);
-    resizeVideos();
+    peerMediaElements[peer_id].parentNode.removeChild(
+      peerMediaElements[peer_id]
+    );
+    adaptAspectRatio();
   }
   if (peer_id in peerConnections) peerConnections[peer_id].close();
 
@@ -1227,7 +1229,7 @@ function setButtonsBarPosition(position) {
       let btnsLeft = videolifyTheme === "ghost" ? "5px" : "20px";
       document.documentElement.style.setProperty("--btns-top", "50%");
       document.documentElement.style.setProperty("--btns-right", "0px");
-      document.documentElement.style.setProperty("--btns-left", btnsLeft);
+      document.documentElement.style.setProperty("--btns-left", '15px');
       document.documentElement.style.setProperty("--btns-margin-left", "0px");
       document.documentElement.style.setProperty("--btns-width", "40px");
       document.documentElement.style.setProperty(
@@ -1425,7 +1427,7 @@ function loadLocalMedia(stream) {
   localMedia.volume = 0;
   localMedia.controls = false;
 
-  videoWrap.className = "video";
+  videoWrap.className = "Camera";
   videoWrap.setAttribute("id", "myVideoWrap");
 
   // add elements to video wrap div
@@ -1434,18 +1436,22 @@ function loadLocalMedia(stream) {
   videoWrap.appendChild(localMedia);
   videoWrap.appendChild(myPitchMeter);
 
-  document.body.appendChild(videoWrap);
-  videoWrap.style.display = "none";
+  getId('videoMediaContainer').appendChild(videoWrap);
+  videoWrap.style.display = 'none';
+
+  logStreamSettingsInfo('localMediaStream', localMediaStream);
+  attachMediaStream(localMedia, localMediaStream);
+  adaptAspectRatio();
 
   getHtmlElementsById();
   setButtonsToolTip();
   manageLeftButtons();
-  handleBodyOnMouseMove();
   setupMySettings();
   setupVideoUrlPlayer();
   startCountTime();
-  handleVideoPlayerFs("myVideo", "myVideoFullScreenBtn");
-  handleVideoToImg("myVideo", "myVideoToImgBtn");
+  handleBodyOnMouseMove();
+  handleVideoPlayerFs('myVideo', 'myVideoFullScreenBtn');
+  handleVideoToImg('myVideo', 'myVideoToImgBtn');
 }
 
 /**
@@ -1577,7 +1583,7 @@ function loadRemoteMediaStream(stream, peers, peer_id) {
   remoteMedia.controls = remoteMediaControls;
   peerMediaElements[peer_id] = remoteMedia;
 
-  remoteVideoWrap.className = "video";
+  remoteVideoWrap.className = "Camera";
   remoteVideoWrap.setAttribute("id", peer_id + "_videoWrap");
 
   // add elements to videoWrap div
@@ -1586,12 +1592,15 @@ function loadRemoteMediaStream(stream, peers, peer_id) {
   remoteVideoWrap.appendChild(remotePitchMeter);
   remoteVideoWrap.appendChild(remoteMedia);
 
-  document.body.appendChild(remoteVideoWrap);
+  // need later on disconnect or remove peers
+  peerMediaElements[peer_id] = remoteVideoWrap;
 
+  // append all elements to videoMediaContainer
+  getId("videoMediaContainer").appendChild(remoteVideoWrap);
   // attachMediaStream is a part of the adapter.js library
   attachMediaStream(remoteMedia, remoteMediaStream);
   // resize video elements
-  resizeVideos();
+  adaptAspectRatio();
   // handle video to image
   handleVideoToImg(peer_id + "_video", peer_id + "_snapshot", peer_id);
   // handle video full screen mode
@@ -1639,14 +1648,66 @@ function logStreamSettingsInfo(name, stream) {
 }
 
 /**
- * Resize video elements
+ * Handle aspect ratio
+ * ['0:0', '4:3', '16:9', '1:1', '1:2'];
+ *    0      1       2      3      4
  */
-function resizeVideos() {
-  const numToString = ["", "one", "two", "three", "four", "five", "six"];
-  const videos = document.querySelectorAll(".video");
-  document.querySelectorAll(".video").forEach((v) => {
-    v.className = "video " + numToString[videos.length];
-  });
+function adaptAspectRatio() {
+  let participantsCount = getId("videoMediaContainer").childElementCount;
+  let desktop,
+    mobile = 1;
+  // desktop aspect ratio
+  switch (participantsCount) {
+    // case 1:
+    //     desktop = 0; // (0:0)
+    //     break;
+    case 1:
+    case 3:
+    case 4:
+    case 7:
+    case 9:
+      desktop = 2; // (16:9)
+      break;
+    case 5:
+    case 6:
+    case 10:
+    case 11:
+      desktop = 1; // (4:3)
+      break;
+    case 2:
+    case 8:
+      desktop = 3; // (1:1)
+      break;
+    default:
+      desktop = 0; // (0:0)
+  }
+  // mobile aspect ratio
+  switch (participantsCount) {
+    case 3:
+    case 9:
+    case 10:
+      mobile = 2; // (16:9)
+      break;
+    case 2:
+    case 7:
+    case 8:
+    case 11:
+      mobile = 1; // (4:3)
+      break;
+    case 1:
+    case 4:
+    case 5:
+    case 6:
+      mobile = 3; // (1:1)
+      break;
+    default:
+      mobile = 3; // (1:1)
+  }
+  if (participantsCount > 11) {
+    desktop = 1; // (4:3)
+    mobile = 3; // (1:1)
+  }
+  setAspectRatio(isMobileDevice ? mobile : desktop);
 }
 
 /**
@@ -1663,11 +1724,11 @@ function setPeerAvatarImgName(videoAvatarImageId, peerName) {
   videoAvatarImageElement.setAttribute(
     "src",
     avatarApiUrl +
-    "?name=" +
-    peerName +
-    "&size=" +
-    avatarImgSize +
-    "&background=random&rounded=true"
+      "?name=" +
+      peerName +
+      "&size=" +
+      avatarImgSize +
+      "&background=random&rounded=true"
   );
 }
 
@@ -1906,7 +1967,6 @@ function manageLeftButtons() {
   setMySettingsBtn();
   setAboutBtn();
   setLeaveRoomBtn();
-  showButtonsBarAndMenu();
 }
 
 /**
@@ -2379,10 +2439,20 @@ function setupMySettings() {
     screenFpsSelect.disabled = true;
   }
   // select themes
-  themeSelect.addEventListener("change", (e) => {
-    setTheme(themeSelect.value);
+  selectheme.addEventListener("change", (e) => {
+    setTheme(selectheme.value);
     setRecordButtonUi();
   });
+
+  // video object fit
+  vidobselec.addEventListener("change", (e) => {
+    document.documentElement.style.setProperty(
+      "--video-object-fit",
+      vidobselec.value
+    );
+  });
+  vidobselec.selectedIndex = 2; // cover
+
   // Mobile not support buttons bar position horizontal
   if (isMobileDevice) {
     btnsBarSelect.disabled = true;
@@ -2843,7 +2913,7 @@ function handleAudio(e, init, force = null) {
   force != null
     ? (e.className = "fas fa-microphone" + (myAudioStatus ? "" : "-slash"))
     : (e.target.className =
-      "fas fa-microphone" + (myAudioStatus ? "" : "-slash"));
+        "fas fa-microphone" + (myAudioStatus ? "" : "-slash"));
   if (init) {
     audioBtn.className = "fas fa-microphone" + (myAudioStatus ? "" : "-slash");
     if (!isMobileDevice) {
@@ -3386,7 +3456,7 @@ function showCaptionDraggable() {
   isCaptionBoxVisible = true;
   // only for desktop
   if (!isMobileDevice) {
-    setTippy(captionBtn, "CLOSE the caption", "right-start");
+    setTippy(captionBtn, "CLOSE Text-To-Speech", "right-start");
   }
 }
 /**
@@ -3482,7 +3552,7 @@ function hideCaptionBox() {
   isCaptionBoxVisible = false;
   // only for desktop
   if (!isMobileDevice) {
-    setTippy(captionBtn, "OPEN the caption", "right-start");
+    setTippy(captionBtn, "Open Text-To-Speech", "right-start");
   }
 }
 
@@ -4947,11 +5017,11 @@ function handleDataChannelFileSharing(data) {
 function sendFileData() {
   console.log(
     "Send file " +
-    fileToSend.name +
-    " size " +
-    bytesToSize(fileToSend.size) +
-    " type " +
-    fileToSend.type
+      fileToSend.name +
+      " size " +
+      bytesToSize(fileToSend.size) +
+      " type " +
+      fileToSend.type
   );
 
   sendInProgress = true;

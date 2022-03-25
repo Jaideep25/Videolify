@@ -18,8 +18,7 @@ function createAudioMeter(audioContext, clipLevel, averaging, clipLag) {
   processor.averaging = averaging || 0.95;
   processor.clipLag = clipLag || 750;
 
-  // this will have no effect, since we don't copy the input to the output,
-  // but works around a current Chrome bug.
+  // this will have no effect, since we don't copy the input to the output, but works around a current Chrome bug.
   processor.connect(audioContext.destination);
 
   processor.checkClipping = function () {
@@ -59,9 +58,7 @@ function volumeAudioProcess(event) {
   // ... then take the square root of the sum.
   const rms = Math.sqrt(sum / bufLength);
 
-  // Now smooth this out with the averaging factor applied
-  // to the previous sample - take the max here because we
-  // want "fast attack, slow release."
+  // Now smooth this out with the averaging factor applied to the previous sample - take the max here because we want "fast attack, slow release."
   this.volume = Math.max(rms, this.volume * this.averaging);
   let final_volume = Math.round(this.volume * 100);
   if (myAudioStatus && final_volume > 5) {

@@ -30,7 +30,7 @@ const signalingServerPort = 3000; // must be the same to server.js PORT
 const signalingServer = getSignalingServer();
 const roomId = getRoomId();
 const peerInfo = getPeerInfo();
-const peerLoockupUrl = "https://extreme-ip-lookup.com/json/?key=demo";
+const peerLoockupUrl = "https://extreme-ip-lookup.com/json/?key=TarRET5s8lzZNRFpmMy0";
 const avatarApiUrl = "https://eu.ui-avatars.com/api";
 const welcomeImg = "../images/image-placeholder.svg";
 const shareUrlImg = "../images/image-placeholder.svg";
@@ -495,7 +495,7 @@ function getPeerGeoLocation() {
     .then((outJson) => {
       peerGeo = outJson;
     })
-    .catch((err) => console.error(err));
+    .catch((err) => console.warn(err));
 }
 
 /**

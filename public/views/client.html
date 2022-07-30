@@ -110,7 +110,7 @@ access to use this app.
         <button id="shareRoomBtn" class="fas fa-users"></button>
         <button id="audioBtn" class="fas fa-microphone"></button>
         <button id="videoBtn" class="fas fa-video"></button>
-        <button id="swapCameraBtn" class="fas fa-sync-alt"></button>
+        <button id="swapCameraBtn" class="fas fa-camera-rotate"></button>
         <button id="screenShareBtn" class="fas fa-desktop"></button>
         <button id="recordStreamBtn" class="fas fa-record-vinyl"></button>
         <button id="fullScreenBtn" class="fas fa-expand-alt"></button>
@@ -121,7 +121,7 @@ access to use this app.
         <button id="fileShareBtn" class="fas fa-folder-open"></button>
         <button id="mySettingsBtn" class="fas fa-cogs"></button>
         <button id="aboutBtn" class="fas fa-question"></button>
-        <button id="leaveRoomBtn" class="fas fa-phone-slash"></button>
+        <button id="leaveRoomBtn" class="fas fa-right-from-bracket"></button>
     </div>
     <!-- End left buttons -->
 
@@ -130,69 +130,64 @@ access to use this app.
         https://getemoji.com
         -->
 
-        <section id="msgerDraggable" class="msger-draggable fadein">
-            <section id="msger" class="msger">
-                <header id="msgerHeader" class="msger-header">
-                    <div class="msger-header-title"><button id="msgerClose" class="fas fa-times" ></button>
-                        </div>
-                    <div class="msger-header-options">
-                        <button id="msgerClean" class="fas fa-trash"></button>
-                        <button id="msgerSaveBtn" class="fas fa-save"></button>
-                    </div>
-                </header>
+    <section id="msgerDraggable" class="msger-draggable fadein">
+        <section id="msger" class="msger">
+            <header id="msgerHeader" class="msger-header">
+                <div class="msger-header-title"><button id="msgerClose" class="fas fa-times"></button>
+                </div>
+                <div class="msger-header-options">
+                    <button id="msgerSaveBtn" class="fas fa-save"></button>
+                    <button id="msgerClean" class="fas fa-trash"></button>
+                </div>
+            </header>
 
-                <main id="msgerChat" class="msger-chat"></main>
+            <main id="msgerChat" class="msger-chat"></main>
 
-                <!-- Start emoji picker 
+            <!-- Start emoji picker 
                 https://github.com/nolanlawson/emoji-picker-element ] 
                 -->
 
-                <section id="msgerEmojiPicker" class="hidden fadein">
-                    <emoji-picker class="dark"></emoji-picker>
-                    <!-- <emoji-picker class="light"></emoji-picker> -->
-                </section>
-
-                <!-- End emoji picker -->
-
-                <div class="msger-inputarea">
-                    <button id="msgerEmojiBtn" class="fas fa-smile"></button>
-                    <input id="msgerInput" class="msger-input" type="text" placeholder="💬 Enter your message..." />
-                    <button id="msgerVideoUrlBtn" class="fab fa-youtube"></button>
-                    <button id="msgerCPBtn" class="fas fa-users"></button>
-                    <button id="msgerSendBtn" class="fas fa-paper-plane"></button>
-                </div>
+            <section id="msgerEmojiPicker" class="hidden fadein">
+                <emoji-picker class="dark"></emoji-picker>
+                <!-- <emoji-picker class="light"></emoji-picker> -->
             </section>
 
-            <!-- Start private msg -->
+            <!-- End emoji picker -->
 
-            <section id="msgerCP" class="center fadein">
-                <section id="msgerCPSec" class="msger">
-                    <header id="msgerCPHeader" class="msger-private-header">
-                        <div class="msger-header-title"><i class="fas fa-comment-alt"></i> Send Private messages</div>
-                        <div class="msger-header-options">
-                            <button id="msgerCPCloseBtn" class="fas fa-times"></button>
-                        </div>
-                    </header>
-                    <main id="msgerCPChat" class="msger-chat">
-                        <div class="search-container">
-                            <input
-                                id="searchPeerBarName"
-                                type="text"
-                                placeholder=" 🔍 Search peer by name..."
-                                name="search"
-                                onkeyup="searchPeer()"
-                            />
-                        </div>
-                        <br />
-                        <div id="msgerCPList"></div>
-                    </main>
-                </section>
-            </section>
-
-            <!-- End private msg -->
+            <div class="msger-inputarea">
+                <input id="msgerInput" class="msger-input" type="text" placeholder="💬 Enter your message..." />
+                <button id="msgerEmojiBtn" class="fas fa-smile"></button>
+                <button id="msgerVideoUrlBtn" class="fab fa-youtube"></button>
+                <button id="msgerCPBtn" class="fas fa-users"></button>
+                <button id="msgerSendBtn" class="fas fa-paper-plane"></button>
+            </div>
         </section>
 
-        <!-- End chat room -->
+        <!-- Start private msg -->
+
+        <section id="msgerCP" class="center fadein">
+            <section id="msgerCPSec" class="msger">
+                <header id="msgerCPHeader" class="msger-private-header">
+                    <div class="msger-header-title"><i class="fas fa-comment-alt"></i> Send Private messages</div>
+                    <div class="msger-header-options">
+                        <button id="msgerCPCloseBtn" class="fas fa-times"></button>
+                    </div>
+                </header>
+                <main id="msgerCPChat" class="msger-chat">
+                    <div class="search-container">
+                        <input id="searchPeerBarName" type="text" placeholder=" 🔍 Search peer by name..." name="search"
+                            onkeyup="searchPeer()" />
+                    </div>
+                    <br />
+                    <div id="msgerCPList"></div>
+                </main>
+            </section>
+        </section>
+
+        <!-- End private msg -->
+    </section>
+
+    <!-- End chat room -->
 
     <!-- Start of caption section -->
 
@@ -200,11 +195,12 @@ access to use this app.
         <section id="caption" class="msger">
             <header id="captionHeader" class="msger-header">
                 <div class="msger-header-title">
-                    <button id="captionClose" class="fas fa-times" style="color: rgb(255, 255, 255); background-color: black;"></button>
+                    <button id="captionClose" class="fas fa-times"
+                        style="color: rgb(255, 255, 255); background-color: black;"></button>
                 </div>
                 <div class="msger-header-options">
-                    <button id="captionClean" class="fas fa-trash"></button>
                     <button id="captionSaveBtn" class="fas fa-save"></button>
+                    <button id="captionClean" class="fas fa-trash"></button>
                 </div>
             </header>
 
@@ -235,6 +231,7 @@ access to use this app.
                 <button id="tabBandwidthBtn" class="fas fa-wifi tablinks"></button>
                 <button id="tabRoomBtn" class="fas fa-home tablinks"></button>
                 <button id="tabStylingBtn" class="fas fa-palette tablinks"></button>
+                <button id="tabLanguagesBtn" class="fas fa-globe tablinks"></button>
             </div>
 
             <div id="tabDevices" class="tabcontent">
@@ -265,6 +262,7 @@ access to use this app.
                     <option value="vgaVideo">VGA</option>
                     <option value="hdVideo">HD</option>
                     <option value="fhdVideo">FULL HD</option>
+                    <option value="2kVideo">2k</option>
                     <option value="4kVideo">4K</option>
                 </select>
                 <br /><br />
@@ -308,7 +306,7 @@ access to use this app.
                     <br /><br />
                     <label>Security</label><br />
                     <button id="lockRoomBtn"><i class="fas fa-lock-open"></i>&nbsp;Lock room</button>
-                        <button id="unlockRoomBtn" class="hidden"><i class="fas fa-lock"></i>&nbsp;Unlock room</button>
+                    <button id="unlockRoomBtn" class="hidden"><i class="fas fa-lock"></i>&nbsp;Unlock room</button>
                 </div>
             </div>
 
@@ -324,14 +322,14 @@ access to use this app.
                 </select>
                 <br /><br />
                 <label>Video fit:</label>
-                    <br />
-                    <select id="videoObjFitSelect">
-                        <option value="fill"> Fill</option>
-                        <option value="contain"> Contain</option>
-                        <option value="cover"> Cover - Default</option>
-                        <option value="scale-down"> Scale Down</option>
-                    </select>
-                    <br /><br />
+                <br />
+                <select id="videoObjFitSelect">
+                    <option value="fill"> Fill</option>
+                    <option value="contain"> Contain</option>
+                    <option value="cover"> Cover - Default</option>
+                    <option value="scale-down"> Scale Down</option>
+                </select>
+                <br /><br />
                 <label for="BtnsBar">Buttons bar</label>
                 <br />
                 <select id="BtnsBar">
@@ -339,14 +337,19 @@ access to use this app.
                     <option value="horizontal">🚥 Horizontal</option>
                 </select>
             </div>
+
+            <div id="tabLanguages" class="tabcontent">
+                <br />
+                <div id="google_translate_element"></div>
+            </div>
         </main>
     </section>
 
     <!-- End my settings -->
 
-     <!-- Start whiteboard -->
+    <!-- Start whiteboard -->
 
-     <section id="whiteboard" class="hidden">
+    <section id="whiteboard" class="hidden">
         <header id="whiteboardHeader" class="whiteboard-header">
             <div id="whiteboardTitle" class="whiteboard-header-title">
                 <button id="whiteboardCloseBtn" class="fas fa-times"></button>
@@ -414,6 +417,18 @@ access to use this app.
 
     <!-- End Youtube Iframe -->
 
+    <!-- Start Video - Audio player -->
+
+    <div id="videoAudioUrlCont" class="center fadein">
+        <div id="videoAudioUrlHeader">
+            <button id="videoAudioCloseBtn" class="fas fa-times"></button>
+        </div>
+        <br />
+        <video id="videoAudioUrlElement" src="" autoplay controls></video>
+    </div>
+
+    <!-- End Video - Audio player -->
+
     <!-- Start Video container -->
 
     <div id="videoMediaContainer">
@@ -422,13 +437,13 @@ access to use this app.
 
     <!-- End Video container -->
 
-    <!-- Js scripts -->
+    <!-- Js scripts https://cdn.jsdelivr.net -->
 
     <script defer src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-    <script defer src="https://cdn.rawgit.com/muaz-khan/DetectRTC/master/DetectRTC.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.5"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/detectrtc@1.4.1/DetectRTC.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.23"></script>
     <script defer type="module" src="https://unpkg.com/emoji-picker-element@1"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/500/fabric.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/521/fabric.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <script defer src="https://unpkg.com/@popperjs/core@2"></script>
     <script defer src="https://unpkg.com/tippy.js@6"></script>
@@ -444,6 +459,19 @@ access to use this app.
 		the <video> and <audio> tags are all added and removed dynamically
 		in 'onAddStream', 'setupLocalMedia', and 'removePeer'/'disconnect'
 		-->
+
+    <!-- 
+            Start Google Translate 
+            https://www.w3schools.com/howto/howto_google_translate.asp
+        -->
+
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+        }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- End Google Translate -->
 </body>
 
 </html>

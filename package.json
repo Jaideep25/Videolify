@@ -1,35 +1,45 @@
 {
   "name": "videolify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A free WebRTC browser-based video call",
-  "main": "app/src/server.js",
+  "main": "server.js",
   "scripts": {
     "start": "node app/src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx prettier --write ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://git.heroku.com/videolify.git"
+    "url": "git+https://github.com/Jaideep25/Videolify"
   },
+  "keywords": [
+    "webrtc",
+    "socket.io",
+    "p2p",
+    "nodejs",
+    "video"
+  ],
   "author": "Jaideep25",
-  "license": "AGPLv3",
+  "license": "AGPL-3.0",
   "homepage": "https://videolify.up.railway.app/",
   "dependencies": {
+    "body-parser": "^1.20.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "ngrok": "^4.0.1",
-    "socket.io": "^4.1.2",
-    "swagger-ui-express": "^4.1.6",
-    "tippy.js": "^6.3.1",
-    "uuid": "^8.3.2",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "ngrok": "^4.3.1",
+    "qs": "^6.11.0",
+    "socket.io": "^4.5.1",
+    "@sentry/node": "^7.6.0",
+    "@sentry/integrations": "^7.6.0",
+    "swagger-ui-express": "^4.4.0",
+    "uuid": "8.3.2",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "node-fetch": "^2.6.1"
-  },
-  "keywords": [
-    "WebRTC"
-  ]
+    "node-fetch": "^2.6.6",
+    "prettier": "2.7.1"
+  }
 }

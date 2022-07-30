@@ -28,7 +28,7 @@
       touchEndX: 0,
       minSwipePixels: 30,
       detectionZone: void 0,
-      swipeCallback: function () { },
+      swipeCallback: function () {},
       init: function (t, n) {
         (e.swipeCallback = n),
           t.addEventListener(
@@ -52,7 +52,7 @@
         e.touchEndX <= e.touchStartX &&
           ((n = e.touchStartX - e.touchEndX), (t = "left")),
           e.touchEndX >= e.touchStartX &&
-          ((n = e.touchEndX - e.touchStartX), (t = "right")),
+            ((n = e.touchEndX - e.touchStartX), (t = "right")),
           n > e.minSwipePixels && "undefined" !== t && e.swipe(t, n);
       },
       swipe: function (t, n) {
@@ -74,14 +74,14 @@
         i
           ? (i.classList.add("is-active"), l.classList.add("is-active"))
           : "next" === t
-            ? (e.firstElementChild.classList.add("is-active"),
-              e.parentNode
-                .getElementsByClassName("carousel-bullets")[0]
-                .firstElementChild.classList.add("is-active"))
-            : (e.lastElementChild.classList.add("is-active"),
-              e.parentNode
-                .getElementsByClassName("carousel-bullets")[0]
-                .lastElementChild.classList.add("is-active"));
+          ? (e.firstElementChild.classList.add("is-active"),
+            e.parentNode
+              .getElementsByClassName("carousel-bullets")[0]
+              .firstElementChild.classList.add("is-active"))
+          : (e.lastElementChild.classList.add("is-active"),
+            e.parentNode
+              .getElementsByClassName("carousel-bullets")[0]
+              .lastElementChild.classList.add("is-active"));
     }
 
     function i(e, t) {
@@ -176,15 +176,15 @@
             ? this.setAttribute("aria-expanded", "false")
             : this.setAttribute("aria-expanded", "true");
       }),
-        document.addEventListener("click", function (n) {
-          n.target === t ||
-            n.target === e ||
-            t.contains(n.target) ||
-            (document.body.classList.remove("off-nav-is-active"),
-              t.classList.remove("is-active"),
-              (t.style.maxHeight = null),
-              e.setAttribute("aria-expanded", "false"));
-        }));
+      document.addEventListener("click", function (n) {
+        n.target === t ||
+          n.target === e ||
+          t.contains(n.target) ||
+          (document.body.classList.remove("off-nav-is-active"),
+          t.classList.remove("is-active"),
+          (t.style.maxHeight = null),
+          e.setAttribute("aria-expanded", "false"));
+      }));
   })(),
   (function () {
     "use strict";
@@ -204,20 +204,20 @@
           (n.hasAttribute("data-video") &&
             (null !== i.querySelector("iframe")
               ? i
-                .querySelector("iframe")
-                .setAttribute("src", n.getAttribute("data-video"))
+                  .querySelector("iframe")
+                  .setAttribute("src", n.getAttribute("data-video"))
               : null !== i.querySelector("video") &&
-              i
-                .querySelector("video")
-                .setAttribute("src", n.getAttribute("data-video"))),
-            n.addEventListener("click", function (e) {
-              let t;
-              e.preventDefault(),
-                n.hasAttribute("aria-controls") &&
+                i
+                  .querySelector("video")
+                  .setAttribute("src", n.getAttribute("data-video"))),
+          n.addEventListener("click", function (e) {
+            let t;
+            e.preventDefault(),
+              n.hasAttribute("aria-controls") &&
                 (t = i) &&
                 (document.body.classList.add("modal-is-active"),
-                  t.classList.add("is-active"));
-            }));
+                t.classList.add("is-active"));
+          }));
       }
     document.addEventListener("click", function (e) {
       (e.target.classList.contains("modal") ||
@@ -270,12 +270,12 @@
             : s;
         (n = l),
           c.getBoundingClientRect().top <= t - n &&
-          !s.classList.contains("is-revealed") &&
-          (a && 0 !== a
-            ? setTimeout(function () {
-              s.classList.add("is-revealed");
-            }, a)
-            : s.classList.add("is-revealed"));
+            !s.classList.contains("is-revealed") &&
+            (a && 0 !== a
+              ? setTimeout(function () {
+                  s.classList.add("is-revealed");
+                }, a)
+              : s.classList.add("is-revealed"));
       }
 
       !(function () {
@@ -301,8 +301,8 @@
     e.length > 0 &&
       document.body.classList.contains("has-animations") &&
       (window.addEventListener("load", i),
-        window.addEventListener("scroll", s),
-        window.addEventListener("resize", a));
+      window.addEventListener("scroll", s),
+      window.addEventListener("resize", a));
   })(),
   (function () {
     "use strict";
@@ -315,10 +315,10 @@
         })((c = Math.min(c, 1)));
         window.scroll(0, a + s * o),
           l < i &&
-          window.requestAnimationFrame((n) => {
-            const l = n || new Date().getTime();
-            t(e, l, i, s, a);
-          });
+            window.requestAnimationFrame((n) => {
+              const l = n || new Date().getTime();
+              t(e, l, i, s, a);
+            });
       };
     if (e.length > 0)
       for (let n = 0; n < e.length; n++) {

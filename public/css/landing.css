@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Fira+Sans:600|Lato:400&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500&display=swap");
 
 html {
   line-height: 1.15;
@@ -9,10 +9,10 @@ html {
 
 body {
   margin: 0;
-  -webkit-user-select: none;  /* Chrome all / Safari all */
-  -moz-user-select: none;     /* Firefox all */
-  -ms-user-select: none;      /* IE 10+ */
-  user-select: none;  
+  -webkit-user-select: none; /* Chrome all / Safari all */
+  -moz-user-select: none; /* Firefox all */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
 }
 
 article,
@@ -286,16 +286,14 @@ template {
     transform: translate(0);
   }
 }
-.has-animations::-webkit-scrollbar{
-width: 10px;
+.has-animations::-webkit-scrollbar {
+  width: 10px;
 }
 .has-animations::-webkit-scrollbar-track {
-  background:#000;
+  background: #000;
 }
 .has-animations::-webkit-scrollbar-thumb {
-  background: linear-gradient(#376df9 0,
-  #09ff00 75%,
-  #ffee00 100%); /*aqua;*/
+  background: linear-gradient(#376df9 0, #09ff00 75%, #ffee00 100%); /*aqua;*/
   border-radius: 30px;
   border-width: 10%;
   border-color: #000;
@@ -1339,8 +1337,7 @@ textarea.form-input {
 /*.invert-color .form-checkbox input:checked,
 .invert-color .form-radio input:checked {
   /*background-color: !important;*/
-  /*border-color: !important }*/
-
+/*border-color: !important }*/
 
 .form-group {
   display: flex;
@@ -2685,7 +2682,7 @@ ul.pricing-item-features-list li {
   position: absolute;
   width: 100%;
   max-width: 100%;
-  height: 612px;
+  height: 1980px;
   background-image: url(../images/illustration-section-01.svg);
   background-repeat: no-repeat;
   background-size: auto;
@@ -2717,9 +2714,7 @@ ul.pricing-item-features-list li {
 .features-tiles-item-image {
   display: inline-flex;
   border-radius: 50%;
-  background: linear-gradient(180deg, #376df9 0,
-  #09ff00 75%,
-  #ffee00 100%);
+  background: linear-gradient(180deg, #376df9 0, #09ff00 75%, #ffee00 100%);
 }
 
 .pricing .tiles-item-inner {
@@ -2856,9 +2851,7 @@ ul.pricing-item-features-list li.is-checked::after {
   padding-left: 16px;
   padding-right: 16px;
   background-color: #376df9;
-  background: linear-gradient(100deg, #376df9 0,
-  #09ff00 75%,
-  #ffee00 100%);
+  background: linear-gradient(100deg, #376df9 0, #09ff00 75%, #ffee00 100%);
 }
 
 @media (min-width: 641px) {

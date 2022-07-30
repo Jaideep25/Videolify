@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-0GEDC5RTJ9"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-0GEDC5RTJ9");
+    </script>
+
+    <!-- Clarity (clarity.js) - Microsoft analytics -->
+    <script type="text/javascript">
+      (function (c, l, a, r, i, t, y) {
+        c[a] =
+          c[a] ||
+          function () {
+            (c[a].q = c[a].q || []).push(arguments);
+          };
+        t = l.createElement(r);
+        t.async = 1;
+        t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0];
+        y.parentNode.insertBefore(t, y);
+      })(window, document, "clarity", "script", "93jfa0ufr9");
+    </script>
+
+    <!-- Title and Icon -->
+
+    <title>Videolify ~ Security.</title>
+    <link rel="shortcut icon" href="../images/favicon.png" />
+    <link rel="apple-touch-icon" href="../images/favicon.png" />
+
+    <!-- Meta Information -->
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Videolify. Powerful ~ Easy to use ~ Secure"
+    />
+    <meta
+      name="keywords"
+      content="webrtc, RTCICECandidates, RTCSessionDescription, RTCDataChannel, real-time communications, webrtc stun, webrtc turn, video meeting, video chat, video conference, multi video chat, multi video conference, peer to peer, p2p, zoom, rtc, teams"
+    />
+
+    <!-- https://ogp.me -->
+
+    <!-- Primary Meta Tags -->
+    <title>Videolify ~ The new revolution</title>
+    <meta name="title" content="Videolify" />
+    <meta
+      name="description"
+      content="Click the link to feel the power of the new revolution~!!"
+    />
+    <meta
+      name="keywords"
+      content="webrtc, webrtc stun, webrtc turn, video meeting, video chat, multi video chat, peer to peer, p2p, zoom"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://videolify.up.railway.app/" />
+    <meta property="og:title" content="Videolify" />
+    <meta
+      property="og:description"
+      content="Click the link to feel the power of the new revolution~!!"
+    />
+    <meta
+      property="og:image"
+      content="https://videolify.up.railway.app/images/preview.png"
+    />
+    <meta
+      name="keywords"
+      content="webrtc, webrtc stun, webrtc turn, video meeting, video chat, multi video chat, peer to peer, p2p, zoom"
+    />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://videolify.up.railway.app/" />
+    <meta property="twitter:title" content="Videolify" />
+    <meta
+      property="twitter:description"
+      content="Click the link to feel the power of the new revolution~!!"
+    />
+    <meta property="twitter:image" content="../images/preview.png" />
+    <meta
+      name="keywords"
+      content="webrtc, webrtc stun, webrtc turn, video meeting, video chat, multi video chat, peer to peer, p2p, zoom"
+    />
+    <!-- StyleSheet -->
+
+    <link rel="stylesheet" href="../css/landing.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Test Stun/Turn Servers</h1>
+
+      <hr />
+
+      <pre
+        id="ice"
+        style="background: #000000; color: lime; overflow: auto"
+      ></pre>
+
+      <hr />
+
+      <p id="ip"></p>
+      <p id="stun">🔴 The STUN server is NOT reachable!</p>
+      <p id="turn">🔴 The TURN server is NOT reachable!</p>
+      <p id="err"></p>
+
+    </div>
+
+    <script>
+      const Ice = document.getElementById("ice");
+      const IP = document.getElementById("ip");
+      const Stun = document.getElementById("stun");
+      const Turn = document.getElementById("turn");
+      const Err = document.getElementById("err");
+
+      const qs = new URLSearchParams(window.location.search);
+
+      let iceServers = qs.get("iceServers");
+
+      if (iceServers) {
+        iceServers = JSON.parse(iceServers);
+      } else {
+        // http://localhost:3000/test
+        iceServers = [
+          // Test some STUN server
+          {
+            urls: "stun:stun.l.google.com:19302",
+          },
+          // Test some TURN server
+          // https://www.metered.ca/tools/openrelay/
+          {
+            urls: "turn:openrelay.metered.ca:443",
+            username: "openrelayproject",
+            credential: "openrelayproject",
+          },
+        ];
+      }
+
+      console.log("Check Ice Servers", iceServers);
+
+      // Print iceServers config
+      Ice.innerHTML = JSON.stringify(iceServers, null, 4);
+
+      // Test the connections
+      const pc = new RTCPeerConnection({
+        iceServers,
+      });
+
+      pc.onicecandidate = (e) => {
+        if (!e.candidate) return;
+
+        console.log(e.candidate.candidate);
+
+        // If a srflx candidate was found, notify that the STUN server works!
+        if (
+          e.candidate.type == "srflx" ||
+          e.candidate.candidate.includes("srflx")
+        ) {
+          let ip = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/;
+          let address = e.candidate.address
+            ? e.candidate.address
+            : e.candidate.candidate.match(ip);
+          IP.innerHTML = "🟢 Your Public IP Address is " + address;
+          Stun.innerHTML = "🟢 The STUN server is reachable!";
+        }
+
+        // If a relay candidate was found, notify that the TURN server works!
+        if (
+          e.candidate.type == "relay" ||
+          e.candidate.candidate.includes("relay")
+        ) {
+          Turn.innerHTML = "🟢 The TURN server is reachable!";
+        }
+      };
+
+      // handle error
+      pc.onicecandidateerror = (e) => {
+        console.error(e);
+        Err.innerHTML = "🔴 Error: " + e.errorText;
+      };
+
+      pc.createDataChannel("test");
+      pc.createOffer().then((offer) => pc.setLocalDescription(offer));
+    </script>
+  </body>
+</html>

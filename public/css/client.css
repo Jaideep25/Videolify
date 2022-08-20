@@ -736,6 +736,7 @@ emoji-picker {
 }
 
 #mySettingsCloseBtn {
+  border-radius: 5px;
   border: none;
   font-size: 1.2rem;
   background: transparent;
@@ -1127,6 +1128,13 @@ progress {
 
 button {
   cursor: pointer;
+}
+
+.cButtons {
+  font-size: 0.9rem;
+  padding: 5px;
+  border-radius: 5px;
+  border: none;
 }
 
 .hidden {

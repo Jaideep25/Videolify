@@ -6986,7 +6986,7 @@ function showAbout() {
  */
 function leaveRoom() {
   playSound("eject");
-    openURL("/newcall");
+  openURL("/newcall");
 }
 
 /**

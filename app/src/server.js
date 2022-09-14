@@ -147,7 +147,6 @@ const dir = {
 };
 // html views
 const views = {
-  about: path.join(__dirname, "../../", "public/views/about.html"),
   client: path.join(__dirname, "../../", "public/views/client.html"),
   landing: path.join(__dirname, "../../", "public/views/landing.html"),
   newCall: path.join(__dirname, "../../", "public/views/newcall.html"),
@@ -193,11 +192,6 @@ app.use((err, req, res, next) => {
 // main page
 app.get(["/"], (req, res) => {
   res.sendFile(views.landing);
-});
-
-// About
-app.get(["/about"], (req, res) => {
-  res.sendFile(views.about);
 });
 
 // set new room name and join

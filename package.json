@@ -38,8 +38,8 @@
     "swagger-ui-express": "^4.5.0",
     "uuid": "8.3.2",
     "yamljs": "^0.3.0"
-},
-"devDependencies": {
+  },
+  "devDependencies": {
     "node-fetch": "^2.6.6",
     "prettier": "2.7.1"
   }

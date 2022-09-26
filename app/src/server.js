@@ -165,7 +165,11 @@ app.use(compression()); // Compress all HTTP responses using GZip
 app.use(express.json()); // Api parse body data as json
 app.use(express.static(dir.public)); // Use all static files from the public folder
 app.use(bodyParser.urlencoded({ extended: true })); // Need for Slack API body parser
-app.use(apiBasePath + '/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)); // api docs
+app.use(
+  apiBasePath + "/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument)
+); // api docs
 
 // all start from here
 app.get("*", function (next) {

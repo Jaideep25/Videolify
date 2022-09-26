@@ -1813,30 +1813,29 @@ async function loadLocalMedia(stream) {
   console.log("LOAD LOCAL MEDIA STREAM TRACKS", localMediaStream.getTracks());
 
   // local video elemets
-  const myVideoWrap = document.createElement('div');
-    const myLocalMedia = document.createElement('video');
+  const myVideoWrap = document.createElement("div");
+  const myLocalMedia = document.createElement("video");
 
-    // html elements
-    const myVideoNavBar = document.createElement('div');
-    const myCountTime = document.createElement('button');
-    const myPeerName = document.createElement('p');
-    const myHandStatusIcon = document.createElement('button');
-    const myVideoToImgBtn = document.createElement('button');
-    const myVideoStatusIcon = document.createElement('button');
-    const myAudioStatusIcon = document.createElement('button');
-    const myVideoFullScreenBtn = document.createElement('button');
-    const myVideoPinBtn = document.createElement('button');
-    const myVideoAvatarImage = document.createElement('img');
-    const myPitchMeter = document.createElement('div');
-    const myPitchBar = document.createElement('div');
+  // html elements
+  const myVideoNavBar = document.createElement("div");
+  const myCountTime = document.createElement("button");
+  const myPeerName = document.createElement("p");
+  const myHandStatusIcon = document.createElement("button");
+  const myVideoToImgBtn = document.createElement("button");
+  const myVideoStatusIcon = document.createElement("button");
+  const myAudioStatusIcon = document.createElement("button");
+  const myVideoFullScreenBtn = document.createElement("button");
+  const myVideoPinBtn = document.createElement("button");
+  const myVideoAvatarImage = document.createElement("img");
+  const myPitchMeter = document.createElement("div");
+  const myPitchBar = document.createElement("div");
 
-    // session time
-    myCountTime.setAttribute('id', 'countTime');
+  // session time
+  myCountTime.setAttribute("id", "countTime");
 
-    // my peer name
-    myPeerName.setAttribute('id', 'myVideoParagraph');
-    myPeerName.className = 'videoPeerName';
-
+  // my peer name
+  myPeerName.setAttribute("id", "myVideoParagraph");
+  myPeerName.className = "videoPeerName";
 
   // my hand status element
   myHandStatusIcon.setAttribute("id", "myHandStatusIcon");
@@ -1865,7 +1864,7 @@ async function loadLocalMedia(stream) {
 
   // no mobile devices
   setTippy(myCountTime, "Session Time", "bottom");
-  setTippy(myPeerName, 'My name', 'bottom');
+  setTippy(myPeerName, "My name", "bottom");
   setTippy(myHandStatusIcon, "My hand is raised", "bottom");
   setTippy(myVideoStatusIcon, "My video is on", "bottom");
   setTippy(myAudioStatusIcon, "My audio is on", "bottom");
@@ -1885,15 +1884,15 @@ async function loadLocalMedia(stream) {
   myPitchBar.style.height = "1%";
 
   // my video nav bar
-  myVideoNavBar.className = 'navbar fadein';
+  myVideoNavBar.className = "navbar fadein";
 
   // attach to video nav bar
   myVideoNavBar.appendChild(myCountTime);
   if (!isMobileDevice) {
-      myVideoNavBar.appendChild(myVideoPinBtn);
+    myVideoNavBar.appendChild(myVideoPinBtn);
   }
   if (isVideoFullScreenSupported) {
-      myVideoNavBar.appendChild(myVideoFullScreenBtn);
+    myVideoNavBar.appendChild(myVideoFullScreenBtn);
   }
   myVideoNavBar.appendChild(myVideoToImgBtn);
   myVideoNavBar.appendChild(myAudioStatusIcon);
@@ -1906,29 +1905,29 @@ async function loadLocalMedia(stream) {
   // hand display none on default menad is raised == false
   myHandStatusIcon.style.display = "none";
 
-  myLocalMedia.setAttribute('id', 'myVideo');
-    myLocalMedia.setAttribute('playsinline', true);
-    myLocalMedia.className = 'mirror';
-    myLocalMedia.autoplay = true;
-    myLocalMedia.muted = true;
-    myLocalMedia.volume = 0;
-    myLocalMedia.controls = false;
+  myLocalMedia.setAttribute("id", "myVideo");
+  myLocalMedia.setAttribute("playsinline", true);
+  myLocalMedia.className = "mirror";
+  myLocalMedia.autoplay = true;
+  myLocalMedia.muted = true;
+  myLocalMedia.volume = 0;
+  myLocalMedia.controls = false;
 
-    myVideoWrap.className = 'Camera';
-    myVideoWrap.setAttribute('id', 'myVideoWrap');
+  myVideoWrap.className = "Camera";
+  myVideoWrap.setAttribute("id", "myVideoWrap");
 
-    // add elements to video wrap div
-    myVideoWrap.appendChild(myVideoNavBar);
-    myVideoWrap.appendChild(myVideoAvatarImage);
-    myVideoWrap.appendChild(myLocalMedia);
-    myVideoWrap.appendChild(myPitchMeter);
-    myVideoWrap.appendChild(myPeerName);
+  // add elements to video wrap div
+  myVideoWrap.appendChild(myVideoNavBar);
+  myVideoWrap.appendChild(myVideoAvatarImage);
+  myVideoWrap.appendChild(myLocalMedia);
+  myVideoWrap.appendChild(myPitchMeter);
+  myVideoWrap.appendChild(myPeerName);
 
-    getId('videoMediaContainer').appendChild(myVideoWrap);
-    myVideoWrap.style.display = 'none';
+  getId("videoMediaContainer").appendChild(myVideoWrap);
+  myVideoWrap.style.display = "none";
 
-    logStreamSettingsInfo('localMediaStream', localMediaStream);
-    attachMediaStream(myLocalMedia, localMediaStream);
+  logStreamSettingsInfo("localMediaStream", localMediaStream);
+  attachMediaStream(myLocalMedia, localMediaStream);
   adaptAspectRatio();
 
   getHtmlElementsById();
@@ -2011,9 +2010,9 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
   const remoteVideoWrap = document.createElement("div");
   const remoteMedia = document.createElement("video");
 
-   // html elements
-   const remoteVideoNavBar = document.createElement('div');
-   const remotePeerName = document.createElement('p');
+  // html elements
+  const remoteVideoNavBar = document.createElement("div");
+  const remotePeerName = document.createElement("p");
 
   const remoteHandStatusIcon = document.createElement("button");
   const remoteVideoStatusIcon = document.createElement("button");
@@ -2030,8 +2029,8 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
   const remotePitchBar = document.createElement("div");
 
   // remote peer name element
-  remotePeerName.setAttribute('id', peer_id + '_name');
-  remotePeerName.className = 'videoPeerName';
+  remotePeerName.setAttribute("id", peer_id + "_name");
+  remotePeerName.className = "videoPeerName";
 
   const peerVideoText = document.createTextNode(peer_name);
   remotePeerName.appendChild(peerVideoText);
@@ -2102,26 +2101,26 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
 
   remotePitchMeter.appendChild(remotePitchBar);
 
-   // remote video nav bar
-   remoteVideoNavBar.className = 'navbar fadein';
+  // remote video nav bar
+  remoteVideoNavBar.className = "navbar fadein";
 
-   // attach to remote video nav bar
-   if (!isMobileDevice) {
-       remoteVideoNavBar.appendChild(remoteVideoPinBtn);
-   }
-   if (isVideoFullScreenSupported) {
-       remoteVideoNavBar.appendChild(remoteVideoFullScreenBtn);
-   }
-   remoteVideoNavBar.appendChild(remoteVideoToImgBtn);
-   remoteVideoNavBar.appendChild(remoteAudioStatusIcon);
-   remoteVideoNavBar.appendChild(remoteVideoStatusIcon);
-   remoteVideoNavBar.appendChild(remoteHandStatusIcon);
-   remoteVideoNavBar.appendChild(remotePrivateMsgBtn);
-   remoteVideoNavBar.appendChild(remoteFileShareBtn);
-   remoteVideoNavBar.appendChild(remoteVideoAudioUrlBtn);
-   if (buttons.remote.showKickOutBtn) {
-       remoteVideoNavBar.appendChild(remotePeerKickOut);
-   }
+  // attach to remote video nav bar
+  if (!isMobileDevice) {
+    remoteVideoNavBar.appendChild(remoteVideoPinBtn);
+  }
+  if (isVideoFullScreenSupported) {
+    remoteVideoNavBar.appendChild(remoteVideoFullScreenBtn);
+  }
+  remoteVideoNavBar.appendChild(remoteVideoToImgBtn);
+  remoteVideoNavBar.appendChild(remoteAudioStatusIcon);
+  remoteVideoNavBar.appendChild(remoteVideoStatusIcon);
+  remoteVideoNavBar.appendChild(remoteHandStatusIcon);
+  remoteVideoNavBar.appendChild(remotePrivateMsgBtn);
+  remoteVideoNavBar.appendChild(remoteFileShareBtn);
+  remoteVideoNavBar.appendChild(remoteVideoAudioUrlBtn);
+  if (buttons.remote.showKickOutBtn) {
+    remoteVideoNavBar.appendChild(remotePeerKickOut);
+  }
 
   remoteMedia.setAttribute("id", peer_id + "_video");
   remoteMedia.setAttribute("playsinline", true);
@@ -3597,7 +3596,7 @@ function showButtonsBarAndMenu() {
     (isMobileDevice && isMySettingsVisible)
   )
     return;
-    toggleClassElements('navbar', 'block');
+  toggleClassElements("navbar", "block");
   buttonsBar.style.display = "flex";
   isButtonsVisible = true;
 }
@@ -3607,7 +3606,7 @@ function showButtonsBarAndMenu() {
  */
 function checkButtonsBarAndMenu() {
   if (!isButtonsBarOver) {
-    toggleClassElements('navbar', 'none');
+    toggleClassElements("navbar", "none");
     buttonsBar.style.display = "none";
     isButtonsVisible = false;
   }
@@ -6819,7 +6818,7 @@ function isVideoTypeSupported(url) {
     url.endsWith(".mp3") ||
     url.endsWith(".webm") ||
     url.endsWith(".ogg") ||
-    url.includes('youtube.com')
+    url.includes("youtube.com")
   )
     return true;
   return false;

@@ -11,19 +11,19 @@ async function startPitchDetection(stream) {
     mediaStreamSource = audioContext.createMediaStreamSource(stream);
     meter = createAudioMeter(audioContext);
     mediaStreamSource.connect(meter);
-}
+  }
 }
 
 /**
-* Check if audio context is supported
-* @returns boolean
-*/
+ * Check if audio context is supported
+ * @returns boolean
+ */
 function isAudioContextSupported() {
-window.AudioContext = window.AudioContext || window.webkitAudioContext;
-if (window.AudioContext) {
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (window.AudioContext) {
     return true;
-}
-return false;
+  }
+  return false;
 }
 
 /**

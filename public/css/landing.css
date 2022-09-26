@@ -2849,7 +2849,7 @@ ul.pricing-item-features-list li.is-checked::after {
 .cta-inner {
   padding-left: 16px;
   padding-right: 16px;
-  
+
   background: #7e349a;
   background: -webkit-linear-gradient(top right, #7e349a, #14398c);
   background: -moz-linear-gradient(top right, #7e349a, #14398c);

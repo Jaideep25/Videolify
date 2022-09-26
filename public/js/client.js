@@ -142,7 +142,7 @@ let recElapsedTime;
 let videolifyTheme = "neon"; // neon - dark - forest - ghost ...
 let BtnsBar = "vertical"; // vertical - horizontal
 let pinVideoPositionSelect;
-let swalBackground = "rgba(0, 0, 0, 0.7)"; // black - #16171b - transparent ...
+let swalBackground = "rgba(0, 0, 0)"; // black - #16171b - transparent ...
 let peerGeo;
 let myPeerName = getPeerName();
 let isScreenEnabled = getScreenEnabled();
@@ -426,7 +426,7 @@ function getHtmlElementsById() {
   screenFpsSelect = getId("screenFps");
   themeSelect = getId("videolifyTheme");
   videoObjFitSelect = getId("videoObjFitSelect");
-  pinVideoPositionSelect = getId('pinVideoPositionSelect');
+  pinVideoPositionSelect = getId("pinVideoPositionSelect");
   btnsBarSelect = getId("BtnsBar");
   tabRoomParticipants = getId("tabRoomParticipants");
   tabRoomSecurity = getId("tabRoomSecurity");
@@ -1813,39 +1813,30 @@ async function loadLocalMedia(stream) {
   console.log("LOAD LOCAL MEDIA STREAM TRACKS", localMediaStream.getTracks());
 
   // local video elemets
-  const videoWrap = document.createElement("div");
-  const localMedia = document.createElement("video");
+  const myVideoWrap = document.createElement('div');
+    const myLocalMedia = document.createElement('video');
 
-  // handle my peer name video audio status
-  const myStatusMenu = document.createElement("div");
-  const myCountTimeImg = document.createElement("i");
-  const myCountTime = document.createElement("p");
-  const myVideoParagraphImg = document.createElement("i");
-  const myVideoParagraph = document.createElement("h4");
-  const myHandStatusIcon = document.createElement("button");
-  const myVideoToImgBtn = document.createElement("button");
-  const myVideoStatusIcon = document.createElement("button");
-  const myAudioStatusIcon = document.createElement("button");
-  const myVideoFullScreenBtn = document.createElement("button");
-  const myVideoPinBtn = document.createElement("button");
-  const myVideoAvatarImage = document.createElement("img");
-  const myPitchMeter = document.createElement("div");
-  const myPitchBar = document.createElement("div");
+    // html elements
+    const myVideoNavBar = document.createElement('div');
+    const myCountTime = document.createElement('button');
+    const myPeerName = document.createElement('p');
+    const myHandStatusIcon = document.createElement('button');
+    const myVideoToImgBtn = document.createElement('button');
+    const myVideoStatusIcon = document.createElement('button');
+    const myAudioStatusIcon = document.createElement('button');
+    const myVideoFullScreenBtn = document.createElement('button');
+    const myVideoPinBtn = document.createElement('button');
+    const myVideoAvatarImage = document.createElement('img');
+    const myPitchMeter = document.createElement('div');
+    const myPitchBar = document.createElement('div');
 
-  // menu Status
-  myStatusMenu.setAttribute("id", "myStatusMenu");
-  myStatusMenu.className = "statusMenu fadein";
+    // session time
+    myCountTime.setAttribute('id', 'countTime');
 
-  // session time
-  myCountTimeImg.setAttribute("id", "countTimeImg");
-  myCountTimeImg.className = "fas fa-clock";
-  myCountTime.setAttribute("id", "countTime");
+    // my peer name
+    myPeerName.setAttribute('id', 'myVideoParagraph');
+    myPeerName.className = 'videoPeerName';
 
-  // my peer name
-  myVideoParagraphImg.setAttribute("id", "myVideoParagraphImg");
-  myVideoParagraphImg.className = "fas fa-user";
-  myVideoParagraph.setAttribute("id", "myVideoParagraph");
-  myVideoParagraph.className = "videoPeerName";
 
   // my hand status element
   myHandStatusIcon.setAttribute("id", "myHandStatusIcon");
@@ -1874,7 +1865,7 @@ async function loadLocalMedia(stream) {
 
   // no mobile devices
   setTippy(myCountTime, "Session Time", "bottom");
-  setTippy(myVideoParagraph, "My name", "bottom");
+  setTippy(myPeerName, 'My name', 'bottom');
   setTippy(myHandStatusIcon, "My hand is raised", "bottom");
   setTippy(myVideoStatusIcon, "My video is on", "bottom");
   setTippy(myAudioStatusIcon, "My audio is on", "bottom");
@@ -1893,18 +1884,21 @@ async function loadLocalMedia(stream) {
   myPitchBar.className = "bar";
   myPitchBar.style.height = "1%";
 
-  // add elements to myStatusMenu div
-  myStatusMenu.appendChild(myCountTimeImg);
-  myStatusMenu.appendChild(myCountTime);
-  myStatusMenu.appendChild(myVideoParagraphImg);
-  myStatusMenu.appendChild(myVideoParagraph);
-  myStatusMenu.appendChild(myHandStatusIcon);
-  myStatusMenu.appendChild(myVideoStatusIcon);
-  myStatusMenu.appendChild(myAudioStatusIcon);
-  myStatusMenu.appendChild(myVideoToImgBtn);
-  if (isVideoFullScreenSupported)
-    myStatusMenu.appendChild(myVideoFullScreenBtn);
-  if (!isMobileDevice) myStatusMenu.appendChild(myVideoPinBtn);
+  // my video nav bar
+  myVideoNavBar.className = 'navbar fadein';
+
+  // attach to video nav bar
+  myVideoNavBar.appendChild(myCountTime);
+  if (!isMobileDevice) {
+      myVideoNavBar.appendChild(myVideoPinBtn);
+  }
+  if (isVideoFullScreenSupported) {
+      myVideoNavBar.appendChild(myVideoFullScreenBtn);
+  }
+  myVideoNavBar.appendChild(myVideoToImgBtn);
+  myVideoNavBar.appendChild(myAudioStatusIcon);
+  myVideoNavBar.appendChild(myVideoStatusIcon);
+  myVideoNavBar.appendChild(myHandStatusIcon);
 
   // add my pitchBar
   myPitchMeter.appendChild(myPitchBar);
@@ -1912,28 +1906,29 @@ async function loadLocalMedia(stream) {
   // hand display none on default menad is raised == false
   myHandStatusIcon.style.display = "none";
 
-  localMedia.setAttribute("id", "myVideo");
-  localMedia.setAttribute("playsinline", true);
-  localMedia.className = "mirror";
-  localMedia.autoplay = true;
-  localMedia.muted = true;
-  localMedia.volume = 0;
-  localMedia.controls = false;
+  myLocalMedia.setAttribute('id', 'myVideo');
+    myLocalMedia.setAttribute('playsinline', true);
+    myLocalMedia.className = 'mirror';
+    myLocalMedia.autoplay = true;
+    myLocalMedia.muted = true;
+    myLocalMedia.volume = 0;
+    myLocalMedia.controls = false;
 
-  videoWrap.className = "Camera";
-  videoWrap.setAttribute("id", "myVideoWrap");
+    myVideoWrap.className = 'Camera';
+    myVideoWrap.setAttribute('id', 'myVideoWrap');
 
-  // add elements to video wrap div
-  videoWrap.appendChild(myStatusMenu);
-  videoWrap.appendChild(myVideoAvatarImage);
-  videoWrap.appendChild(localMedia);
-  videoWrap.appendChild(myPitchMeter);
+    // add elements to video wrap div
+    myVideoWrap.appendChild(myVideoNavBar);
+    myVideoWrap.appendChild(myVideoAvatarImage);
+    myVideoWrap.appendChild(myLocalMedia);
+    myVideoWrap.appendChild(myPitchMeter);
+    myVideoWrap.appendChild(myPeerName);
 
-  getId("videoMediaContainer").appendChild(videoWrap);
-  videoWrap.style.display = "none";
+    getId('videoMediaContainer').appendChild(myVideoWrap);
+    myVideoWrap.style.display = 'none';
 
-  logStreamSettingsInfo("localMediaStream", localMediaStream);
-  attachMediaStream(localMedia, localMediaStream);
+    logStreamSettingsInfo('localMediaStream', localMediaStream);
+    attachMediaStream(myLocalMedia, localMediaStream);
   adaptAspectRatio();
 
   getHtmlElementsById();
@@ -1949,7 +1944,7 @@ async function loadLocalMedia(stream) {
   }
   handleFileDragAndDrop("myVideo", myPeerId, true);
   handleVideoToImg("myVideo", "myVideoToImgBtn");
-  handleVideoPinUnpin('myVideo', 'myVideoPinBtn', 'myVideoWrap', 'myVideo');
+  handleVideoPinUnpin("myVideo", "myVideoPinBtn", "myVideoWrap", "myVideo");
   refreshMyVideoAudioStatus(localMediaStream);
 
   if (!useVideo) {
@@ -2016,10 +2011,10 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
   const remoteVideoWrap = document.createElement("div");
   const remoteMedia = document.createElement("video");
 
-  // handle peers name video audio status
-  const remoteStatusMenu = document.createElement("div");
-  const remoteVideoParagraphImg = document.createElement("i");
-  const remoteVideoParagraph = document.createElement("h4");
+   // html elements
+   const remoteVideoNavBar = document.createElement('div');
+   const remotePeerName = document.createElement('p');
+
   const remoteHandStatusIcon = document.createElement("button");
   const remoteVideoStatusIcon = document.createElement("button");
   const remoteAudioStatusIcon = document.createElement("button");
@@ -2034,18 +2029,12 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
   const remotePitchMeter = document.createElement("div");
   const remotePitchBar = document.createElement("div");
 
-  // menu Status
-  remoteStatusMenu.setAttribute("id", peer_id + "_menuStatus");
-  remoteStatusMenu.className = "statusMenu fadein";
-
   // remote peer name element
-  remoteVideoParagraphImg.setAttribute("id", peer_id + "_nameImg");
-  remoteVideoParagraphImg.className = "fas fa-user";
-  remoteVideoParagraph.setAttribute("id", peer_id + "_name");
-  remoteVideoParagraph.className = "videoPeerName";
+  remotePeerName.setAttribute('id', peer_id + '_name');
+  remotePeerName.className = 'videoPeerName';
 
   const peerVideoText = document.createTextNode(peer_name);
-  remoteVideoParagraph.appendChild(peerVideoText);
+  remotePeerName.appendChild(peerVideoText);
   // remote hand status element
   remoteHandStatusIcon.setAttribute("id", peer_id + "_handStatus");
   remoteHandStatusIcon.style.setProperty("color", "rgb(0, 255, 0)");
@@ -2088,7 +2077,7 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
   remoteVideoPinBtn.className = "fas fa-map-pin";
 
   // no mobile devices
-  setTippy(remoteVideoParagraph, "Participant name", "bottom");
+  setTippy(remotePeerName, "Participant name", "bottom");
   setTippy(remoteHandStatusIcon, "Participant hand is raised", "bottom");
   setTippy(remoteVideoStatusIcon, "Participant video is on", "bottom");
   setTippy(remoteAudioStatusIcon, "Participant audio is on", "bottom");
@@ -2113,21 +2102,26 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
 
   remotePitchMeter.appendChild(remotePitchBar);
 
-  // add elements to remoteStatusMenu div
-  remoteStatusMenu.appendChild(remoteVideoParagraphImg);
-  remoteStatusMenu.appendChild(remoteVideoParagraph);
-  remoteStatusMenu.appendChild(remoteHandStatusIcon);
-  remoteStatusMenu.appendChild(remoteVideoStatusIcon);
-  remoteStatusMenu.appendChild(remoteAudioStatusIcon);
-  remoteStatusMenu.appendChild(remotePrivateMsgBtn);
-  remoteStatusMenu.appendChild(remoteFileShareBtn);
-  remoteStatusMenu.appendChild(remoteVideoAudioUrlBtn);
-  remoteStatusMenu.appendChild(remoteVideoToImgBtn);
-  if (buttons.remote.showKickOutBtn)
-    remoteStatusMenu.appendChild(remotePeerKickOut);
-  if (isVideoFullScreenSupported)
-    remoteStatusMenu.appendChild(remoteVideoFullScreenBtn);
-  if (!isMobileDevice) remoteStatusMenu.appendChild(remoteVideoPinBtn);
+   // remote video nav bar
+   remoteVideoNavBar.className = 'navbar fadein';
+
+   // attach to remote video nav bar
+   if (!isMobileDevice) {
+       remoteVideoNavBar.appendChild(remoteVideoPinBtn);
+   }
+   if (isVideoFullScreenSupported) {
+       remoteVideoNavBar.appendChild(remoteVideoFullScreenBtn);
+   }
+   remoteVideoNavBar.appendChild(remoteVideoToImgBtn);
+   remoteVideoNavBar.appendChild(remoteAudioStatusIcon);
+   remoteVideoNavBar.appendChild(remoteVideoStatusIcon);
+   remoteVideoNavBar.appendChild(remoteHandStatusIcon);
+   remoteVideoNavBar.appendChild(remotePrivateMsgBtn);
+   remoteVideoNavBar.appendChild(remoteFileShareBtn);
+   remoteVideoNavBar.appendChild(remoteVideoAudioUrlBtn);
+   if (buttons.remote.showKickOutBtn) {
+       remoteVideoNavBar.appendChild(remotePeerKickOut);
+   }
 
   remoteMedia.setAttribute("id", peer_id + "_video");
   remoteMedia.setAttribute("playsinline", true);
@@ -2144,10 +2138,11 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
   remoteVideoWrap.setAttribute("id", peer_id + "_videoWrap");
 
   // add elements to videoWrap div
-  remoteVideoWrap.appendChild(remoteStatusMenu);
+  remoteVideoWrap.appendChild(remoteVideoNavBar);
   remoteVideoWrap.appendChild(remoteVideoAvatarImage);
   remoteVideoWrap.appendChild(remotePitchMeter);
   remoteVideoWrap.appendChild(remoteMedia);
+  remoteVideoWrap.appendChild(remotePeerName);
 
   // need later on disconnect or remove peers
   peerMediaElements[peer_id] = remoteVideoWrap;
@@ -2161,7 +2156,12 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
   // handle video to image
   handleVideoToImg(peer_id + "_video", peer_id + "_snapshot", peer_id);
   // handle video pin/unpin
-  handleVideoPinUnpin(peer_id + '_video', peer_id + '_pinUnpin', peer_id + '_videoWrap', peer_id);
+  handleVideoPinUnpin(
+    peer_id + "_video",
+    peer_id + "_pinUnpin",
+    peer_id + "_videoWrap",
+    peer_id
+  );
   // handle video full screen mode
   if (isVideoFullScreenSupported) {
     handleVideoPlayerFs(peer_id + "_video", peer_id + "_fullScreen", peer_id);
@@ -2502,89 +2502,92 @@ function handleVideoPinUnpin(elemId, pnId, camId, peerId) {
   let videoPlayer = getId(elemId);
   let btnPn = getId(pnId);
   let cam = getId(camId);
-  let videoMediaContainer = getId('videoMediaContainer');
-  let videoPinMediaContainer = getId('videoPinMediaContainer');
+  let videoMediaContainer = getId("videoMediaContainer");
+  let videoPinMediaContainer = getId("videoPinMediaContainer");
   if (btnPn && videoPlayer && cam) {
-      btnPn.addEventListener('click', () => {
-          isVideoPinned = !isVideoPinned;
-          if (isVideoPinned) {
-              videoPlayer.style.objectFit = 'contain';
-              cam.className = '';
-              cam.style.width = '100%';
-              cam.style.height = '100%';
-              toggleVideoPin(pinVideoPositionSelect.value);
-              videoPinMediaContainer.appendChild(cam);
-              videoPinMediaContainer.style.display = 'block';
-              pinnedVideoPlayerId = elemId;
-              setColor(btnPn, 'lime');
-          } else {
-              if (pinnedVideoPlayerId != videoPlayer.id) {
-                  isVideoPinned = true;
-                  return userLog('info', 'Another video seems pinned, unpin it before to pin this one');
-              }
-              if (!isScreenStreaming) {
-                  videoPlayer.style.objectFit = 'var(--video-object-fit)';
-              }
-              videoPinMediaContainer.removeChild(cam);
-              cam.className = 'Camera';
-              videoMediaContainer.appendChild(cam);
-              removeVideoPinMediaContainer(peerId, true);
-              setColor(btnPn, 'white');
-          }
-          adaptAspectRatio();
-      });
+    btnPn.addEventListener("click", () => {
+      isVideoPinned = !isVideoPinned;
+      if (isVideoPinned) {
+        videoPlayer.style.objectFit = "contain";
+        cam.className = "";
+        cam.style.width = "100%";
+        cam.style.height = "100%";
+        toggleVideoPin(pinVideoPositionSelect.value);
+        videoPinMediaContainer.appendChild(cam);
+        videoPinMediaContainer.style.display = "block";
+        pinnedVideoPlayerId = elemId;
+        setColor(btnPn, "lime");
+      } else {
+        if (pinnedVideoPlayerId != videoPlayer.id) {
+          isVideoPinned = true;
+          return userLog(
+            "info",
+            "Another video seems pinned, unpin it before to pin this one"
+          );
+        }
+        if (!isScreenStreaming) {
+          videoPlayer.style.objectFit = "var(--video-object-fit)";
+        }
+        videoPinMediaContainer.removeChild(cam);
+        cam.className = "Camera";
+        videoMediaContainer.appendChild(cam);
+        removeVideoPinMediaContainer(peerId, true);
+        setColor(btnPn, "white");
+      }
+      adaptAspectRatio();
+    });
   }
 }
 
 function toggleVideoPin(position) {
   if (!isVideoPinned) return;
-  const videoMediaContainer = getId('videoMediaContainer');
-  const videoPinMediaContainer = getId('videoPinMediaContainer');
+  const videoMediaContainer = getId("videoMediaContainer");
+  const videoPinMediaContainer = getId("videoPinMediaContainer");
   switch (position) {
-      case 'vertical':
-          videoPinMediaContainer.style.width = '75%';
-          videoPinMediaContainer.style.height = '100%';
-          videoMediaContainer.style.top = 0;
-          videoMediaContainer.style.width = '25%';
-          videoMediaContainer.style.height = '100%';
-          videoMediaContainer.style.right = 0;
-          document.documentElement.style.setProperty('--vmi-wh', '15vw');
-          break;
-      case 'horizontal':
-          videoPinMediaContainer.style.width = '100%';
-          videoPinMediaContainer.style.height = '75%';
-          videoMediaContainer.style.top = '75%';
-          videoMediaContainer.style.right = null;
-          videoMediaContainer.style.width = null;
-          videoMediaContainer.style.width = '100% !important';
-          videoMediaContainer.style.height = '25%';
-          document.documentElement.style.setProperty('--vmi-wh', '15vh');
-          break;
+    case "vertical":
+      videoPinMediaContainer.style.width = "75%";
+      videoPinMediaContainer.style.height = "100%";
+      videoMediaContainer.style.top = 0;
+      videoMediaContainer.style.width = "25%";
+      videoMediaContainer.style.height = "100%";
+      videoMediaContainer.style.right = 0;
+      break;
+    case "horizontal":
+      videoPinMediaContainer.style.width = "100%";
+      videoPinMediaContainer.style.height = "75%";
+      videoMediaContainer.style.top = "75%";
+      videoMediaContainer.style.right = null;
+      videoMediaContainer.style.width = null;
+      videoMediaContainer.style.width = "100% !important";
+      videoMediaContainer.style.height = "25%";
+      break;
   }
   resizeVideoMedia();
 }
 
 /**
-* Remove video pin media container
-* @param {string} peer_id aka socket.id
-* @param {boolean} force_remove force to remove
-*/
+ * Remove video pin media container
+ * @param {string} peer_id aka socket.id
+ * @param {boolean} force_remove force to remove
+ */
 function removeVideoPinMediaContainer(peer_id, force_remove = false) {
   //alert(pinnedVideoPlayerId + '==' + peer_id);
   if (
-      (isVideoPinned && (pinnedVideoPlayerId == peer_id + '_video' || pinnedVideoPlayerId == peer_id)) ||
-      force_remove
+    (isVideoPinned &&
+      (pinnedVideoPlayerId == peer_id + "_video" ||
+        pinnedVideoPlayerId == peer_id)) ||
+    force_remove
   ) {
-      const videoPinMediaContainer = getId('videoPinMediaContainer');
-      const videoMediaContainer = getId('videoMediaContainer');
-      videoPinMediaContainer.style.display = 'none';
-      videoMediaContainer.style.top = 0;
-      videoMediaContainer.style.right = null;
-      videoMediaContainer.style.width = '100%';
-      videoMediaContainer.style.height = '100%';
-      pinnedVideoPlayerId = null;
-      isVideoPinned = false;
-      resizeVideoMedia();
+    const videoPinMediaContainer = getId("videoPinMediaContainer");
+    const videoMediaContainer = getId("videoMediaContainer");
+    videoPinMediaContainer.style.display = "none";
+    videoMediaContainer.style.top = 0;
+    videoMediaContainer.style.right = null;
+    videoMediaContainer.style.width = "100%";
+    videoMediaContainer.style.height = "100%";
+    pinnedVideoPlayerId = null;
+    isVideoPinned = false;
+    resizeVideoMedia();
   }
 }
 
@@ -3224,12 +3227,12 @@ function setupMySettings() {
 
   // Mobile isn't supported with pin/unpin video feature
   if (!isMobileDevice) {
-    pinVideoPositionSelect.addEventListener('change', (e) => {
-        toggleVideoPin(pinVideoPositionSelect.value);
+    pinVideoPositionSelect.addEventListener("change", (e) => {
+      toggleVideoPin(pinVideoPositionSelect.value);
     });
-} else {
-    getId('pinUnpinGridDiv').style.display = 'none';
-}
+  } else {
+    getId("pinUnpinGridDiv").style.display = "none";
+  }
 
   // room actions
   muteEveryoneBtn.addEventListener("click", (e) => {
@@ -3594,7 +3597,7 @@ function showButtonsBarAndMenu() {
     (isMobileDevice && isMySettingsVisible)
   )
     return;
-  toggleClassElements("statusMenu", "inline");
+    toggleClassElements('navbar', 'block');
   buttonsBar.style.display = "flex";
   isButtonsVisible = true;
 }
@@ -3604,7 +3607,7 @@ function showButtonsBarAndMenu() {
  */
 function checkButtonsBarAndMenu() {
   if (!isButtonsBarOver) {
-    toggleClassElements("statusMenu", "none");
+    toggleClassElements('navbar', 'none');
     buttonsBar.style.display = "none";
     isButtonsVisible = false;
   }
@@ -6816,7 +6819,7 @@ function isVideoTypeSupported(url) {
     url.endsWith(".mp3") ||
     url.endsWith(".webm") ||
     url.endsWith(".ogg") ||
-    url.includes("youtube")
+    url.includes('youtube.com')
   )
     return true;
   return false;

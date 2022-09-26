@@ -293,8 +293,8 @@ template {
   background: #000;
 }
 .has-animations::-webkit-scrollbar-thumb {
-  background: linear-gradient(#376df9 0, #09ff00 75%, #ffee00 100%); /*aqua;*/
-  border-radius: 30px;
+  background-image: linear-gradient(#b0fffc, #446cd3, rgba(95, 88, 219, 0.5));
+  box-shadow: 0 4px 15px 0 rgba(116, 79, 168, 0.75); /*aqua;*/
   border-width: 10%;
   border-color: #000;
 }
@@ -2695,14 +2695,13 @@ ul.pricing-item-features-list li {
 .illustration-section-02::after {
   content: "";
   position: absolute;
-  width: 100%;
-  max-width: 100%;
   height: 612px;
   background-image: url(../images/illustration-section-02.svg);
   background-repeat: no-repeat;
   background-size: auto;
   left: 50%;
   top: 0;
+  width: max-content;
   background-position: center top;
   transform: translate(-50%);
 }
@@ -2714,7 +2713,7 @@ ul.pricing-item-features-list li {
 .features-tiles-item-image {
   display: inline-flex;
   border-radius: 50%;
-  background: linear-gradient(180deg, #376df9 0, #09ff00 75%, #ffee00 100%);
+  background-image: linear-gradient(#e2b0ff, #9f44d3, rgba(171, 88, 219, 0.5));
 }
 
 .pricing .tiles-item-inner {
@@ -2850,8 +2849,12 @@ ul.pricing-item-features-list li.is-checked::after {
 .cta-inner {
   padding-left: 16px;
   padding-right: 16px;
-  background-color: #376df9;
-  background: linear-gradient(100deg, #376df9 0, #09ff00 75%, #ffee00 100%);
+  
+  background: #7e349a;
+  background: -webkit-linear-gradient(top right, #7e349a, #14398c);
+  background: -moz-linear-gradient(top right, #7e349a, #14398c);
+  background: linear-gradient(to bottom left, #7e349a, #14398c);
+  border-radius: 15px;
 }
 
 @media (min-width: 641px) {
@@ -2926,11 +2929,11 @@ ul.pricing-item-features-list li.is-checked::after {
 }
 
 .text-color-primary {
-  color: #376df9;
+  color: #37f951;
 }
 
 .text-color-secondary {
-  color: #ff5fa0;
+  color: #e1ff00;
 }
 
 .text-color-error {
@@ -3520,4 +3523,35 @@ img.has-shadow {
 .features-tiles-item-image.mb-16 {
   width: 72px;
   height: 72px;
+}
+
+.site-footer {
+  background-color: #000;
+}
+
+.btn-hover {
+  width: 200px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  margin: 20px;
+  height: 50px;
+  text-align: center;
+  border: none;
+  background-size: 300% 100%;
+
+  border-radius: 50px;
+  moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.btn-hover:hover {
+  background-position: 100% 0;
+  moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }

@@ -2713,7 +2713,10 @@ ul.pricing-item-features-list li {
 .features-tiles-item-image {
   display: inline-flex;
   border-radius: 50%;
-  background-image: linear-gradient(#e2b0ff, #9f44d3, rgba(171, 88, 219, 0.5));
+  /*
+  
+  background: linear-gradient(-360deg, #fc466b, #3f5efb);*/
+  background: radial-gradient(circle at bottom, #8a2387, #e94057, #f27121);
 }
 
 .pricing .tiles-item-inner {
@@ -2843,7 +2846,7 @@ ul.pricing-item-features-list li.is-checked::after {
 
 .cta .form-input {
   border-color: transparent;
-  border-radius: 2px;
+  border-radius: 12px;
 }
 
 .cta-inner {
@@ -2851,10 +2854,8 @@ ul.pricing-item-features-list li.is-checked::after {
   padding-right: 16px;
 
   background: #7e349a;
-  background: -webkit-linear-gradient(top right, #7e349a, #14398c);
-  background: -moz-linear-gradient(top right, #7e349a, #14398c);
-  background: linear-gradient(to bottom left, #7e349a, #14398c);
-  border-radius: 15px;
+  background: radial-gradient(circle at left,#ff00cc, 40%, #333399);
+  border-radius: 24px;
 }
 
 @media (min-width: 641px) {

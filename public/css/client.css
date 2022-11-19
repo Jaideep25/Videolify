@@ -40,7 +40,7 @@
   /* common */
   --navbar-bg: linear-gradient(#363434, #000000);
   --body-bg: radial-gradient(#393939, #000000);
-  --border: 1px solid rgb(255 255 255 / 32%);
+  --border: 0.5px solid rgb(255 255 255 / 32%);
 
   --msger-top: 50%;
   --msger-left: 50%;
@@ -54,7 +54,7 @@
 
   /* whiteboard resize */
   --wb-width: 800px;
-  --wb-height: 600px;
+  --wb-height: 200px;
 
   /* my settings */
   --mySettings-select-w: 100%;
@@ -84,7 +84,7 @@
     */
   /* neon theme default */
   --body-bg: black;
-  --msger-bg: linear-gradient(to left, #383838, #000000);
+  --msger-bg: radial-gradient(#b769b4, #005977);
   --msger-private-bg: black;
   --left-msg-bg: #da05f3;
   --private-msg-bg: #f77070;
@@ -96,7 +96,7 @@
   --wb-bg: linear-gradient(to left, #1f1e1e, #000000);
   --wb-hbg: #000000;
   --my-settings-label-color: white;
-  --hover-color: rgb(0, 162, 255);
+  --hover-color: rgb(237, 255, 39);
   /* rgb(8, 189, 89); */
   /* dark theme
     --body-bg: #16171b;
@@ -265,7 +265,7 @@ body {
 }
 
 #buttonsBar button:hover {
-  color: var(--hover-color);
+  color: rgb(26, 216, 121);
   transform: var(--btns-hover-scale);
 }
 
@@ -419,6 +419,8 @@ button#whiteboardFsBtn {
 
 .msger-header-title button,
 .msger-header-options button {
+  padding: 5px;
+  /* border: var(--border); */
   border: none;
   font-size: 1.1rem;
   background: rgb(0, 0, 0);
@@ -462,6 +464,7 @@ button#whiteboardFsBtn {
 .msg {
   display: flex;
   align-items: flex-end;
+  font-size: 0.8rem;
   margin-bottom: 10px;
 }
 
@@ -595,7 +598,6 @@ button:hover {
 .msger-inputarea * {
   border: none;
   border-radius: 3px;
-  margin: 1px;
   color: #fff;
   font-size: 1rem;
 }
@@ -644,7 +646,7 @@ button:hover {
 .msger-input-buttons button {
   padding: 5px;
   border: none;
-  border-radius: 3px;
+  border-radius: 5px;
   font-size: 1rem;
   color: #fff;
   background: var(--msger-bg);
@@ -731,15 +733,11 @@ button:hover {
 # Emoji picker
 --------------------------------------------------------------*/
 
-emoji-picker {
+em-emoji-picker {
   z-index: 12;
   position: absolute;
   bottom: 105px;
-  width: 100%;
-  height: 50%;
-  --background: #16171b;
-  --num-columns: 8;
-  --emoji-size: 1.5rem;
+  left: 10px;
 }
 
 /*--------------------------------------------------------------
@@ -782,15 +780,18 @@ emoji-picker {
 }
 
 #mySettings select {
-  max-width: 305px;
+  height: 40px;
   font-size: 0.9rem;
-  height: 30px;
+  max-width: 305px;
   color: #fff;
   background-color: #2b2b2b;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 #mySettingsCloseBtn {
+  padding: 5px;
+  /* border: var(--border); */
   border: none;
   border-radius: 5px;
   font-size: 1.2rem;
@@ -806,7 +807,10 @@ emoji-picker {
 }
 
 #myPeerNameSet {
-  border: 1px solid #fff;
+  padding: 10px;
+  max-width: 160px;
+  border: var(--border);
+  border-radius: 5px;
   color: #fff;
   background-color: #2b2b2b;
 }
@@ -815,12 +819,20 @@ emoji-picker {
 #muteEveryoneBtn,
 #hideEveryoneBtn,
 #lockRoomBtn,
-#unlockRoomBtn,
+#unlockRoomBtn {
+  padding: 10px;
+  border: var(--border);
+  font-size: 0.9rem;
+  border-radius: 5px;
+  color: #fff;
+  background-color: transparent;
+}
 #speechRecognitionIcon,
 #speechRecognitionStart,
 #speechRecognitionStop {
+  padding: 10px;
+  border: none;
   font-size: 0.9rem;
-  padding: 5px;
   border-radius: 5px;
   color: #fff;
   background-color: transparent;
@@ -846,20 +858,25 @@ emoji-picker {
 /* Style the tab */
 
 .tab {
-  overflow: hidden;
   background-color: rgba(0, 0, 0);
+  padding: 5px;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 /* Style the buttons inside the tab */
 
 .tab button {
+  margin: 2px;
   font-size: 1rem;
   background-color: inherit;
   float: left;
+  /* border: var(--border); */
   border: none;
+  border-radius: 5px;
   outline: none;
   cursor: pointer;
-  padding: 14px 16px;
+  padding: 12px 14px;
   transition: 0.3s;
   color: #fff;
 }
@@ -915,9 +932,9 @@ emoji-picker {
   background-color: transparent !important;
 }
 
-/* .swal2-popup {
-    font-size: 0.8 !important;
-} */
+.swal2-popup {
+  border: var(--border) !important;
+}
 
 .swal2-select {
   background-color: black !important;
@@ -1181,6 +1198,15 @@ progress {
 # Common
 --------------------------------------------------------------*/
 
+hr {
+  border: 0;
+  display: block;
+  height: 1px;
+  background: #dbdbdb;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
 button {
   cursor: pointer;
 }
@@ -1237,7 +1263,7 @@ button {
   border-radius: 50px;
   overflow: hidden;
   outline: none;
-  border: none;
+  border: var(--border);
   cursor: pointer;
   background-color: #000000;
   transition: background-color ease 0.3s;
@@ -1249,7 +1275,7 @@ button {
   position: absolute;
   z-index: 2;
   width: 20px;
-  height: 20px;
+  height: 18px;
   background: #fff;
   left: 2px;
   top: 2px;
@@ -1267,7 +1293,7 @@ button {
 }
 
 .toggle:checked {
-  background-color: #4cd964;
+  background-color: green;
 }
 
 .toggle:checked:before {

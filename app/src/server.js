@@ -506,6 +506,7 @@ io.sockets.on("connect", async (socket) => {
     let peer_screen_status = config.peer_screen_status;
     let peer_hand_status = config.peer_hand_status;
     let peer_rec_status = config.peer_rec_status;
+    let peer_privacy_status = config.peer_privacy_status;
 
     if (channel in socket.channels) {
       return log.debug("[" + socket.id + "] [Warning] already joined", channel);
@@ -535,6 +536,7 @@ io.sockets.on("connect", async (socket) => {
       peer_screen_status: peer_screen_status,
       peer_hand_status: peer_hand_status,
       peer_rec_status: peer_rec_status,
+      peer_privacy_status: peer_privacy_status,
     };
     log.debug("[Join] - connected peers grp by roomId", peers);
 
@@ -735,6 +737,7 @@ io.sockets.on("connect", async (socket) => {
     let peer_name = config.peer_name;
     let element = config.element;
     let status = config.status;
+
     try {
       for (let peer_id in peers[room_id]) {
         if (peers[room_id][peer_id]["peer_name"] == peer_name) {
@@ -753,6 +756,9 @@ io.sockets.on("connect", async (socket) => {
               break;
             case "rec":
               peers[room_id][peer_id]["peer_rec_status"] = status;
+              break;
+            case "privacy":
+              peers[room_id][peer_id]["peer_privacy_status"] = status;
               break;
           }
         }

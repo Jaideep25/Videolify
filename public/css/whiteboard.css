@@ -42,10 +42,12 @@
 
 .whiteboard-header-title button,
 .whiteboard-header-options button {
-  border: none;
+  padding: 10px;
   font-size: 1.2rem;
+  margin: 1px;
   background: rgb(0, 0, 0);
   color: #fff;
+  border: var(--border);
   border-radius: 5px;
   transition: all 0.3s ease-in-out;
   transition: background 0.23s;
@@ -63,12 +65,13 @@
   -moz-appearance: none;
   appearance: none;
   padding: 0;
-  border: none;
   width: 20px;
   height: 20px;
+  margin: 1px;
   margin-left: 5px;
   border-radius: 50px;
   border: solid 0.5px #afadad38;
+  cursor: pointer;
 }
 .whiteboardColorPicker:hover {
   transform: var(--btns-hover-scale);

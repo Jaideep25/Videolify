@@ -68,6 +68,7 @@
   <!-- StyleSheet -->
 
   <link rel="stylesheet" href="../css/landing.css" />
+  <link rel="stylesheet" href="../css/newcall.css" />
 </head>
 
 <body class="has-animations">
@@ -115,14 +116,9 @@
                       getUserMediaError;
                   </script>
                   <div class="reveal-from-bottom" data-reveal-delay="450">
-                    <button class="button button-primary button-wide-mobile pulse" style="
+                    <button class="button button-primary button-wide-mobile br-6 pulse" style="
                           border: 0;
-                          background: linear-gradient(
-                            10deg,
-                            #376df9 0,
-                            #09ff00 75%,
-                            #ffee00 100%
-                          );
+                          background-image: linear-gradient(to right, #03001e, #7303c0, #ec38bc);
                         "
                       onclick="roomId ? window.location.href = '/join/' + roomId : window.location.href = '/newcall';">
                       Try again

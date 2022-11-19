@@ -2854,7 +2854,7 @@ ul.pricing-item-features-list li.is-checked::after {
   padding-right: 16px;
 
   background: #7e349a;
-  background: radial-gradient(circle at left,#ff00cc, 40%, #333399);
+  background: radial-gradient(circle at left, #ff00cc, 40%, #333399);
   border-radius: 24px;
 }
 
@@ -3394,6 +3394,22 @@ img.has-shadow {
 
 .spacer-64 {
   padding-top: 64px;
+}
+
+.br-6 {
+  border-radius: 6px;
+}
+
+.br-12 {
+  border-radius: 12px;
+}
+
+.br-18 {
+  border-radius: 18px;
+}
+
+.br-24 {
+  border-radius: 24px;
 }
 
 @media (max-width: 640px) {

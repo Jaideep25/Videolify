@@ -21,5 +21,4 @@ npm-debug.log
 # yarn
 yarn.lock
 
-# logs
-server.txt
+docker-push.sh

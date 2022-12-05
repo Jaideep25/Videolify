@@ -648,7 +648,7 @@ button:hover {
   border: none;
   border-radius: 5px;
   font-size: 1rem;
-  color: #fff;
+  color: rgb(255, 255, 255);
   background: var(--msger-bg);
   transition: background 0.23s;
 }
@@ -657,6 +657,10 @@ button:hover {
   color: var(--hover-color);
   transform: var(--btns-hover-scale);
   transition: all 0.3s ease-in-out;
+}
+
+.msger-input-buttons input {
+  cursor: pointer;
 }
 
 #msgerSendBtn {
@@ -940,6 +944,10 @@ em-emoji-picker {
   background-color: black !important;
   color: white !important;
   border-radius: 6px !important;
+}
+
+.swal2-timer-progress-bar-container {
+  background: #376df9;
 }
 
 /*--------------------------------------------------------------

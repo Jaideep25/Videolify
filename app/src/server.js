@@ -51,8 +51,8 @@ const cors = require("cors");
 const path = require("path");
 const app = express();
 
-const Logs = require("./Logs");
-const log = new Logger("server");
+const Logs = require("./logs");
+const log = new Logs("server");
 
 const isHttps = false; // must be the same on client.js
 const port = process.env.PORT || 3000; // must be the same to client.js signalingServerPort

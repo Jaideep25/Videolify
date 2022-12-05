@@ -10,7 +10,7 @@ const options = {
   depth: null,
   colors: true,
 };
-module.exports = class Logs {
+module.exports = class Logger {
   constructor(appName = "Videolify", debugOn = true) {
     this.appName = colors.yellow(appName);
     this.debugOn = debugOn;

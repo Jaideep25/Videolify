@@ -563,7 +563,7 @@ function setButtonsToolTip() {
   // main buttons
   setTippy(shareRoomBtn, "Invite people to join", "right-start");
   setTippy(audioBtn, "Click to mute", "right-start");
-  setTippy(videoBtn, "Click to turn off your video", "right-start");
+  setTippy(videoBtn, "Turn off video", "right-start");
   setTippy(screenShareBtn, "Start screen sharing", "right-start");
   setTippy(recordStreamBtn, "Start recording", "right-start");
   setTippy(fullScreenBtn, "View full screen", "right-start");
@@ -1069,8 +1069,8 @@ async function whoAreYou() {
     initAudioBtn.className = className.audioOff;
     setMyAudioStatus(useAudio);
   }
-  setTippy(initAudioBtn, "Stop the audio", "top");
-  setTippy(initVideoBtn, "Stop the video", "top");
+  setTippy(initAudioBtn, "Click to mute", "top");
+  setTippy(initVideoBtn, "Turn off video", "top");
 }
 
 /**
@@ -2014,7 +2014,7 @@ async function loadLocalMedia(stream) {
   setTippy(myHandStatusIcon, "My hand is raised", "bottom");
   setTippy(myPrivacyBtn, "Toggle video privacy", "bottom");
   setTippy(myVideoStatusIcon, "My video is on", "bottom");
-  setTippy(myAudioStatusIcon, "My audio is on", "bottom");
+  setTippy(myAudioStatusIcon, "You're unmuted", "bottom");
   setTippy(myVideoToImgBtn, "Take a snapshot", "bottom");
   setTippy(myVideoFullScreenBtn, "Full screen mode", "bottom");
   setTippy(myVideoPinBtn, "Toggle Pin video", "bottom");
@@ -2257,15 +2257,15 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
   setTippy(remotePeerName, "Participant name", "bottom");
   setTippy(remoteHandStatusIcon, "Participant hand is raised", "bottom");
   setTippy(remoteVideoStatusIcon, "Participant video is on", "bottom");
-  setTippy(remoteAudioStatusIcon, "Participant audio is on", "bottom");
+  setTippy(remoteAudioStatusIcon, "Participant is unmuted", "bottom");
   setTippy(remoteAudioVolume, "🔊 Volume", "top-end");
   setTippy(remoteVideoAudioUrlBtn, "Send Video/Audio", "bottom");
   setTippy(remotePrivateMsgBtn, "Send DM", "bottom");
   setTippy(remoteFileShareBtn, "Send file", "bottom");
   setTippy(remoteVideoToImgBtn, "Take a snapshot", "bottom");
   setTippy(remotePeerKickOut, "Kick out", "bottom");
-  setTippy(remoteVideoFullScreenBtn, "Full screen mode", "bottom");
-  setTippy(remoteVideoPinBtn, "Toggle Pin video", "bottom");
+  setTippy(remoteVideoFullScreenBtn, "Full screen", "bottom");
+  setTippy(remoteVideoPinBtn, "Pin video", "bottom");
 
   // my video avatar image
   remoteVideoAvatarImage.setAttribute("id", peer_id + "_avatar");
@@ -4168,7 +4168,7 @@ function handleAudio(e, init, force = null) {
     audioBtn.className = myAudioStatus ? className.audioOn : className.audioOff;
     setTippy(
       initAudioBtn,
-      myAudioStatus ? "Stop the audio" : "Start the audio",
+      myAudioStatus ? "Click to mute" : "Start to unmute",
       "top"
     );
   }
@@ -4190,16 +4190,14 @@ function handleVideo(e, init, force = null) {
   myVideoStatus = localMediaStream.getVideoTracks()[0].enabled;
 
   force != null
-    ? (e.className = myAudioStatus ? className.audioOn : className.audioOff)
-    : (e.target.className = myAudioStatus
-        ? className.audioOn
-        : className.audioOff);
+        ? (e.className = myVideoStatus ? className.videoOn : className.videoOff)
+        : (e.target.className = myVideoStatus ? className.videoOn : className.videoOff);
 
   if (init) {
-    audioBtn.className = myAudioStatus ? className.audioOn : className.audioOff;
+    videoBtn.className = myVideoStatus ? className.videoOn : className.videoOff;
     setTippy(
       initVideoBtn,
-      myVideoStatus ? "Stop the video" : "Start the video",
+      myVideoStatus ? "Turn off video" : "Turn on video",
       "top"
     );
   }
@@ -4329,7 +4327,7 @@ async function setMyVideoStatusTrue() {
   myVideoStatusIcon.className = className.videoOn;
   myVideoAvatarImage.style.display = "none";
   emitPeerStatus("video", myVideoStatus);
-  setTippy(videoBtn, "Stop the video", "right-start");
+  setTippy(videoBtn, "Turn off video", "right-start");
 }
 
 /**
@@ -5559,13 +5557,13 @@ function setMyAudioStatus(status) {
   emitPeerStatus("audio", status);
   setTippy(
     myAudioStatusIcon,
-    status ? "My audio is on" : "My audio is off",
+    status ? "You're unmuted" : "You're muted",
     "bottom"
   );
   status ? playSound("on") : playSound("off");
   setTippy(
     audioBtn,
-    status ? "Stop the audio" : "Start the audio",
+    status ? "Click to mute" : "Click to unmute",
     "right-start"
   );
 }
@@ -5591,7 +5589,7 @@ function setMyVideoStatus(status) {
       );
     setTippy(
       videoBtn,
-      status ? "Stop the video" : "Start the video",
+      status ? "Turn off video" : "Turn on video",
       "right-start"
     );
   }
@@ -5651,7 +5649,7 @@ function setPeerAudioStatus(peer_id, status) {
     peerAudioStatus.className = className.audioOn + (status ? "" : "-slash");
     setTippy(
       peerAudioStatus,
-      status ? "Participant audio is on" : "Participant audio is off",
+      status ? "Participant is unmuted" : "Participant is muted",
       "bottom"
     );
     status ? playSound("on") : playSound("off");
@@ -5685,7 +5683,7 @@ function handlePeerAudioBtn(peer_id) {
   if (!buttons.remote.audioBtnClickAllowed) return;
   let peerAudioBtn = getId(peer_id + "_audioStatus");
   peerAudioBtn.onclick = () => {
-    if (peerAudioBtn.className === "className.audioOn")
+    if (peerAudioBtn.className === className.audioOn)
       disablePeer(peer_id, "audio");
   };
 }

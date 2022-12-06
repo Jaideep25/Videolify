@@ -4444,7 +4444,7 @@ async function refreshMyLocalStream(stream, localAudioTrackChange = false) {
 
   // enable audio
   if (localAudioTrackChange && myAudioStatus === false) {
-    audioBtn.className = "className.audioOn";
+    audioBtn.className = className.audioOn;
     setMyAudioStatus(true);
     myAudioStatus = true;
   }
@@ -5552,7 +5552,7 @@ function setMyHandStatus() {
  * @param {boolean} status of my audio
  */
 function setMyAudioStatus(status) {
-  myAudioStatusIcon.className = "className.audioOn" + (status ? "" : "-slash");
+  myAudioStatusIcon.className = className.audioOn + (status ? "" : "-slash");
   // send my audio status to all peers in the room
   emitPeerStatus("audio", status);
   setTippy(
@@ -5574,26 +5574,15 @@ function setMyAudioStatus(status) {
  */
 function setMyVideoStatus(status) {
   // on vdeo OFF display my video avatar name
-  if (myVideoAvatarImage)
-    myVideoAvatarImage.style.display = status ? "none" : "block";
-  if (myVideoStatusIcon)
-    myVideoStatusIcon.className = className.videoOff + (status ? "" : "-slash");
+  if (myVideoAvatarImage) myVideoAvatarImage.style.display = status ? 'none' : 'block';
+  if (myVideoStatusIcon) myVideoStatusIcon.className = status ? className.videoOn : className.videoOff;
   // send my video status to all peers in the room
-  emitPeerStatus("video", status);
+  emitPeerStatus('video', status);
   if (!isMobileDevice) {
-    if (myVideoStatusIcon)
-      setTippy(
-        myVideoStatusIcon,
-        status ? "My video is on" : "My video is off",
-        "bottom"
-      );
-    setTippy(
-      videoBtn,
-      status ? "Turn off video" : "Turn on video",
-      "right-start"
-    );
+      if (myVideoStatusIcon) setTippy(myVideoStatusIcon, status ? 'My video is on' : 'My video is off', 'bottom');
+      setTippy(videoBtn, status ? 'Turn off video' : 'Turn on video', 'right-start');
   }
-  status ? playSound("on") : playSound("off");
+  status ? playSound('on') : playSound('off');
 }
 
 /**
@@ -5941,7 +5930,7 @@ function setMyAudioOn(peer_name) {
   if (myAudioStatus === true || !useAudio) return;
   localMediaStream.getAudioTracks()[0].enabled = true;
   myAudioStatus = localMediaStream.getAudioTracks()[0].enabled;
-  audioBtn.className = "className.audioOn";
+  audioBtn.className = className.audioOn;
   setMyAudioStatus(myAudioStatus);
   userLog("toast", peer_name + " has enabled your audio");
   playSound("on");

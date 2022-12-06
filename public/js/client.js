@@ -2649,7 +2649,7 @@ function handleVideoPlayerFs(videoId, videoFullScreenBtnId, peer_id = null) {
   }
 
   function showMsg() {
-    userLog("toast", "Full screen mode work when video is on");
+    userLog("toast", "Full screen mode works when video is on");
   }
 
   function handleFSVideo() {
@@ -4190,8 +4190,10 @@ function handleVideo(e, init, force = null) {
   myVideoStatus = localMediaStream.getVideoTracks()[0].enabled;
 
   force != null
-        ? (e.className = myVideoStatus ? className.videoOn : className.videoOff)
-        : (e.target.className = myVideoStatus ? className.videoOn : className.videoOff);
+    ? (e.className = myVideoStatus ? className.videoOn : className.videoOff)
+    : (e.target.className = myVideoStatus
+        ? className.videoOn
+        : className.videoOff);
 
   if (init) {
     videoBtn.className = myVideoStatus ? className.videoOn : className.videoOff;
@@ -5574,15 +5576,28 @@ function setMyAudioStatus(status) {
  */
 function setMyVideoStatus(status) {
   // on vdeo OFF display my video avatar name
-  if (myVideoAvatarImage) myVideoAvatarImage.style.display = status ? 'none' : 'block';
-  if (myVideoStatusIcon) myVideoStatusIcon.className = status ? className.videoOn : className.videoOff;
+  if (myVideoAvatarImage)
+    myVideoAvatarImage.style.display = status ? "none" : "block";
+  if (myVideoStatusIcon)
+    myVideoStatusIcon.className = status
+      ? className.videoOn
+      : className.videoOff;
   // send my video status to all peers in the room
-  emitPeerStatus('video', status);
+  emitPeerStatus("video", status);
   if (!isMobileDevice) {
-      if (myVideoStatusIcon) setTippy(myVideoStatusIcon, status ? 'My video is on' : 'My video is off', 'bottom');
-      setTippy(videoBtn, status ? 'Turn off video' : 'Turn on video', 'right-start');
+    if (myVideoStatusIcon)
+      setTippy(
+        myVideoStatusIcon,
+        status ? "My video is on" : "My video is off",
+        "bottom"
+      );
+    setTippy(
+      videoBtn,
+      status ? "Turn off video" : "Turn on video",
+      "right-start"
+    );
   }
-  status ? playSound('on') : playSound('off');
+  status ? playSound("on") : playSound("off");
 }
 
 /**

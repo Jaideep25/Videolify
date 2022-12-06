@@ -4309,9 +4309,7 @@ async function toggleScreenSharing() {
  * @param {boolean} status of screen sharing
  */
 function setScreenSharingStatus(status) {
-  screenShareBtn.className = status
-    ? "className.screenOff"
-    : "className.screenOn";
+  screenShareBtn.className = status ? className.screenOff : className.screenOn;
   setTippy(
     screenShareBtn,
     status ? "Stop screen sharing" : "Start screen sharing",
@@ -4327,8 +4325,8 @@ async function setMyVideoStatusTrue() {
   // Put video status already ON
   localMediaStream.getVideoTracks()[0].enabled = true;
   myVideoStatus = true;
-  videoBtn.className = "className.videoOn";
-  myVideoStatusIcon.className = "className.videoOn";
+  videoBtn.className = className.videoOn;
+  myVideoStatusIcon.className = className.videoOn;
   myVideoAvatarImage.style.display = "none";
   emitPeerStatus("video", myVideoStatus);
   setTippy(videoBtn, "Stop the video", "right-start");
@@ -4341,12 +4339,12 @@ async function setMyVideoStatusTrue() {
 function toggleFullScreen() {
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen();
-    fullScreenBtn.className = "className.fsOn";
+    fullScreenBtn.className = className.fsOn;
     isDocumentOnFullScreen = true;
   } else {
     if (document.exitFullscreen) {
       document.exitFullscreen();
-      fullScreenBtn.className = "className.fsOff";
+      fullScreenBtn.className = className.fsOff;
       isDocumentOnFullScreen = false;
     }
   }
@@ -4763,7 +4761,7 @@ function showChatRoomDraggable() {
     buttonsBar.style.display = "none";
     isButtonsVisible = false;
   }
-  chatRoomBtn.className = "className.chatOff";
+  chatRoomBtn.className = className.chatOff;
   msgerDraggable.style.top = "50%";
   msgerDraggable.style.left = isMobileDevice ? "50%" : "25%";
   msgerDraggable.style.display = "flex";
@@ -4863,7 +4861,7 @@ function hideChatRoomAndEmojiPicker() {
   msgerDraggable.style.display = "none";
   msgerEmojiPicker.style.display = "none";
   msgerEmojiBtn.style.color = "#FFFFFF";
-  chatRoomBtn.className = "className.chatOn";
+  chatRoomBtn.className = className.chatOn;
   isChatRoomVisible = false;
   isChatEmojiVisible = false;
   setTippy(chatRoomBtn, "Open the chat", "right-start");
@@ -4874,7 +4872,7 @@ function hideChatRoomAndEmojiPicker() {
  */
 function hideCaptionBox() {
   captionDraggable.style.display = "none";
-  captionBtn.className = "className.captionOn";
+  captionBtn.className = className.captionOn;
   isCaptionBoxVisible = false;
   setTippy(captionBtn, "Open STT [Captions]", "right-start");
 }
@@ -4922,7 +4920,7 @@ function handleDataChannelChat(dataMessage) {
   // chat message for me also
   if (!isChatRoomVisible && showChatOnMessage) {
     showChatRoomDraggable();
-    chatRoomBtn.className = "className.chatOff";
+    chatRoomBtn.className = className.chatOff;
   }
   // show message from
   if (!showChatOnMessage) {
@@ -5053,7 +5051,7 @@ function appendMessage(from, img, side, msg, privateMsg, msgId = null) {
   if (privateMsg && msgId != null && msgId != myPeerId) {
     msgHTML += `
                 <button 
-                    class="className.msgPrivate"
+                    class=className.msgPrivate
                     id="msg-private-reply-${chatMessagesId}"
                     style="color:#fff; border:none; background:transparent;"
                     onclick="sendPrivateMsgToPeer('${myPeerId}','${from}')"
@@ -5062,13 +5060,13 @@ function appendMessage(from, img, side, msg, privateMsg, msgId = null) {
   msgHTML += `
                 <button
                     id="msg-delete-${chatMessagesId}"
-                    class="className.trash"
+                    class=className.trash
                     style="color:#fff; border:none; background:transparent;"
                     onclick="deleteMessage('msg-${chatMessagesId}')"
                 ></button>
                 <button
                     id="msg-copy-${chatMessagesId}"
-                    class="className.copy" 
+                    class=className.copy 
                     style="color:#fff; border:none; background:transparent;"
                     onclick="copyToClipboard('${chatMessagesId}')"
                 ></button>
@@ -5153,7 +5151,7 @@ async function msgerAddPeers(peers) {
                         class="msger-input"
                         placeholder="💬 Enter your message..."
                     ></textarea>
-                    <button id="${peer_id}_pMsgBtn" class="className.msgPrivate" value="${peer_name}"></button>
+                    <button id="${peer_id}_pMsgBtn" class=className.msgPrivate value="${peer_name}"></button>
                 </div>
                 `;
         msgerCPList.insertAdjacentHTML("beforeend", msgerPrivateDiv);
@@ -5581,8 +5579,7 @@ function setMyVideoStatus(status) {
   if (myVideoAvatarImage)
     myVideoAvatarImage.style.display = status ? "none" : "block";
   if (myVideoStatusIcon)
-    myVideoStatusIcon.className =
-      "className.videoOff" + (status ? "" : "-slash");
+    myVideoStatusIcon.className = className.videoOff + (status ? "" : "-slash");
   // send my video status to all peers in the room
   emitPeerStatus("video", status);
   if (!isMobileDevice) {
@@ -5651,7 +5648,7 @@ function setPeerHandStatus(peer_id, peer_name, status) {
 function setPeerAudioStatus(peer_id, status) {
   let peerAudioStatus = getId(peer_id + "_audioStatus");
   if (peerAudioStatus) {
-    peerAudioStatus.className = "className.audioOn" + (status ? "" : "-slash");
+    peerAudioStatus.className = className.audioOn + (status ? "" : "-slash");
     setTippy(
       peerAudioStatus,
       status ? "Participant audio is on" : "Participant audio is off",
@@ -5701,7 +5698,7 @@ function handlePeerVideoBtn(peer_id) {
   if (!useVideo || !buttons.remote.videoBtnClickAllowed) return;
   let peerVideoBtn = getId(peer_id + "_videoStatus");
   peerVideoBtn.onclick = () => {
-    if (peerVideoBtn.className === "className.videoOn")
+    if (peerVideoBtn.className === className.videoOn)
       disablePeer(peer_id, "video");
   };
 }
@@ -5792,7 +5789,7 @@ function setPeerVideoStatus(peer_id, status) {
   if (peerVideoAvatarImage)
     peerVideoAvatarImage.style.display = status ? "none" : "block";
   if (peerVideoStatus) {
-    peerVideoStatus.className = "className.videoOn" + (status ? "" : "-slash");
+    peerVideoStatus.className = className.videoOn + (status ? "" : "-slash");
     setTippy(
       peerVideoStatus,
       status ? "Participant video is on" : "Participant video is off",
@@ -5880,7 +5877,7 @@ function handleScreenStart(peer_id) {
   let remoteVideoStatusBtn = getId(peer_id + "_videoStatus");
   let remoteVideoStream = getId(peer_id + "_video");
   if (remoteVideoStatusBtn) {
-    remoteVideoStatusBtn.className = "className.videoOn";
+    remoteVideoStatusBtn.className = className.videoOn;
     setTippy(remoteVideoStatusBtn, "Participant screen share is on", "bottom");
   }
   if (remoteVideoStream) {
@@ -5903,7 +5900,7 @@ function handleScreenStop(peer_id, peer_use_video) {
   let remoteVideoAvatarImage = getId(peer_id + "_avatar");
   let remoteVideoStatusBtn = getId(peer_id + "_videoStatus");
   if (remoteVideoStatusBtn) {
-    remoteVideoStatusBtn.className = "className.videoOff";
+    remoteVideoStatusBtn.className = className.videoOff;
     setTippy(remoteVideoStatusBtn, "Participant screen share is off", "bottom");
   }
   if (remoteVideoStream) {
@@ -5932,7 +5929,7 @@ function setMyAudioOff(peer_name) {
   if (myAudioStatus === false || !useAudio) return;
   localMediaStream.getAudioTracks()[0].enabled = false;
   myAudioStatus = localMediaStream.getAudioTracks()[0].enabled;
-  audioBtn.className = "className.videoOff";
+  audioBtn.className = className.videoOff;
   setMyAudioStatus(myAudioStatus);
   userLog("toast", peer_name + " has disabled your audio");
   playSound("off");
@@ -5960,7 +5957,7 @@ function setMyVideoOff(peer_name) {
   if (myVideoStatus === false || !useVideo) return;
   localMediaStream.getVideoTracks()[0].enabled = false;
   myVideoStatus = localMediaStream.getVideoTracks()[0].enabled;
-  videoBtn.className = "className.videoOff";
+  videoBtn.className = className.videoOff;
   setMyVideoStatus(myVideoStatus);
   userLog("toast", peer_name + " has disabled your video");
   playSound("off");

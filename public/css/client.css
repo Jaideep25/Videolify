@@ -96,7 +96,7 @@
   --wb-bg: linear-gradient(to left, #1f1e1e, #000000);
   --wb-hbg: #000000;
   --my-settings-label-color: white;
-  --hover-color: rgb(237, 255, 39);
+  --hover-color: #009dff;
   /* rgb(8, 189, 89); */
   /* dark theme
     --body-bg: #16171b;
@@ -265,7 +265,7 @@ body {
 }
 
 #buttonsBar button:hover {
-  color: rgb(26, 216, 121);
+  color: rgb(97, 2, 192);
   transform: var(--btns-hover-scale);
 }
 
@@ -317,7 +317,7 @@ body {
 #whiteboardBtn:hover,
 #mySettingsBtn:hover,
 #aboutBtn:hover {
-  color: rgb(0, 162, 255);
+  color: #009dff;
   transform: var(--btns-hover-scale);
 }
 #leaveRoomBtn:hover {
@@ -326,7 +326,15 @@ body {
 }
 
 button#myHandBtn {
-  color: #48ff00;
+  color: #348424;
+}
+
+button#myHandBtn:hover {
+  color: #00ff95;
+}
+
+button#leaveRoomBtn {
+  color: #ff0000;
 }
 
 button#whiteboardCleanBtn {

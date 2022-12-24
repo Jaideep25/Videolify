@@ -2,37 +2,6 @@
 @import url("https://fonts.googleapis.com/css?family=Comfortaa:wght@500&display=swap");
 
 /*--------------------------------------------------------------
-# Fade in page on load 
---------------------------------------------------------------*/
-
-@-webkit-keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@-moz-keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/*--------------------------------------------------------------
 # Root settings
 --------------------------------------------------------------*/
 
@@ -922,6 +891,70 @@ em-emoji-picker {
 }
 
 /*--------------------------------------------------------------
+# Input slider UI
+--------------------------------------------------------------*/
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 41px;
+  height: 19px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 17px;
+  width: 17px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: green;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px green;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(24px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/*--------------------------------------------------------------
 # Swal2
 --------------------------------------------------------------*/
 
@@ -956,6 +989,49 @@ em-emoji-picker {
 
 .swal2-timer-progress-bar-container {
   background: #376df9;
+}
+
+/*--------------------------------------------------------------
+# Fade in page on load 
+--------------------------------------------------------------*/
+
+.fadein {
+  -webkit-animation: fadeIn ease-in 1;
+  -moz-animation: fadeIn ease-in 1;
+  animation: fadeIn ease-in 1;
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  animation-duration: 1s;
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
 }
 
 /*--------------------------------------------------------------

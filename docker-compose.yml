@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  mirotalk:
+  videolify:
     image: videolify:latest
     build:
       context: .

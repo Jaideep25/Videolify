@@ -423,6 +423,7 @@ button#whiteboardFsBtn {
   overflow-y: auto;
   padding: 10px;
   background: var(--msger-bg);
+  max-width: 95%;
 }
 
 .msger-chat::-webkit-scrollbar {

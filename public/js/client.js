@@ -402,7 +402,7 @@ let receiveFilePercentage;
 let receiveInProgress = false;
 // MTU 1kb to prevent drop.
 // const chunkSize = 1024;
-const chunkSize = 1024 * 16; // 16kb/s
+const chunkSize = 1024 * 220; // .1mb/s
 // video URL player
 let videoUrlCont;
 let videoAudioUrlCont;
@@ -6834,6 +6834,15 @@ function sendFileData(peer_id, broadcast) {
     if (offset < fileToSend.size) readSlice(offset);
   });
   const readSlice = (o) => {
+    for (let peer_id in fileDataChannels) {
+      if (fileDataChannels[peer_id].bufferedAmount > fileDataChannels[peer_id].bufferedAmountLowThreshold) {
+          fileDataChannels[peer_id].onbufferedamountlow = () => {
+              fileDataChannels[peer_id].onbufferedamountlow = null;
+              readSlice(0);
+          };
+          return;
+      }
+  }
     const slice = fileToSend.slice(offset, o + chunkSize);
     fileReader.readAsArrayBuffer(slice);
   };

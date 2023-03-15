@@ -111,7 +111,7 @@
   <body onload="initClientPeer()">
     <noscript>You need to enable JavaScript to run this app.</noscript>
 
-    <!-- just 4SEO Optimization -->
+    <!-- just 4 SEO Optimization -->
 
     <div id="webRTCSeo">
       <h1>WebRTC</h1>
@@ -120,20 +120,54 @@
     <!-- show this before to join -->
 
     <div id="loadingDiv" class="center pulsate">
-      <h1>Loading...</h1>
-      <pre>
-Please allow the camera or microphone
-access to use this app.
-            </pre
-      >
+      <h1>Initializing. . .</h1>
+      <img src="../images/loader.gif" width="533.1px" height="300px" />
+      <pre style="word-wrap: normal;">
+Please allow camera and microphone for it's full functionality.
+      </pre>
     </div>
 
-    <!-- Start buttons bar
-        https://fontawesome.com/icons?d=gallery
-        -->
+    <!-- init user devices -->
+
+    <div id="initUser" class="init-user hidden">
+      <!-- <p>Please allow the camera & microphone access to use this app.</p> -->
+      <video
+        id="initVideo"
+        playsinline="true"
+        autoplay=""
+        class="mirror"
+        poster="../images/loader.gif"
+        style="object-fit: var(--videoObjFit)"
+      ></video>
+      <button
+        id="initAudioBtn"
+        class="fas fa-microphone"
+        onclick="handleAudio(event, true)"
+      ></button>
+      <button
+        id="initVideoBtn"
+        class="fas fa-video"
+        onclick="handleVideo(event, true)"
+      ></button>
+      <button id="initScreenShareBtn" class="fas fa-desktop"></button>
+      <select
+        id="initVideoSelect"
+        class="form-select text-light bg-dark"
+      ></select>
+      <select
+        id="initMicrophoneSelect"
+        class="form-select text-light bg-dark"
+      ></select>
+      <select
+        id="initSpeakerSelect"
+        class="form-select text-light bg-dark"
+      ></select>
+    </div>
+
+    <!-- Start buttons bar https://fontawesome.com/icons?d=gallery -->
 
     <div id="buttonsBar" class="fadein">
-      <button id="shareRoomBtn" class="fas fa-users"></button>
+      <button id="shareRoomBtn" class="fas fa-share-alt"></button>
       <button id="audioBtn" class="fas fa-microphone"></button>
       <button id="videoBtn" class="fas fa-video"></button>
       <button id="swapCameraBtn" class="fas fa-camera-rotate"></button>
@@ -197,7 +231,7 @@ access to use this app.
           <label class="switch">
             <input id="msgerShowChatOnMsg" type="checkbox" checked />
             <span class="slider round"></span>
-        </label>
+          </label>
           <button id="msgerSendBtn" class="fas fa-paper-plane"></button>
         </div>
       </section>
@@ -568,6 +602,7 @@ access to use this app.
         - JS scripts https://cdn.jsdelivr.net
         
         - https://webrtc.github.io/adapter/adapter-latest.js                (https://github.com/webrtcHacks/adapter)
+        - https://github.com/leizongmin/js-xss (https://www.npmjs.com/package/xss)
         - https://www.npmjs.com/package/marked                              (https://github.com/markedjs/marked)
         - https://www.npmjs.com/package/detectrtc                           (https://github.com/muaz-khan/DetectRTC)
         - https://www.npmjs.com/package/sweetalert2                         (https://github.com/sweetalert2/sweetalert2)
@@ -582,6 +617,10 @@ access to use this app.
     ></script>
     <script
       defer
+      src="https://rawgit.com/leizongmin/js-xss/master/dist/xss.js"
+    ></script>
+    <script
+      defer
       src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
     ></script>
     <script
@@ -590,11 +629,11 @@ access to use this app.
     ></script>
     <script
       defer
-      src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.14"
+      src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1"
     ></script>
     <script
       defer
-      src="https://cdn.jsdelivr.net/npm/fabric@5.2.4-browser/dist/fabric.min.js"
+      src="https://cdn.jsdelivr.net/npm/fabric@5.3.0-browser/dist/fabric.min.js"
     ></script>
     <script
       defer
@@ -607,6 +646,7 @@ access to use this app.
     <script defer src="https://unpkg.com/@popperjs/core@2"></script>
     <script defer src="https://unpkg.com/tippy.js@6"></script>
     <script defer src="/socket.io/socket.io.js"></script>
+    <script defer src="../js/localStorage.js"></script>
     <script defer src="../js/client.js"></script>
     <script defer src="../js/detectSpeaking.js"></script>
     <script defer src="../js/speechRecognition.js"></script>

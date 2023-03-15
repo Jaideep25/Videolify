@@ -1,27 +1,23 @@
 /*
- ██████ ██      ██ ███████ ███    ██ ████████ 
-██      ██      ██ ██      ████   ██    ██    
-██      ██      ██ █████   ██ ██  ██    ██    
-██      ██      ██ ██      ██  ██ ██    ██    
- ██████ ███████ ██ ███████ ██   ████    ██   
 
-Videolify Browser Client
-Copyright (C) 2023 Jaideep25 <jaideepch@outlook.com>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ ██████ ██      ██ ███████ ███    ██ ████████ 
+██      ██      ██ ██      ████   ██    ██    
+██      ██      ██ █████   ██ ██  ██    ██    
+██      ██      ██ ██      ██  ██ ██    ██    
+ ██████ ███████ ██ ███████ ██   ████    ██                           
 
 */
+
+/**
+ * Videolify - Client component
+ *
+ * @link    GitHub: https://github.com/jaideep25/videolify
+ * @link    Official Live demo: https://videolify.up.railway.app
+ * @license For open source use: AGPLv3
+ * @author  Jaideep25 <jaideepch@outlook.com>
+ * @version 1.3
+ *
+ */
 
 "use strict"; // https://www.w3schools.com/js/js_strict.asp
 
@@ -88,6 +84,8 @@ const className = {
   privacy: "far fa-circle",
   snapShot: "fas fa-camera-retro",
   pinUnpin: "fas fa-map-pin",
+  zoomIn: 'fas fa-magnifying-glass-plus',
+  zoomOut: 'fas fa-magnifying-glass-minus',
   fullScreen: "fas fa-expand",
   fsOn: "fas fa-compress-alt",
   fsOff: "fas fa-expand-alt",
@@ -105,6 +103,8 @@ const className = {
   heart: "fas fa-heart",
 };
 // https://fontawesome.com/search?o=r&m=free
+
+const myRoomUrl = window.location.href;
 
 // Show desired buttons captionBtn, showSwapCameraBtn, showScreenShareBtn, showFullScreenBtn -> (auto-detected)
 const buttons = {
@@ -146,10 +146,12 @@ const buttons = {
     showFileShareBtn: true,
     showShareVideoAudioBtn: true,
     showPrivateMessageBtn: true,
+    showZoomInOutBtn: true,
   },
   local: {
     showSnapShotBtn: true,
     showVideoCircleBtn: true,
+    showZoomInOutBtn: true,
   },
 };
 
@@ -245,6 +247,7 @@ let isRecScreenStream = false;
 let isChatPasteTxt = false;
 let needToCreateOffer = false; // after session description answer
 let signalingSocket; // socket.io connection to our webserver
+let initStream; // initial webcam stream
 let localMediaStream; // my microphone / webcam
 let remoteMediaStream; // peers microphone / webcam
 let recScreenStream; // recorded screen stream
@@ -262,6 +265,12 @@ let countTime; // conference count time
 // init audio-video
 let initAudioBtn;
 let initVideoBtn;
+let initScreenShareBtn;
+// init Devices select
+let initVideo;
+let initVideoSelect;
+let initMicrophoneSelect;
+let initSpeakerSelect;
 // buttons bar
 let buttonsBar;
 let shareRoomBtn;
@@ -417,11 +426,21 @@ let speechRecognitionIcon;
 let speechRecognitionStart;
 let speechRecognitionStop;
 
+// Local Storage class
+let lS = new LocalStorage();
+
 /**
  * Load all Html elements by Id
  */
 function getHtmlElementsById() {
   countTime = getId("countTime");
+  // init buttons
+  initScreenShareBtn = getId('initScreenShareBtn');
+  // Init devices select
+  initVideo = getId("initVideo");
+  initVideoSelect = getId("initVideoSelect");
+  initMicrophoneSelect = getId("initMicrophoneSelect");
+  initSpeakerSelect = getId("initSpeakerSelect");
   // my video
   myVideo = getId("myVideo");
   myVideoWrap = getId("myVideoWrap");
@@ -558,8 +577,10 @@ function getHtmlElementsById() {
  * https://atomiks.github.io/tippyjs/
  */
 function setButtonsToolTip() {
-  // not need for mobile
+  // not needed for mobile
   if (isMobileDevice) return;
+  // init buttons
+  setTippy(initScreenShareBtn, 'Toggle screen sharing', 'top');
   // main buttons
   setTippy(shareRoomBtn, "Invite people to join", "right-start");
   setTippy(audioBtn, "Click to mute", "right-start");
@@ -567,8 +588,8 @@ function setButtonsToolTip() {
   setTippy(screenShareBtn, "Start screen sharing", "right-start");
   setTippy(recordStreamBtn, "Start recording", "right-start");
   setTippy(fullScreenBtn, "View full screen", "right-start");
-  setTippy(chatRoomBtn, "Open chat-box", "right-start");
-  setTippy(captionBtn, "Open STT [Captions]", "right-start");
+  setTippy(chatRoomBtn, "Open Chats", "right-start");
+  setTippy(captionBtn, "Open Captions", "right-start");
   setTippy(myHandBtn, "Raise hand", "right-start");
   setTippy(whiteboardBtn, "Open whiteboard", "right-start");
   setTippy(fileShareBtn, "Share files", "right-start");
@@ -627,11 +648,11 @@ function setButtonsToolTip() {
   setTippy(sendAbortBtn, "Abort file transfer", "right-start");
   setTippy(receiveHideBtn, "Hide file transfer", "right-start");
   // video URL player
-  setTippy(videoUrlCloseBtn, "Close the video player", "right-start");
-  setTippy(videoAudioCloseBtn, "Close the video player", "right-start");
+  setTippy(videoUrlCloseBtn, "Close video player", "right-start");
+  setTippy(videoAudioCloseBtn, "Close video player", "right-start");
   setTippy(
     msgerVideoUrlBtn,
-    "Share a video or audio to all participants",
+    "Share a video/audio to all participants",
     "top"
   );
 }
@@ -706,9 +727,9 @@ function getSignalingServer() {
  * @returns {string} Room Id
  */
 function getRoomId() {
-  // chek if passed as params /join?room=id
+  // check if passed as params /join?room=id
   let qs = new URLSearchParams(window.location.search);
-  let queryRoomId = qs.get("room");
+  let queryRoomId = filterXSS(qs.get('room'));
 
   // skip /join/
   let roomId = queryRoomId ? queryRoomId : location.pathname.substring(6);
@@ -744,7 +765,7 @@ function makeId(length) {
  */
 function getNotify() {
   let qs = new URLSearchParams(window.location.search);
-  let notify = qs.get("notify");
+  let notify = filterXSS(qs.get('notify'));
   if (notify) {
     let queryNotify = notify === "1" || notify === "true";
     if (queryNotify != null) return queryNotify;
@@ -757,17 +778,21 @@ function getNotify() {
  * @returns {string} Peer Name
  */
 function getPeerName() {
-  let qs = new URLSearchParams(window.location.search);
-  return qs.get("name");
+  const qs = new URLSearchParams(window.location.search);
+    const name = filterXSS(qs.get('name'));
+    if (isHtml(name)) {
+        return 'Invalid name';
+    }
+    return name;
 }
 
-/**
+/*
  * Is screen enabled on join room
  * @returns {boolean} true/false
  */
 function getScreenEnabled() {
   let qs = new URLSearchParams(window.location.search);
-  let screen = qs.get("screen");
+  let screen = filterXSS(qs.get('screen'));
   if (screen) {
     screen = screen.toLowerCase();
     let queryPeerScreen = screen === "1" || screen === "true";
@@ -888,7 +913,6 @@ async function handleConnect() {
   } else {
     await initEnumerateDevices();
     await setupLocalMedia();
-    await whoAreYou();
   }
 }
 
@@ -912,7 +936,7 @@ function handleServerInfo(config) {
   }
 
   if (notify && peers_count == 1) {
-    welcomeUser();
+    shareRoomMeetingURL(true);
   } else {
     checkShareScreen();
   }
@@ -1013,6 +1037,10 @@ function handleButtonsRule() {
  */
 async function whoAreYou() {
   console.log("11. Who are you?");
+
+  getId("loadingDiv").style.display = "none";
+  document.body.style.background = "var(--body-bg)";
+
   if (myPeerName) {
     checkPeerAudioVideo();
     whoAreYouJoin();
@@ -1022,23 +1050,23 @@ async function whoAreYou() {
 
   playSound("newMessage");
 
+  await loadLocalStorage();
+
+  const initUser = getId("initUser");
+  initUser.classList.toggle("hidden");
+
   Swal.fire({
     allowOutsideClick: false,
     allowEscapeKey: false,
-    background: swalBackground,
+    background: "radial-gradient(#393939, #000000)",
+    title: "Videolify 😉",
     position: "center",
-    imageAlt: "Name",
-    imageUrl: welcomeImg,
-    title: "Enter your name",
     input: "text",
+    inputPlaceholder: "Enter your name",
     inputValue: window.localStorage.peer_name
       ? window.localStorage.peer_name
       : "",
-    html: `<br>
-        <div style="padding: 10px;">
-        <button id="initAudioBtn" class="${className.audioOn}" onclick="handleAudio(event, true)"></button>
-        <button id="initVideoBtn" class="${className.videoOn}" onclick="handleVideo(event, true)"></button>
-        </div>`,
+    html: initUser, // inject html
     confirmButtonText: `Join meeting`,
     showClass: {
       popup: "animate__animated animate__fadeInDown",
@@ -1048,7 +1076,16 @@ async function whoAreYou() {
     },
     inputValidator: (value) => {
       if (!value) return "Please enter your name";
-      myPeerName = value;
+
+      // prevent xss execution itself
+      myPeerName = filterXSS(value);
+
+      // prevent XSS injection to remote peer
+      if (isHtml(myPeerName)) {
+          myPeerName = '';
+          return 'Invalid name!';
+      }
+
       window.localStorage.peer_name = myPeerName;
       whoAreYouJoin();
     },
@@ -1056,7 +1093,40 @@ async function whoAreYou() {
     playSound("addPeer");
   });
 
-  if (isMobileDevice) return;
+  // select video - audio
+
+  initVideoSelect.onchange = () => {
+    videoSelect.selectedIndex = initVideoSelect.selectedIndex;
+    lS.setLocalStorageDevices(
+      lS.MEDIA_TYPE.video,
+      videoSelect.selectedIndex,
+      videoSelect.value
+    );
+    myVideoChange = true;
+    refreshLocalMedia();
+    changeCamera(initVideoSelect.value);
+  };
+  initMicrophoneSelect.onchange = () => {
+    audioInputSelect.selectedIndex = initMicrophoneSelect.selectedIndex;
+    lS.setLocalStorageDevices(
+      lS.MEDIA_TYPE.audio,
+      audioInputSelect.selectedIndex,
+      audioInputSelect.value
+    );
+    myVideoChange = false;
+    refreshLocalMedia();
+  };
+  initSpeakerSelect.onchange = () => {
+    audioOutputSelect.selectedIndex = initSpeakerSelect.selectedIndex;
+    lS.setLocalStorageDevices(
+      lS.MEDIA_TYPE.speaker,
+      audioOutputSelect.selectedIndex,
+      audioOutputSelect.value
+    );
+    changeAudioDestination();
+  };
+
+  // init video -audio buttons
 
   initAudioBtn = getId("initAudioBtn");
   initVideoBtn = getId("initVideoBtn");
@@ -1069,8 +1139,91 @@ async function whoAreYou() {
     initAudioBtn.className = className.audioOff;
     setMyAudioStatus(useAudio);
   }
+
   setTippy(initAudioBtn, "Click to mute", "top");
   setTippy(initVideoBtn, "Turn off video", "top");
+}
+
+/**
+ * Load settings from Local Storage
+ */
+async function loadLocalStorage() {
+  const localStorageDevices = lS.getLocalStorageDevices();
+  console.log("12. Get Local Storage Devices before", localStorageDevices);
+  if (localStorageDevices) {
+    //
+    initMicrophoneSelect.selectedIndex = localStorageDevices.audio.index;
+    initSpeakerSelect.selectedIndex = localStorageDevices.speaker.index;
+    initVideoSelect.selectedIndex = localStorageDevices.video.index;
+    //
+    audioInputSelect.selectedIndex = initMicrophoneSelect.selectedIndex;
+    audioOutputSelect.selectedIndex = initSpeakerSelect.selectedIndex;
+    videoSelect.selectedIndex = initVideoSelect.selectedIndex;
+    //
+    if (lS.DEVICES_COUNT.audio != localStorageDevices.audio.count) {
+      console.log("12.1 Audio devices seems changed, use default index 0");
+      initMicrophoneSelect.selectedIndex = 0;
+      audioInputSelect.selectedIndex = 0;
+      lS.setLocalStorageDevices(
+        lS.MEDIA_TYPE.audio,
+        initMicrophoneSelect.selectedIndex,
+        initMicrophoneSelect.value
+      );
+    }
+    if (lS.DEVICES_COUNT.speaker != localStorageDevices.speaker.count) {
+      console.log("12.2 Speaker devices seems changed, use default index 0");
+      initSpeakerSelect.selectedIndex = 0;
+      audioOutputSelect.selectedIndex = 0;
+      lS.setLocalStorageDevices(
+        lS.MEDIA_TYPE.speaker,
+        initSpeakerSelect.selectedIndexIndex,
+        initSpeakerSelect.value
+      );
+    }
+    if (lS.DEVICES_COUNT.video != localStorageDevices.video.count) {
+      console.log("12.3 Video devices seems changed, use default index 0");
+      initVideoSelect.selectedIndex = 0;
+      videoSelect.selectedIndex = 0;
+      lS.setLocalStorageDevices(
+        lS.MEDIA_TYPE.video,
+        initVideoSelect.selectedIndex,
+        initVideoSelect.value
+      );
+    }
+    //
+    console.log(
+      "12.4 Get Local Storage Devices after",
+      lS.getLocalStorageDevices()
+    );
+  }
+  // Start init cam
+  if (useVideo && initVideoSelect.value) {
+    myVideoChange = true;
+    refreshLocalMedia();
+    changeCamera(initVideoSelect.value);
+  }
+}
+
+/**
+ * Change init camera by device id
+ * @param {string} deviceId
+ */
+function changeCamera(deviceId) {
+  if (initStream) {
+    stopTracks(initStream);
+    initVideo.style.display = "block";
+  }
+  navigator.mediaDevices
+    .getUserMedia({ video: { deviceId: deviceId } })
+    .then((camStream) => {
+      initVideo.srcObject = camStream;
+      initStream = camStream;
+      console.log("Success attached init video stream");
+    })
+    .catch((err) => {
+      console.error("[Error] changeCamera", err);
+      userLog("error", "Error while swapping camera" + err, "top-end");
+    });
 }
 
 /**
@@ -1079,8 +1232,8 @@ async function whoAreYou() {
  */
 function checkPeerAudioVideo() {
   let qs = new URLSearchParams(window.location.search);
-  let audio = qs.get("audio");
-  let video = qs.get("video");
+  let audio = filterXSS(qs.get('audio'));
+    let video = filterXSS(qs.get('video'));
   if (audio) {
     audio = audio.toLowerCase();
     let queryPeerAudio = audio === "1" || audio === "true";
@@ -1096,7 +1249,8 @@ function checkPeerAudioVideo() {
 /**
  * Room and Peer name are ok Join Channel
  */
-function whoAreYouJoin() {
+async function whoAreYouJoin() {
+  if (isMobileDevice && myVideoStatus && myAudioStatus) refreshLocalMedia();
   myVideoWrap.style.display = "inline";
   myVideoParagraph.innerHTML = myPeerName + " (me)";
   setPeerAvatarImgName("myVideoAvatarImage", useAvatarApi);
@@ -1126,52 +1280,7 @@ async function joinToChannel() {
     peer_rec_status: isRecScreenStream,
     peer_privacy_status: isVideoPrivacyActive,
   });
-}
-
-/**
- * welcome message
- */
-function welcomeUser() {
-  const myRoomUrl = window.location.href;
-  playSound("newMessage");
-  Swal.fire({
-    background: swalBackground,
-    position: "center",
-    title: "<strong>Welcome " + myPeerName + "</strong>",
-    imageAlt: "Welcome",
-    imageUrl: welcomeImg,
-    html:
-      `
-        <br/> 
-        <p style="color:white;">Share this meeting invite for more peers to join.</p>
-        <p style="color:rgb(8, 189, 89);">` +
-      myRoomUrl +
-      `</p>`,
-    showDenyButton: true,
-    showCancelButton: true,
-    confirmButtonText: `Copy URL`,
-    denyButtonText: `Email invite`,
-    cancelButtonText: `Close`,
-    showClass: {
-      popup: "animate__animated animate__fadeInDown",
-    },
-    hideClass: {
-      popup: "animate__animated animate__fadeOutUp",
-    },
-  }).then((result) => {
-    if (result.isConfirmed) {
-      copyRoomURL();
-    } else if (result.isDenied) {
-      let message = {
-        email: "",
-        subject: "Please join our Videolify conference",
-        body: "Click to join: " + myRoomUrl,
-      };
-      shareRoomByEmail(message);
-    }
-    // share screen on join room
-    checkShareScreen();
-  });
+  handleBodyOnMouseMove(); // show/hide buttonsBar...
 }
 
 /**
@@ -1734,8 +1843,8 @@ function setButtonsBarPosition(position) {
  */
 async function initEnumerateDevices() {
   console.log("05. init Enumerate Devices");
-  await initEnumerateAudioDevices();
   await initEnumerateVideoDevices();
+  await initEnumerateAudioDevices();
   if (!useAudio && !useVideo) {
     initEnumerateDevicesFailed = true;
     playSound("alert");
@@ -1809,20 +1918,25 @@ function enumerateAudioDevices(stream) {
     .enumerateDevices()
     .then((devices) =>
       devices.forEach((device) => {
-        let el = null;
+        let el,
+          eli = null;
         if ("audioinput" === device.kind) {
           el = getId("audioSource");
+          eli = getId("initMicrophoneSelect");
         } else if ("audiooutput" === device.kind) {
           el = getId("audioOutput");
+          eli = getId("initSpeakerSelect");
         }
         if (!el) return;
-        addChild(device, el, device.kind);
+        addChild(device, [el, eli]);
       })
     )
     .then(() => {
       stopTracks(stream);
       isEnumerateAudioDevices = true;
-      getId("audioOutput").disabled = !("sinkId" in HTMLMediaElement.prototype);
+      const sinkId = "sinkId" in HTMLMediaElement.prototype;
+      getId("audioOutput").disabled = !sinkId;
+      if (!sinkId) getId("initSpeakerSelect").display = "none";
     });
 }
 
@@ -1836,12 +1950,14 @@ function enumerateVideoDevices(stream) {
     .enumerateDevices()
     .then((devices) =>
       devices.forEach((device) => {
-        let el = null;
+        let el,
+          eli = null;
         if ("videoinput" === device.kind) {
           el = getId("videoSource");
+          eli = getId("initVideoSelect");
         }
         if (!el) return;
-        addChild(device, el, device.kind);
+        addChild(device, [el, eli]);
       })
     )
     .then(() => {
@@ -1849,7 +1965,6 @@ function enumerateVideoDevices(stream) {
       isEnumerateVideoDevices = true;
     });
 }
-
 /**
  * Stop tracks from stream
  * @param {object} stream
@@ -1859,28 +1974,33 @@ function stopTracks(stream) {
     track.stop();
   });
 }
-
 /**
  * Add child to element
  * @param {object} device
- * @param {object} el
- * @param {string} kind audio/video
+ * @param {object} els
  */
-function addChild(device, el, kind) {
-  const option = document.createElement("option");
-  option.value = device.deviceId;
-  switch (kind) {
-    case "videoinput":
-      option.text = `📹 ` + device.label || `📹 camera ${el.length + 1}`;
-      break;
-    case "audioinput":
-      option.text = `🎤 ` + device.label || `🎤 microphone ${el.length + 1}`;
-      break;
-    case "audiooutput":
-      option.text = `🔈 ` + device.label || `🔈 speaker ${el.length + 1}`;
-      break;
-  }
-  el.appendChild(option);
+function addChild(device, els) {
+  let kind = device.kind;
+  els.forEach((el) => {
+    let option = document.createElement("option");
+    option.value = device.deviceId;
+    switch (kind) {
+      case "videoinput":
+        option.innerHTML = `📹 ` + device.label || `📹 camera ${el.length + 1}`;
+        break;
+      case "audioinput":
+        option.innerHTML =
+          `🎤 ` + device.label || `🎤 microphone ${el.length + 1}`;
+        break;
+      case "audiooutput":
+        option.innerHTML =
+          `🔈 ` + device.label || `🔈 speaker ${el.length + 1}`;
+        break;
+      default:
+        break;
+    }
+    el.appendChild(option);
+  });
   selectors = [
     getId("audioSource"),
     getId("audioOutput"),
@@ -1930,6 +2050,7 @@ async function setupLocalMedia() {
     if (stream) {
       await loadLocalMedia(stream);
       await startPitchDetection(stream);
+      await whoAreYou();
     }
   } catch (err) {
     console.error("[Error] - Access denied for audio - video device", err);
@@ -1946,8 +2067,6 @@ async function setupLocalMedia() {
  */
 async function loadLocalMedia(stream) {
   console.log("10. Access granted to audio - video device");
-  // hide loading div
-  getId("loadingDiv").style.display = "none";
 
   localMediaStream = stream;
 
@@ -1968,6 +2087,8 @@ async function loadLocalMedia(stream) {
   const myAudioStatusIcon = document.createElement("button");
   const myVideoFullScreenBtn = document.createElement("button");
   const myVideoPinBtn = document.createElement("button");
+  const myVideoZoomInBtn = document.createElement('button');
+  const myVideoZoomOutBtn = document.createElement('button');
   const myVideoAvatarImage = document.createElement("img");
   const myPitchMeter = document.createElement("div");
   const myPitchBar = document.createElement("div");
@@ -2004,6 +2125,12 @@ async function loadLocalMedia(stream) {
   myVideoFullScreenBtn.setAttribute("id", "myVideoFullScreenBtn");
   myVideoFullScreenBtn.className = className.fullScreen;
 
+  // my video zoomIn/Out
+  myVideoZoomInBtn.setAttribute('id', 'myVideoZoomInBtn');
+  myVideoZoomInBtn.className = className.zoomIn;
+  myVideoZoomOutBtn.setAttribute('id', 'myVideoZoomOutBtn');
+  myVideoZoomOutBtn.className = className.zoomOut;
+
   // my video pin/unpin button
   myVideoPinBtn.setAttribute("id", "myVideoPinBtn");
   myVideoPinBtn.className = className.pinUnpin;
@@ -2017,6 +2144,8 @@ async function loadLocalMedia(stream) {
   setTippy(myAudioStatusIcon, "You're unmuted", "bottom");
   setTippy(myVideoToImgBtn, "Take a snapshot", "bottom");
   setTippy(myVideoFullScreenBtn, "Full screen mode", "bottom");
+  setTippy(myVideoZoomInBtn, 'Zoom-in video', 'bottom');
+  setTippy(myVideoZoomOutBtn, 'Zoom-out video', 'bottom');
   setTippy(myVideoPinBtn, "Toggle Pin video", "bottom");
 
   // my video avatar image
@@ -2039,6 +2168,10 @@ async function loadLocalMedia(stream) {
   if (!isMobileDevice) {
     myVideoNavBar.appendChild(myVideoPinBtn);
   }
+  if (buttons.local.showZoomInOutBtn) {
+    myVideoNavBar.appendChild(myVideoZoomInBtn);
+    myVideoNavBar.appendChild(myVideoZoomOutBtn);
+}
   if (isVideoFullScreenSupported) {
     myVideoNavBar.appendChild(myVideoFullScreenBtn);
   }
@@ -2091,7 +2224,6 @@ async function loadLocalMedia(stream) {
   setupMySettings();
   setupVideoUrlPlayer();
   startCountTime();
-  handleBodyOnMouseMove();
 
   if (isVideoFullScreenSupported) {
     handleVideoPlayerFs(myLocalMedia.id, myVideoFullScreenBtn.id);
@@ -2112,6 +2244,10 @@ async function loadLocalMedia(stream) {
     myVideoWrap.id,
     myLocalMedia.id
   );
+
+  if (buttons.local.showZoomInOutBtn) {
+    handleVideoZoomInOut(myVideoZoomInBtn.id, myVideoZoomOutBtn.id, myLocalMedia.id);
+}
 
   refreshMyVideoAudioStatus(localMediaStream);
 
@@ -2194,6 +2330,8 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
   const remoteVideoToImgBtn = document.createElement("button");
   const remoteVideoFullScreenBtn = document.createElement("button");
   const remoteVideoPinBtn = document.createElement("button");
+  const remoteVideoZoomInBtn = document.createElement('button');
+  const remoteVideoZoomOutBtn = document.createElement('button');
   const remoteVideoAvatarImage = document.createElement("img");
   const remotePitchMeter = document.createElement("div");
   const remotePitchBar = document.createElement("div");
@@ -2246,6 +2384,12 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
   remotePeerKickOut.setAttribute("id", peer_id + "_kickOut");
   remotePeerKickOut.className = className.kickOut;
 
+  // remote video zoomIn/Out
+  remoteVideoZoomInBtn.setAttribute('id', peer_id + 'videoZoomIn');
+  remoteVideoZoomInBtn.className = className.zoomIn;
+  remoteVideoZoomOutBtn.setAttribute('id', peer_id + 'videoZoomOut');
+  remoteVideoZoomOutBtn.className = className.zoomOut;
+
   // remote video full screen mode
   remoteVideoFullScreenBtn.setAttribute("id", peer_id + "_fullScreen");
   remoteVideoFullScreenBtn.className = className.fullScreen;
@@ -2265,6 +2409,8 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
   setTippy(remoteVideoToImgBtn, "Take a snapshot", "bottom");
   setTippy(remotePeerKickOut, "Kick out", "bottom");
   setTippy(remoteVideoFullScreenBtn, "Full screen", "bottom");
+  setTippy(remoteVideoZoomInBtn, 'Zoom in video', 'bottom');
+  setTippy(remoteVideoZoomOutBtn, 'Zoom out video', 'bottom');
   setTippy(remoteVideoPinBtn, "Pin video", "bottom");
 
   // my video avatar image
@@ -2287,6 +2433,12 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
   if (!isMobileDevice) {
     remoteVideoNavBar.appendChild(remoteVideoPinBtn);
   }
+
+  if (buttons.remote.showZoomInOutBtn) {
+    remoteVideoNavBar.appendChild(remoteVideoZoomInBtn);
+    remoteVideoNavBar.appendChild(remoteVideoZoomOutBtn);
+}
+
   if (isVideoFullScreenSupported) {
     remoteVideoNavBar.appendChild(remoteVideoFullScreenBtn);
   }
@@ -2294,8 +2446,10 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
     remoteVideoNavBar.appendChild(remoteVideoToImgBtn);
   }
 
-  remoteVideoNavBar.appendChild(remoteVideoStatusIcon);
-  remoteVideoNavBar.appendChild(remoteAudioStatusIcon);
+  if (buttons.remote.showZoomInOutBtn) {
+    remoteVideoNavBar.appendChild(remoteVideoZoomInBtn);
+    remoteVideoNavBar.appendChild(remoteVideoZoomOutBtn);
+}
 
   if (buttons.remote.showAudioVolume) {
     remoteVideoNavBar.appendChild(remoteAudioVolume);
@@ -2362,6 +2516,11 @@ async function loadRemoteMediaStream(stream, peers, peer_id) {
     peer_id,
     peer_screen_status
   );
+
+  if (buttons.remote.showZoomInOutBtn) {
+    // handle video zoomIn/Out
+    handleVideoZoomInOut(remoteVideoZoomInBtn.id, remoteVideoZoomOutBtn.id, remoteMedia.id, peer_id);
+}
 
   // pin video on screen share detected
   if (peer_video_status && peer_screen_status) {
@@ -2865,6 +3024,57 @@ function toggleVideoPin(position) {
 }
 
 /**
+ * Zoom in/out video element
+ * @param {string} zoomInBtnId
+ * @param {string} zoomOutBtnId
+ * @param {string} mediaId
+ * @param {string} peerId
+ */
+function handleVideoZoomInOut(zoomInBtnId, zoomOutBtnId, mediaId, peerId = null) {
+  const id = peerId ? peerId + '_videoStatus' : 'myVideoStatusIcon';
+  const zoomIn = getId(zoomInBtnId);
+  const zoomOut = getId(zoomOutBtnId);
+  const video = getId(mediaId);
+
+  let zoom = 1;
+
+  function setTransform() {
+      if (isVideoOf(id) || isVideoPrivacyMode(video)) return;
+      if (zoom < 1) zoom = 1;
+      video.style.scale = zoom;
+  }
+
+  video.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      let delta = e.wheelDelta ? e.wheelDelta : -e.deltaY;
+      delta > 0 ? (zoom *= 1.2) : (zoom /= 1.2);
+      setTransform();
+  });
+
+  zoomIn.addEventListener('click', () => {
+      if (isVideoOf(id)) return userLog('toast', 'Zoom in works only when video is on');
+      if (isVideoPrivacyMode(video)) return userLog('toast', 'Doesn\'t zoom if video on privacy mode');
+      zoom = zoom + 0.1;
+      setTransform();
+  });
+
+  zoomOut.addEventListener('click', () => {
+      if (isVideoOf(id)) return userLog('toast', 'Zoom out works only when video is on');
+      if (isVideoPrivacyMode(video)) return userLog('toast', 'Doesn\'t zoom if video on privacy mode');
+      zoom = zoom - 0.1;
+      setTransform();
+  });
+
+  function isVideoOf(id) {
+      const videoStatusBtn = getId(id);
+      return videoStatusBtn.className === className.videoOff;
+  }
+  function isVideoPrivacyMode() {
+      return video.classList.contains('videoCircle');
+  }
+}
+
+/**
  * Remove video pin media container
  * @param {string} peer_id aka socket.id
  * @param {boolean} force_remove force to remove
@@ -3064,10 +3274,14 @@ function setScreenShareBtn() {
     buttons.main.showScreenBtn
   ) {
     isScreenSharingSupported = true;
+    initScreenShareBtn.addEventListener('click', async (e) => {
+      await toggleScreenSharing(true);
+  });
     screenShareBtn.addEventListener("click", async (e) => {
       await toggleScreenSharing();
     });
   } else {
+    initScreenShareBtn.style.display = 'none';
     screenShareBtn.style.display = "none";
     elemDisplay(getId("screenFpsDiv"), false);
   }
@@ -3504,15 +3718,30 @@ function setupMySettings() {
   audioInputSelect.addEventListener("change", (e) => {
     myVideoChange = false;
     refreshLocalMedia();
+    lS.setLocalStorageDevices(
+      lS.MEDIA_TYPE.audio,
+      audioInputSelect.selectedIndex,
+      audioInputSelect.value
+    );
   });
   // select audio output
   audioOutputSelect.addEventListener("change", (e) => {
     changeAudioDestination();
+    lS.setLocalStorageDevices(
+      lS.MEDIA_TYPE.speaker,
+      audioOutputSelect.selectedIndex,
+      audioOutputSelect.value
+    );
   });
   // select video input
   videoSelect.addEventListener("change", (e) => {
     myVideoChange = true;
     refreshLocalMedia();
+    lS.setLocalStorageDevices(
+      lS.MEDIA_TYPE.video,
+      videoSelect.selectedIndex,
+      videoSelect.value
+    );
   });
   // select video quality
   videoQualitySelect.addEventListener("change", (e) => {
@@ -3677,7 +3906,12 @@ function getVideoConstraints(videoQuality) {
           frameRate: { ideal: 60 },
         }; // video cam constraints default
       }
-      return { frameRate: frameRate };
+      // This will make the browser use hdVideo and 30fps.
+      return {
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
+        frameRate: { ideal: 30 },
+      }; // on default as hdVideo
     case "qvgaVideo":
       return {
         width: { exact: 320 },
@@ -3962,146 +4196,76 @@ function checkButtonsBarAndMenu() {
  * https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share
  */
 async function shareRoomUrl() {
-  const myRoomUrl = window.location.href;
-
   // navigator share
-  let isSupportedNavigatorShare = false;
-  let errorNavigatorShare = false;
-  // if supported
   if (navigator.share) {
-    isSupportedNavigatorShare = true;
     try {
       // not add title and description to load metadata from url
       await navigator.share({ url: myRoomUrl });
       userLog("toast", "Room Shared successfully!");
     } catch (err) {
-      errorNavigatorShare = true;
       /*
-                This feature is available only in secure contexts (HTTPS),
-                in some or all supporting browsers and mobile devices
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                      console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                      console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                      console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                      console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                      console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                      console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                      console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                      console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                      console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                      console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                      console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
-              console.error("navigator.share", err); 
-                console.error("navigator.share", err); 
+            This feature is available only in secure contexts (HTTPS),
+            in some or all supporting browsers and mobile devices
+            console.error("navigator.share", err); 
             */
-    }
-  }
+      console.error("Navigator share error", err);
 
-  // something wrong or not supported navigator.share
-  if (
-    !isSupportedNavigatorShare ||
-    (isSupportedNavigatorShare && errorNavigatorShare)
-  ) {
-    playSound("newMessage");
-    Swal.fire({
-      background: swalBackground,
-      position: "center",
-      title: "Share Room",
-      // imageAlt: 'Share',
-      // imageUrl: shareUrlImg,
-      html:
-        `
-            <br/>
-            <div id="qrRoomContainer">
-                <canvas id="qrRoom"></canvas>
-            </div>
-            <br/><br/>
-            <p style="color:white;"> Invite others to join. Share this meeting link.</p>
-            <p style="color:rgb(8, 189, 89);">` +
-        myRoomUrl +
-        `</p>`,
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: `Copy URL`,
-      denyButtonText: `Email invite`,
-      cancelButtonText: `Close`,
-      showClass: {
-        popup: "animate__animated animate__fadeInDown",
-      },
-      hideClass: {
-        popup: "animate__animated animate__fadeOutUp",
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        copyRoomURL();
-      } else if (result.isDenied) {
-        let message = {
-          email: "",
-          subject: "Please join our Videolify conference",
-          body: "Click to join: " + myRoomUrl,
-        };
-        shareRoomByEmail(message);
-      }
-    });
-    makeRoomQR();
+      shareRoomMeetingURL();
+    }
+  } else {
+    shareRoomMeetingURL();
   }
 }
 
+/**
+ * Share meeting room
+ * @param {boolean} checkScreen check screen share
+ */
+function shareRoomMeetingURL(checkScreen = false) {
+  playSound("newMessage");
+  Swal.fire({
+    background: swalBackground,
+    position: "center",
+    title: "Share the room",
+    html: `
+    <div id="qrRoomContainer">
+        <canvas id="qrRoom"></canvas>
+    </div>
+    <br/>
+    <p style="color:rgb(8, 189, 89);">Join from your mobile device</p>
+    <p style="color:white;">No need for apps, simply capture the QR code with your mobile camera</p>
+    <p style="color:white;">Or</p>
+    <p style="color:white;">Invite someone else to join by sending them the following URL</p>
+    <p style="color:rgb(8, 189, 89);">${myRoomUrl}</p>`,
+    showDenyButton: true,
+    showCancelButton: true,
+    cancelButtonColor: "red",
+    denyButtonColor: "green",
+    confirmButtonText: `Copy URL`,
+    denyButtonText: `Email invite`,
+    cancelButtonText: `Close`,
+    showClass: {
+      popup: "animate__animated animate__fadeInDown",
+    },
+    hideClass: {
+      popup: "animate__animated animate__fadeOutUp",
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      copyRoomURL();
+    } else if (result.isDenied) {
+      let message = {
+        email: "",
+        subject: "Please join our videolify Video Chat Meeting",
+        body: "Click to join: " + myRoomUrl,
+      };
+      shareRoomByEmail(message);
+    }
+    // share screen on join room
+    if (checkScreen) checkShareScreen();
+  });
+  makeRoomQR();
+}
 /**
  * Make Room QR
  * https://github.com/neocotic/qrious
@@ -4168,9 +4332,11 @@ function handleAudio(e, init, force = null) {
     audioBtn.className = myAudioStatus ? className.audioOn : className.audioOff;
     setTippy(
       initAudioBtn,
-      myAudioStatus ? "Click to mute" : "Start to unmute",
+      myAudioStatus ? "Click to mute" : "Click to unmute",
       "top"
     );
+    getId("initMicrophoneSelect").disabled = !myAudioStatus;
+    getId("initSpeakerSelect").disabled = !myAudioStatus;
   }
   setMyAudioStatus(myAudioStatus);
 }
@@ -4202,6 +4368,8 @@ function handleVideo(e, init, force = null) {
       myVideoStatus ? "Turn off video" : "Turn on video",
       "top"
     );
+    initVideo.style.display = myVideoStatus ? "block" : "none";
+    initVideoSelect.disabled = !myVideoStatus;
   }
   setMyVideoStatus(myVideoStatus);
 }
@@ -4257,8 +4425,9 @@ function stopLocalAudioTrack() {
 /**
  * Enable - disable screen sharing
  * https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia
+ * @param {boolean} init screen before join
  */
-async function toggleScreenSharing() {
+async function toggleScreenSharing(init = false) {
   screenMaxFrameRate = parseInt(screenFpsSelect.value);
   const constraints = {
     audio: true, // enable tab audio
@@ -4289,6 +4458,16 @@ async function toggleScreenSharing() {
       await stopLocalVideoTrack();
       await refreshMyLocalStream(screenMediaPromise);
       await refreshMyStreamToPeers(screenMediaPromise);
+
+      if (initStream) {
+        stopTracks(initStream);
+        initStream = screenMediaPromise;
+        const newStream = new MediaStream([initStream.getVideoTracks()[0]]);
+        initVideo.style.display = 'block';
+        initVideo.classList.toggle('mirror');
+        initVideo.srcObject = newStream;
+    }
+
       myVideo.classList.toggle("mirror");
       setScreenSharingStatus(isScreenStreaming);
       if (myVideoAvatarImage && !useVideo)
@@ -4299,6 +4478,7 @@ async function toggleScreenSharing() {
     }
   } catch (err) {
     console.error("[Error] Unable to share the screen", err);
+    if (init) return;
     userLog("error", "Unable to share the screen " + err);
   }
 }
@@ -4308,12 +4488,12 @@ async function toggleScreenSharing() {
  * @param {boolean} status of screen sharing
  */
 function setScreenSharingStatus(status) {
-  screenShareBtn.className = status ? className.screenOff : className.screenOn;
-  setTippy(
-    screenShareBtn,
-    status ? "Stop screen sharing" : "Start screen sharing",
-    "right-start"
-  );
+    initScreenShareBtn.className = status ? className.screenOff : className.screenOn;
+    screenShareBtn.className = status ? className.screenOff : className.screenOn;
+    setTippy(initScreenShareBtn, status ? 'Stop screen sharing' : 'Start screen sharing', 'right-start');
+    setTippy(screenShareBtn, status ? 'Stop screen sharing' : 'Start screen sharing', 'right-start');
+    disable(initVideoSelect, status);
+    disable(initVideoBtn, status);
 }
 
 /**
@@ -4490,7 +4670,7 @@ async function refreshMyLocalStream(stream, localAudioTrackChange = false) {
   startPitchDetection(localMediaStream);
 
   // attachMediaStream is a part of the adapter.js library
-  attachMediaStream(myVideo, localMediaStream); // newstream
+  attachMediaStream(myVideo, localMediaStream); // newStream
 
   // on toggleScreenSharing video stop
   if (useVideo || isScreenStreaming) {
@@ -4713,7 +4893,7 @@ function downloadRecordedStream() {
           <li>Size: ${blobFileSize}</li>
       </ul>
       <br/>
-                Please wait to be processed, then will be downloaded to your ${currentDevice} device.
+                Please wait for the video to be processed, then will be downloaded to your ${currentDevice}.
             </div>`
     );
 
@@ -4765,7 +4945,7 @@ function showChatRoomDraggable() {
   msgerDraggable.style.left = isMobileDevice ? "50%" : "25%";
   msgerDraggable.style.display = "flex";
   isChatRoomVisible = true;
-  setTippy(chatRoomBtn, "Close chat-box", "right-start");
+  setTippy(chatRoomBtn, "Close Chats", "right-start");
 }
 
 /**
@@ -4782,7 +4962,7 @@ function showCaptionDraggable() {
   captionDraggable.style.left = isMobileDevice ? "50" : "75%";
   captionDraggable.style.display = "flex";
   isCaptionBoxVisible = true;
-  setTippy(captionBtn, "Close STT [Captions]", "right-start");
+  setTippy(captionBtn, "Close Captions", "right-start");
 }
 
 /**
@@ -4863,7 +5043,7 @@ function hideChatRoomAndEmojiPicker() {
   chatRoomBtn.className = className.chatOn;
   isChatRoomVisible = false;
   isChatEmojiVisible = false;
-  setTippy(chatRoomBtn, "Open the chat", "right-start");
+  setTippy(chatRoomBtn, "Open Chats", "right-start");
 }
 
 /**
@@ -4873,7 +5053,7 @@ function hideCaptionBox() {
   captionDraggable.style.display = "none";
   captionBtn.className = className.captionOn;
   isCaptionBoxVisible = false;
-  setTippy(captionBtn, "Open STT [Captions]", "right-start");
+  setTippy(captionBtn, "Open Captions", "right-start");
 }
 
 /**
@@ -4905,11 +5085,11 @@ function sendChatMessage() {
 function handleDataChannelChat(dataMessage) {
   if (!dataMessage) return;
 
-  let msgFrom = dataMessage.from;
-  let msgTo = dataMessage.to;
-  let msg = dataMessage.msg;
-  let msgPrivate = dataMessage.privateMsg;
-  let msgId = dataMessage.id;
+  const msgFrom = filterXSS(dataMessage.from);
+  const msgTo = filterXSS(dataMessage.to);
+  const msg = dataMessage.msg;
+  const msgPrivate = dataMessage.privateMsg;
+  const msgId = dataMessage.id;
 
   // private message but not for me return
   if (msgPrivate && msgTo != myPeerName) return;
@@ -5136,7 +5316,7 @@ async function msgerAddPeers(peers) {
   for (let peer_id in peers) {
     let peer_name = peers[peer_id]["peer_name"];
     // bypass insert to myself in the list :)
-    if (peer_id != myPeerId) {
+    if (peer_id != myPeerId && peer_name) {
       let exsistMsgerPrivateDiv = getId(peer_id + "_pMsgDiv");
       // if there isn't add it....
       if (!exsistMsgerPrivateDiv) {
@@ -5224,13 +5404,25 @@ function addMsgerPrivateBtn(msgerPrivateBtn, msgerPrivateMsgInput, peerId) {
   };
 
   function sendPrivateMessage() {
-    let pMsg = checkMsg(msgerPrivateMsgInput.value);
+    const pMsg = checkMsg(msgerPrivateMsgInput.value.trim());
     if (!pMsg) {
       msgerPrivateMsgInput.value = "";
       isChatPasteTxt = false;
       return;
     }
-    let toPeerName = msgerPrivateBtn.value;
+
+    // sanitization to prevent XSS
+    msgerPrivateBtn.value = filterXSS(msgerPrivateBtn.value);
+    myPeerName = filterXSS(myPeerName);
+
+    if (isHtml(myPeerName) && isHtml(msgerPrivateBtn.value)) {
+        msgerPrivateMsgInput.value = '';
+        isChatPasteTxt = false;
+        return;
+    }
+
+    const toPeerName = msgerPrivateBtn.value;
+
     emitMsg(myPeerName, toPeerName, pMsg, true, peerId);
     appendMessage(
       myPeerName,
@@ -5472,11 +5664,20 @@ function openTab(evt, tabName) {
  * Update myPeerName to other peers in the room
  */
 function updateMyPeerName() {
-  let myNewPeerName = myPeerNameSet.value;
-  let myOldPeerName = myPeerName;
-
   // myNewPeerName empty
-  if (!myNewPeerName) return;
+  if (!myPeerNameSet.value) return;
+
+  // prevent xss execution itself
+  myPeerNameSet.value = filterXSS(myPeerNameSet.value);
+
+  // prevent XSS injection to remote peer
+  if (isHtml(myPeerNameSet.value)) {
+    myPeerNameSet.value = "";
+    return userLog("warning", "Invalid name!");
+  }
+
+  const myNewPeerName = myPeerNameSet.value;
+  const myOldPeerName = myPeerName;
 
   myPeerName = myNewPeerName;
   myVideoParagraph.innerHTML = myPeerName + " (me)";
@@ -5652,7 +5853,7 @@ function setPeerAudioStatus(peer_id, status) {
     peerAudioStatus.className = className.audioOn + (status ? "" : "-slash");
     setTippy(
       peerAudioStatus,
-      status ? "Participant is unmuted" : "Participant is muted",
+      status ? "Peer is unmuted" : "Peer is muted",
       "bottom"
     );
     status ? playSound("on") : playSound("off");
@@ -5793,7 +5994,7 @@ function setPeerVideoStatus(peer_id, status) {
     peerVideoStatus.className = className.videoOn + (status ? "" : "-slash");
     setTippy(
       peerVideoStatus,
-      status ? "Participant video is on" : "Participant video is off",
+      status ? "Peer video is on" : "Peer video is off",
       "bottom"
     );
     status ? playSound("on") : playSound("off");
@@ -5879,7 +6080,7 @@ function handleScreenStart(peer_id) {
   let remoteVideoStream = getId(peer_id + "_video");
   if (remoteVideoStatusBtn) {
     remoteVideoStatusBtn.className = className.videoOn;
-    setTippy(remoteVideoStatusBtn, "Participant screen share is on", "bottom");
+    setTippy(remoteVideoStatusBtn, "Peer screen share is on", "bottom");
   }
   if (remoteVideoStream) {
     getId(peer_id + "_pinUnpin").click();
@@ -5902,7 +6103,7 @@ function handleScreenStop(peer_id, peer_use_video) {
   let remoteVideoStatusBtn = getId(peer_id + "_videoStatus");
   if (remoteVideoStatusBtn) {
     remoteVideoStatusBtn.className = className.videoOff;
-    setTippy(remoteVideoStatusBtn, "Participant screen share is off", "bottom");
+    setTippy(remoteVideoStatusBtn, "Peer screen share is off", "bottom");
   }
   if (remoteVideoStream) {
     if (isVideoPinned) getId(peer_id + "_pinUnpin").click();
@@ -6413,34 +6614,15 @@ function whiteboardAddObj(type) {
       });
       break;
     case "text":
-      Swal.fire({
-        background: swalBackground,
-        title: "Enter the text",
-        input: "text",
-        showCancelButton: true,
-        confirmButtonText: "OK",
-        showClass: {
-          popup: "animate__animated animate__fadeInDown",
-        },
-        hideClass: {
-          popup: "animate__animated animate__fadeOutUp",
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          let wbCanvasText = result.value;
-          if (wbCanvasText) {
-            const text = new fabric.Text(wbCanvasText, {
-              top: 0,
-              left: 0,
-              fontFamily: "Comfortaa",
-              fill: wbCanvas.freeDrawingBrush.color,
-              strokeWidth: wbCanvas.freeDrawingBrush.width,
-              stroke: wbCanvas.freeDrawingBrush.color,
+      const text = new fabric.IText('Lorem Ipsum', {
+                top: 0,
+                left: 0,
+                fontFamily: 'Comfortaa',
+                fill: wbCanvas.freeDrawingBrush.color,
+                strokeWidth: wbCanvas.freeDrawingBrush.width,
+                stroke: wbCanvas.freeDrawingBrush.color,
             });
             addWbCanvasObj(text);
-          }
-        }
-      });
       break;
     case "line":
       const line = new fabric.Line([50, 100, 200, 200], {
@@ -6482,7 +6664,7 @@ function whiteboardAddObj(type) {
  */
 function addWbCanvasObj(obj) {
   if (obj) {
-    wbCanvas.add(obj);
+    wbCanvas.add(obj).setActiveObject(obj);
     whiteboardIsDrawingMode(false);
     wbCanvasToJson();
   }
@@ -6835,14 +7017,17 @@ function sendFileData(peer_id, broadcast) {
   });
   const readSlice = (o) => {
     for (let peer_id in fileDataChannels) {
-      if (fileDataChannels[peer_id].bufferedAmount > fileDataChannels[peer_id].bufferedAmountLowThreshold) {
-          fileDataChannels[peer_id].onbufferedamountlow = () => {
-              fileDataChannels[peer_id].onbufferedamountlow = null;
-              readSlice(0);
-          };
-          return;
+      if (
+        fileDataChannels[peer_id].bufferedAmount >
+        fileDataChannels[peer_id].bufferedAmountLowThreshold
+      ) {
+        fileDataChannels[peer_id].onbufferedamountlow = () => {
+          fileDataChannels[peer_id].onbufferedamountlow = null;
+          readSlice(0);
+        };
+        return;
       }
-  }
+    }
     const slice = fileToSend.slice(offset, o + chunkSize);
     fileReader.readAsArrayBuffer(slice);
   };
@@ -6961,7 +7146,11 @@ function sendFileInformations(file, peer_id, broadcast = false) {
     if (!thereIsPeerConnections()) {
       return userLog("info", "No participants detected");
     }
-    let fileInfo = {
+    // prevent XSS injection to remote peer (fileToSend.name is read only)
+    if (isHtml(fileToSend.name))
+      return userLog("warning", "Invalid file name!");
+
+    const fileInfo = {
       room_id: roomId,
       broadcast: broadcast,
       peer_name: myPeerName,
@@ -7532,11 +7721,11 @@ function handlePeerVolume(data) {
     element.style.backgroundColor = "orange";
   }
   element.style.height = volume + "%";
-  remoteVideoWrap.classList.toggle('speaking');
-    setTimeout(function () {
-        element.style.backgroundColor = '#19bb5c';
-        element.style.height = '0%';
-        remoteVideoWrap.classList.toggle('speaking');
+  remoteVideoWrap.classList.toggle("speaking");
+  setTimeout(function () {
+    element.style.backgroundColor = "#19bb5c";
+    element.style.height = "0%";
+    remoteVideoWrap.classList.toggle("speaking");
   }, 700);
 }
 
@@ -7545,18 +7734,18 @@ function handlePeerVolume(data) {
  * @param {object} data my audio
  */
 function handleMyVolume(data) {
-  let element = getId('myPitchBar');
+  let element = getId("myPitchBar");
   let volume = data.volume + 25;
   if (!element) return;
   if (volume > 50) {
-      element.style.backgroundColor = 'orange';
+    element.style.backgroundColor = "orange";
   }
-  element.style.height = volume + '%';
-  myVideoWrap.classList.toggle('speaking');
+  element.style.height = volume + "%";
+  //myVideoWrap.classList.toggle("speaking");
   setTimeout(function () {
-      element.style.backgroundColor = '#19bb5c';
-      element.style.height = '0%';
-      myVideoWrap.classList.toggle('speaking');
+    element.style.backgroundColor = "#19bb5c";
+    element.style.height = "0%";
+    //myVideoWrap.classList.toggle("speaking");
   }, 700);
 }
 
@@ -7754,4 +7943,22 @@ function getName(name) {
  */
 function elemDisplay(elem, yes) {
   elem.style.display = yes ? "inline" : "none";
+}
+
+/**
+ * Sanitize XSS scripts
+ * @param {object} src object
+ * @returns sanitized object
+ */
+function sanitizeXSS(src) {
+  return JSON.parse(filterXSS(JSON.stringify(src)));
+}
+
+/**
+ * Disable element
+ * @param {object} elem
+ * @param {boolean} disabled
+ */
+function disable(elem, disabled) {
+  elem.disabled = disabled;
 }

@@ -165,6 +165,7 @@ body {
 # Google Translate
 --------------------------------------------------------------*/
 
+.skiptranslate iframe,
 .goog-te-banner-frame.skiptranslate {
   display: none !important;
 }
@@ -181,13 +182,58 @@ body {
   color: #fff;
   padding: 30px;
   border-radius: 10px;
-  background: var(--body-bg);
+  background: rgba(0, 0, 0, 0.7);
+  text-align: center;
 }
 #loadingDiv h1 {
   font-size: 60px;
+  font-family: "Comfortaa";
+}
+#loadingDiv img {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 #loadingDiv pre {
   padding: 5px;
+  font-family: "Comfortaa";
+}
+
+/*--------------------------------------------------------------
+# Init User
+--------------------------------------------------------------*/
+
+.init-user {
+  display: block;
+  padding: 5px;
+}
+
+.init-user select {
+  display: block;
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px;
+  background: #2c2c2c;
+  color: white;
+  border: var(--border);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.init-user button {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  width: 50px;
+  padding: 10px;
+  background: transparent;
+  font-size: 1.5rem;
+  border: var(--border);
+  border-radius: 5px;
+  color: white;
+}
+
+.init-user button:hover {
+  background-color: rgb(35, 35, 35);
+  color: white;
 }
 
 /*--------------------------------------------------------------
@@ -240,18 +286,6 @@ body {
 
 #buttonsBar button:focus {
   outline: none;
-}
-
-#initAudioBtn,
-#initVideoBtn {
-  border: none;
-  border-radius: 5px;
-  width: 40px;
-  background: white;
-  color: black;
-  font-size: 1.5rem;
-  padding: 4px;
-  transition: all 0.3s ease-in-out;
 }
 
 #shareRoomBtn,
@@ -922,7 +956,7 @@ em-emoji-picker {
 
 .slider:before {
   position: absolute;
-  content: '';
+  content: "";
   height: 17px;
   width: 17px;
   left: 0px;
@@ -968,6 +1002,10 @@ input:checked + .slider:before {
   background-color: transparent !important;
 }
 
+.swal2-input {
+  border: var(--border) !important;
+}
+
 .swal2-file {
   color: white !important;
   background-color: transparent !important;
@@ -1010,28 +1048,28 @@ input:checked + .slider:before {
 
 @-webkit-keyframes fadeIn {
   from {
-      opacity: 0;
+    opacity: 0;
   }
   to {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 @-moz-keyframes fadeIn {
   from {
-      opacity: 0;
+    opacity: 0;
   }
   to {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 @keyframes fadeIn {
   from {
-      opacity: 0;
+    opacity: 0;
   }
   to {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
@@ -1290,6 +1328,11 @@ progress {
 /*--------------------------------------------------------------
 # Common
 --------------------------------------------------------------*/
+
+select {
+  height: 40px;
+  line-height: 40px;
+}
 
 hr {
   border: 0;

@@ -8,6 +8,8 @@ http://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=Server
 ███████ ███████ ██   ██   ████   ███████ ██   ██                                           
 
 dependencies: {
+    @sentry/node            : https://www.npmjs.com/package/@sentry/node
+    @sentry/integrations    : https://www.npmjs.com/package/@sentry/integrations
     body-parser             : https://www.npmjs.com/package/body-parser
     compression             : https://www.npmjs.com/package/compression
     colors                  : https://www.npmjs.com/package/colors
@@ -17,11 +19,10 @@ dependencies: {
     express                 : https://www.npmjs.com/package/express
     ngrok                   : https://www.npmjs.com/package/ngrok
     qs                      : https://www.npmjs.com/package/qs
-    @sentry/node            : https://www.npmjs.com/package/@sentry/node
-    @sentry/integrations    : https://www.npmjs.com/package/@sentry/integrations
     socket.io               : https://www.npmjs.com/package/socket.io
     swagger                 : https://www.npmjs.com/package/swagger-ui-express
     uuid                    : https://www.npmjs.com/package/uuid
+    xss                     : https://www.npmjs.com/package/xss
     yamljs                  : https://www.npmjs.com/package/yamljs
 }
 */
@@ -30,7 +31,7 @@ dependencies: {
  * Videolify P2P - Server component
  *
  * @link    GitHub: https://github.com/Jaideep25/Videolify
- * @link    Live demo: https://videolify.up.railway.app or https://videolify.herokuapp.com
+ * @link    Live demo: https://videolify.up.railway.app or https://videolify.onrender.com
  * @license For open source use: AGPLv3
  * @license For commercial or closed source, contact us at jaideepch@outlook.com
  * @author  Jaideep25 - jaideepch@outlook.com
@@ -49,15 +50,18 @@ const compression = require("compression");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const checkXSS = require("./xss.js");
 const app = express();
-
+const Host = require('./host');
 const Logs = require("./logs");
 const log = new Logs("server");
 
-const isHttps = false; // must be the same on client.js
+const domain = process.env.HOST || "localhost";
+const isHttps = process.env.HTTPS == "true";
 const port = process.env.PORT || 3000; // must be the same to client.js signalingServerPort
+const host = `http${isHttps ? "s" : ""}://${domain}:${port}`;
 
-let io, server, host;
+let io, server, authHost;
 
 if (isHttps) {
   const fs = require("fs");
@@ -66,10 +70,8 @@ if (isHttps) {
     cert: fs.readFileSync(path.join(__dirname, "../ssl/cert.pem"), "utf-8"),
   };
   server = https.createServer(options, app);
-  host = "https://" + "localhost" + ":" + port;
 } else {
   server = http.createServer(app);
-  host = "http://" + "localhost" + ":" + port;
 }
 
 /*  
@@ -81,6 +83,15 @@ io = new Server({
 }).listen(server);
 
 // console.log(io);
+
+// Host protection (disabled by default)
+const hostProtected = process.env.HOST_PROTECTED == 'true' ? true : false;
+const hostCfg = {
+    protected: hostProtected,
+    username: process.env.HOST_USERNAME,
+    password: process.env.HOST_PASSWORD,
+    authenticated: !hostProtected,
+};
 
 // Swagger config
 const yamlJS = require("yamljs");
@@ -149,6 +160,7 @@ const dir = {
 const views = {
   client: path.join(__dirname, "../../", "public/views/client.html"),
   landing: path.join(__dirname, "../../", "public/views/landing.html"),
+  login: path.join(__dirname, '../../', 'public/views/login.html'),
   newCall: path.join(__dirname, "../../", "public/views/newcall.html"),
   notFound: path.join(__dirname, "../../", "public/views/404.html"),
   permission: path.join(__dirname, "../../", "public/views/permission.html"),
@@ -196,12 +208,48 @@ app.use((err, req, res, next) => {
 
 // main page
 app.get(["/"], (req, res) => {
-  res.sendFile(views.landing);
+  if (hostCfg.protected == true) {
+    hostCfg.authenticated = false;
+    res.sendFile(views.login);
+} else {
+    res.sendFile(views.landing);
+}
+});
+
+// handle login on host protected
+app.get(['/login'], (req, res) => {
+if (hostCfg.protected == true) {
+    let ip = getIP(req);
+    log.debug(`Request login to host from: ${ip}`, req.query);
+    const { username, password } = req.query;
+    if (username == hostCfg.username && password == hostCfg.password) {
+        hostCfg.authenticated = true;
+        authHost = new Host(ip, true);
+        log.debug('LOGIN OK', { ip: ip, authorized: authHost.isAuthorized(ip) });
+        res.sendFile(views.landing);
+    } else {
+        log.debug('LOGIN KO', { ip: ip, authorized: false });
+        hostCfg.authenticated = false;
+        res.sendFile(views.login);
+    }
+} else {
+    res.redirect('/');
+}
 });
 
 // set new room name and join
 app.get(["/newcall"], (req, res) => {
-  res.sendFile(views.newCall);
+  if (hostCfg.protected == true) {
+    let ip = getIP(req);
+    if (allowedIP(ip)) {
+        res.sendFile(views.newCall);
+    } else {
+        hostCfg.authenticated = false;
+        res.sendFile(views.login);
+    }
+} else {
+    res.sendFile(views.newCall);
+}
 });
 
 // if not allow video/audio
@@ -222,19 +270,19 @@ app.get(["/test"], (req, res) => {
   /*
         http://localhost:3000/test?iceServers=[{"urls":"stun:stun.l.google.com:19302"},{"urls":"turn:openrelay.metered.ca:443","username":"openrelayproject","credential":"openrelayproject"}]
         https://videolify.up.railway.app//test?iceServers=[{"urls":"stun:stun.l.google.com:19302"},{"urls":"turn:openrelay.metered.ca:443","username":"openrelayproject","credential":"openrelayproject"}]
-        https://videolify.herokuapp.com/test?iceServers=[{"urls":"stun:stun.l.google.com:19302"},{"urls":"turn:openrelay.metered.ca:443","username":"openrelayproject","credential":"openrelayproject"}]
+        https://videolify.cleverapps.io/test?iceServers=[{"urls":"stun:stun.l.google.com:19302"},{"urls":"turn:openrelay.metered.ca:443","username":"openrelayproject","credential":"openrelayproject"}]
     */
   res.sendFile(views.stunTurn);
 });
 
 // no room name specified to join
 app.get("/join/", (req, res) => {
-  if (Object.keys(req.query).length > 0) {
+  if (hostCfg.authenticated && Object.keys(req.query).length > 0) {
     log.debug("Request Query", req.query);
     /* 
             http://localhost:3000/join?room=test&name=videolify&audio=1&video=1&screen=1&notify=1
             https://videolify.up.railway.app/join?room=test&name=videolify&audio=1&video=1&screen=1&notify=1
-            https://videolify.herokuapp.com/join?room=test&name=videolify&audio=1&video=1&screen=1&notify=1
+            https://videolify.cleverapps.io/join?room=test&name=videolify&audio=1&video=1&screen=1&notify=1
         */
     const { room, name, audio, video, screen, notify } = req.query;
     // all the params are mandatory for the direct room join
@@ -245,9 +293,19 @@ app.get("/join/", (req, res) => {
   res.redirect("/");
 });
 
-// Join Room *
-app.get("/join/*", (req, res) => {
-  res.sendFile(views.client);
+// Join Room by id
+app.get('/join/:roomId', function (req, res) {
+  // log.debug('Join to room', { roomId: req.params.roomId });
+  if (hostCfg.authenticated) {
+    res.sendFile(views.client);
+} else {
+    res.redirect('/');
+}
+});
+
+// Not specified correctly the room id
+app.get('/join/*', function (req, res) {
+  res.redirect('/');
 });
 
 /**
@@ -384,13 +442,17 @@ async function ngrokStart() {
   try {
     await ngrok.authtoken(ngrokAuthToken);
     await ngrok.connect(port);
-    let api = ngrok.getApi();
-    let data = await api.listTunnels();
-    let pu0 = data.tunnels[0].public_url;
-    let pu1 = data.tunnels[1].public_url;
-    let tunnelHttps = pu0.startsWith("https") ? pu0 : pu1;
+    const api = ngrok.getApi();
+    const data = JSON.parse(await api.get("api/tunnels")); // v3
+    // const data = await api.listTunnels(); // v4
+    const pu0 = data.tunnels[0].public_url;
+    const pu1 = data.tunnels[1].public_url;
+    const tunnelHttps = pu0.startsWith("https") ? pu0 : pu1;
     // server settings
     log.debug("settings", {
+      host_protected: hostCfg.protected,
+            host_username: hostCfg.username,
+            host_password: hostCfg.password,
       iceServers: iceServers,
       ngrok: {
         ngrok_enabled: ngrokEnabled,
@@ -434,6 +496,9 @@ server.listen(port, null, () => {
   } else {
     // server settings
     log.debug("settings", {
+      host_protected: hostCfg.protected,
+            host_username: hostCfg.username,
+            host_password: hostCfg.password,
       iceServers: iceServers,
       server: host,
       test_ice_servers: testStunTurn,
@@ -484,6 +549,7 @@ io.sockets.on("connect", async (socket) => {
   socket.on("disconnect", async (reason) => {
     for (let channel in socket.channels) {
       await removePeerFrom(channel);
+      removeIP(socket);
     }
     log.debug("[" + socket.id + "] disconnected", { reason: reason });
     delete sockets[socket.id];
@@ -492,7 +558,9 @@ io.sockets.on("connect", async (socket) => {
   /**
    * On peer join
    */
-  socket.on("join", async (config) => {
+  socket.on("join", async (cfg) => {
+    // Prevent XSS injection
+    const config = checkXSS(cfg);
     // log.debug('Join room', config);
     log.debug("[" + socket.id + "] join ", config);
 
@@ -591,7 +659,9 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Handle Room action
    */
-  socket.on("roomAction", async (config) => {
+  socket.on("roomAction", async (cfg) => {
+    // Prevent XSS injection
+    const config = checkXSS(cfg);
     //log.debug('[' + socket.id + '] Room action:', config);
     let room_is_locked = false;
     let room_id = config.room_id;
@@ -639,7 +709,9 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Relay NAME to peers
    */
-  socket.on("peerName", async (config) => {
+  socket.on("peerName", async (cfg) => {
+    // Prevent XSS injection
+    const config = checkXSS(cfg);
     // log.debug('Peer name', config);
     let room_id = config.room_id;
     let peer_name_old = config.peer_name_old;
@@ -672,7 +744,9 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Relay Audio Video Hand ... Status to peers
    */
-  socket.on("peerStatus", async (config) => {
+  socket.on("peerStatus", async (cfg) => {
+    // Prevent XSS injection
+    const config = checkXSS(cfg);
     // log.debug('Peer status', config);
     let room_id = config.room_id;
     let peer_name = config.peer_name;
@@ -728,7 +802,9 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Relay actions to peers or specific peer in the same room
    */
-  socket.on("peerAction", async (config) => {
+  socket.on("peerAction", async (cfg) => {
+    // Prevent XSS injection
+    const config = checkXSS(cfg);
     // log.debug('Peer action', config);
     let room_id = config.room_id;
     let peer_id = config.peer_id;
@@ -777,7 +853,9 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Relay Kick out peer from room
    */
-  socket.on("kickOut", async (config) => {
+  socket.on('kickOut', async (cfg) => {
+    // Prevent XSS injection
+    const config = checkXSS(cfg);
     let room_id = config.room_id;
     let peer_id = config.peer_id;
     let peer_name = config.peer_name;
@@ -800,7 +878,9 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Relay File info
    */
-  socket.on("fileInfo", async (config) => {
+  socket.on('fileInfo', async (cfg) => {
+    // Prevent XSS injection
+    const config = checkXSS(cfg);
     // log.debug('File info', config);
     let room_id = config.room_id;
     let peer_name = config.peer_name;
@@ -842,7 +922,9 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Abort file sharing
    */
-  socket.on("fileAbort", async (config) => {
+  socket.on('fileAbort', async (cfg) => {
+    // Prevent XSS injection
+    const config = checkXSS(cfg);
     let room_id = config.room_id;
     let peer_name = config.peer_name;
 
@@ -861,7 +943,9 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Relay video player action
    */
-  socket.on("videoPlayer", async (config) => {
+  socket.on('videoPlayer', async (cfg) => {
+    // Prevent XSS injection
+    const config = checkXSS(cfg);
     // log.debug('Video player', config);
     let room_id = config.room_id;
     let peer_name = config.peer_name;
@@ -907,13 +991,17 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Whiteboard actions for all user in the same room
    */
-  socket.on("wbCanvasToJson", async (config) => {
+  socket.on('wbCanvasToJson', async (cfg) => {
+    // Prevent XSS injection
+    const config = checkXSS(cfg);
     // log.debug('Whiteboard send canvas', config);
     let room_id = config.room_id;
     await sendToRoom(room_id, socket.id, "wbCanvasToJson", config);
   });
 
-  socket.on("whiteboardAction", async (config) => {
+  socket.on('whiteboardAction', async (cfg) => {
+    // Prevent XSS injection
+    const config = checkXSS(cfg);
     log.debug("Whiteboard", config);
     let room_id = config.room_id;
     await sendToRoom(room_id, socket.id, "whiteboardAction", config);
@@ -1016,3 +1104,36 @@ io.sockets.on("connect", async (socket) => {
     }
   }
 }); // end [sockets.on-connect]
+
+/**
+ * Get ip
+ * @param {object} req
+ * @returns string ip
+ */
+function getIP(req) {
+  return req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+}
+
+/**
+* Check if auth ip
+* @param {string} ip
+* @returns boolean
+*/
+function allowedIP(ip) {
+  return authHost != null && authHost.isAuthorized(ip);
+}
+
+/**
+* Remove hosts auth ip on socket disconnect
+* @param {object} socket
+*/
+function removeIP(socket) {
+  if (hostCfg.protected == true) {
+      let ip = socket.handshake.address;
+      if (ip && allowedIP(ip)) {
+          authHost.deleteIP(ip);
+          hostCfg.authenticated = false;
+          log.debug('Remove IP from auth', { ip: ip });
+      }
+  }
+}

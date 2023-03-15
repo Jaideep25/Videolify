@@ -23,40 +23,49 @@ Open the app in one of following **supported browser**
 
 <br>
 
-[![videolify](public/images/preview.png)](https://videolify.herokuapp.com/)
+[![videolify](public/images/preview.png)](https://videolify.cleverapps.io/)
 
 ## Features
 
-- Is `100% Free` and `Open Source`
-- No download, plug-in or login required, entirely browser based
+- Is `100% Free` - `Open Source` - `Self Hosted` and [PWA](https://en.wikipedia.org/wiki/Progressive_web_application)!
+- No download, plug-in, or login required, entirely browser-based
 - Unlimited number of conference rooms without call time limitation
+- Translated in 133 languages
+- Host protection to ensure unauthorized access to your host
+- Possibility to password protect the room during the meeting
 - Desktop and Mobile compatible
-- Optimized Room Url Sharing (share it to your participants, wait them to join)
-- WebCam Streaming (Front - Rear for mobile)
-- Audio Streaming
+- Optimized Room URL Sharing for mobile
+- Webcam Streaming (Front - Rear for mobile)
+- Audio Streaming crystal clear with detect speaking and volume indicator
 - Screen Sharing to present documents, slides, and more...
-- File Sharing, share any files to your participants in the room
-- Select Audio Input - Output && Video source
+- File Sharing (with drag-and-drop), share any files to your participants in the room
+- Select Audio Input - Output and Video source
+- Ability to set video quality up to 4K and 60 FPS
 - Recording your Screen, Audio and Video
-- Chat with Emoji Picker & Private messages & Save the conversations
-- Simple Whiteboard for the teachers
-- Share any YouTube video in real time
-- Full Screen Mode on mouse click on the Video element
+- Snapshot the video frame and save it as image png
+- Chat with Emoji Picker to show you feeling, private messages, Markdown support, possibility to Save the conversations, and many more
+- Speech recognition to send the speeches
+- Advance collaborative whiteboard for the teachers
+- Share any YT Embed video, video mp4, webm, ogg and audio mp3 in real-time
+- Full-Screen Mode on mouse click on the Video element, Pin/Unpin, Zoom in-out video element
 - Possibility to Change UI Themes
-- Right click on the Video elements for more options
-- Direct `peer-to-peer` connection ensures lowest latency thanks to `webrtc`
-- Supports `API` (Application Programming Interface)
+- Right-click on the Video elements for more options
+- Direct `peer-to-peer` connection ensures the lowest latency thanks to `WebRTC`
+- Supports [REST API](app/api/README.md) (Application Programming Interface)
+- [Slack](https://api.slack.com/apps/) API integration
+- [Sentry](https://sentry.io/) error reporting
+- ...
 
 ## Demo
 
-- `Open` https://videolify.herokuapp.com/newcall `or` https://videolify.up.railway.app/newcall
+- `Open` https://videolify.cleverapps.io/newcall `or` https://videolify.up.railway.app/newcall
 - `Pick` your personal Room name and `Join To Room`
 - `Allow` to use the camera and microphone
 - `Share` the Room URL and `Wait` someone to join for video conference
 
 ## Room name
 
-- You can also `join` directly to your room name by going to https://videolify.herokuapp.com/join/your-room-name-goes-here `or` https://videolify.up.railway.app/join/your-room-name-goes-here
+- You can also `join` directly to your room name by going to https://videolify.cleverapps.io/join/your-room-name-goes-here `or` https://videolify.up.railway.app/join/your-room-name-goes-here
 
 ## Quick start
 
@@ -111,27 +120,26 @@ npm start
 
 ## Docker
 
-Install: https://docs.docker.com/compose/install/
+![docker](public/images/docker.png)
+
+- Install docker engine: https://docs.docker.com/engine/install/
+- Install docker compose: https://docs.docker.com/compose/install/
+- Repository docker hub: https://hub.docker.com/r/mirotalk/p2p
 
 ```bash
-cp .env.template .env
-docker-compose up # or
-docker-compose up -d
+# copy .env.template to .env (edit it according to your needs)
+$ cp .env.template .env
+# Copy docker-compose.template.yml in docker-compose.yml (edit it according to your needs)
+$ cp docker-compose.template.yml docker-compose.yml
+# Get official image from Docker Hub
+$ docker pull mirotalk/p2p:latest
+# create and start containers
+$ docker-compose up # -d
+# to stop and remove resources
+$ docker-compose down
 ```
 
 - Open http://localhost:3000 in browser
-
-To `Update` image after some videolify `changes` or `updates`.
-
-```bash
-docker-compose build
-```
-
-To `Stops` containers and removes containers, networks, volumes, and images created by `up`
-
-```bash
-docker-compose down
-```
 
 ## API
 
@@ -140,12 +148,12 @@ The `response` will give you a `entrypoint / Room URL` for `your meeting`, where
 ```bash
 curl -X POST "http://localhost:3000/api/v1/meeting" -H "authorization: videolify_default_secret" -H "Content-Type: application/json"
 curl -X POST "https://videolify.up.railway.app/api/v1/meeting" -H "authorization: videolify_default_secret" -H "Content-Type: application/json"
-curl -X POST "https://videolify.herokuapp.com/api/v1/meeting" -H "authorization: videolify_default_secret" -H "Content-Type: application/json"
+curl -X POST "https://videolify.cleverapps.io/api/v1/meeting" -H "authorization: videolify_default_secret" -H "Content-Type: application/json"
 ```
 
 ## API Documentation
 
-The server exposes a [swagger](https://swagger.io/) document at http://localhost:3000/api/v1/docs. Or you can check it out live on [railway](https://videolify.up.railway.app/api/v1/docs) or [heroku](https://videolify.herokuapp.com/api/v1/docs).
+The server exposes a [swagger](https://swagger.io/) document at http://localhost:3000/api/v1/docs. Or you can check it out live on [railway](https://videolify.up.railway.app/api/v1/docs) or [heroku](https://videolify.cleverapps.io/api/v1/docs).
 
 ---
 
@@ -156,13 +164,20 @@ You can use a service like [ngrok](https://ngrok.com/) or deploy it on:
 
 [![Deploy on Heroku](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/)
 
-`DEMO` https://videolify.herokuapp.com/
+`DEMO` https://videolify.cleverapps.io/
 
 <br>
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app)
 
 `DEMO :` https://videolify.up.railway.app/
+
+---
+
+
+## Security
+
+For `Security` concerning, please follow [this documentation](./SECURITY.md).
 
 ---
 

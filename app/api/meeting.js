@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 
 const API_KEY = "videolify_default_secret";
 // const VIDEOLIFY_URL = "http://localhost:3000/api/v1/meeting";
-// const VIDEOLIFY_URL = "https://videolify.herokuapp.com/api/v1/meeting";
+// const VIDEOLIFY_URL = "https://videolify.cleverapps.io/api/v1/meeting";
 const VIDEOLIFY_URL = "https://videolify.up.railway.app/api/v1/meeting";
 
 function getResponse() {

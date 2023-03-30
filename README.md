@@ -4,8 +4,6 @@
 
 <br>
 
-[//]: https://img.shields.io/badge/<LABEL>-<MESSAGE>-<COLOR>
-
 [![Author](https://img.shields.io/badge/Author-Jaideep25-brightgreen.svg)](https://www.github.com/Jaideep25/Videolify/)
 ![License: AGPLv3](https://img.shields.io/badge/License-AGPLv3-blue.svg)
 [![Repo Link](https://img.shields.io/badge/Repo-Link-black.svg)](https://github.com/Jaideep25/videolify)
@@ -14,8 +12,6 @@
 Powered by `WebRTC` using google Stun and [numb](http://numb.viagenie.ca/) Turn. `Videolify` provides video quality and latency not available with traditional technology.
 
 Open the app in one of following **supported browser**
-
-[//]: #![webrtc](public/images/webrtc.png)
 
 [![Foo](public/images/browsers.png)](https://videolify.up.railway.app/)
 
@@ -124,7 +120,6 @@ npm start
 
 - Install docker engine: https://docs.docker.com/engine/install/
 - Install docker compose: https://docs.docker.com/compose/install/
-- Repository docker hub: https://hub.docker.com/r/mirotalk/p2p
 
 ```bash
 # copy .env.template to .env (edit it according to your needs)
@@ -132,12 +127,14 @@ $ cp .env.template .env
 # Copy docker-compose.template.yml in docker-compose.yml (edit it according to your needs)
 $ cp docker-compose.template.yml docker-compose.yml
 # Get official image from Docker Hub
-$ docker pull mirotalk/p2p:latest
+$ docker pull videolify/p2p:latest
 # create and start containers
 $ docker-compose up # -d
 # to stop and remove resources
 $ docker-compose down
 ```
+
+[//]: https://img.shields.io/badge/-[//]: #![webrtc](public/images/webrtc.png)
 
 - Open http://localhost:3000 in browser
 
@@ -174,7 +171,6 @@ You can use a service like [ngrok](https://ngrok.com/) or deploy it on:
 
 ---
 
-
 ## Security
 
 For `Security` concerning, please follow [this documentation](./SECURITY.md).
@@ -189,7 +185,7 @@ From where I took inspiration for this project. ❤️
 
 ## Contributing
 
-- Pull Requests are welcome! :slightly_smiling_face:
+- Pull Requests are welcome! 🙂
 - Please run [prettier](https://prettier.io) on all of your PRs before submitting, this can be done with `prettier --write videolify/`
 
 ---

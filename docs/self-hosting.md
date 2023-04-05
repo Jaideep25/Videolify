@@ -2,13 +2,12 @@
 
 ## Requirements
 
-- Recommended: [Hetzner](https://www.hetzner.com/cloud) (`CPX11` it's enough, OS: `Ubuntu 20.04 LTS / 22.04.1 LTS`).
-- Use [my personal link](https://hetzner.cloud/?ref=XdRifCzCK3bn) to receive `€⁠20 in cloud credits`.
 - [Node.js](https://nodejs.org/en/) at least 12x, better `16.15.1 LTS` & npm
 - Setup your own TURN server like [coturn](https://github.com/coturn/coturn) (recommended) or use third party STUN/TURN servers (configurable on `.env` file)
 - Your domain name, example: `your.domain.name`
   - Set a DNS A record for that domain that point to Your Server public IPv4
     > DNS A Record: The Address Mapping record (or DNS host record) stores a hostname and its corresponding IPv4 address. When users search for your website, the A record redirects this traffic from the web address (xxxxx.com – human-readable domain) to the IPv4 address.
+    >
 
 ---
 
@@ -29,7 +28,7 @@ $ npm install -g npm@latest
 
 ```bash
 # Clone videolify P2P repo
-$ git clone https://github.com/miroslavpejic85/videolify.git
+$ git clone https://github.com/jaideep25/videolify.git
 # Go to videolify dir
 $ cd videolify
 # Copy .env.template to .env and edit it if needed
@@ -75,7 +74,7 @@ $ cp .env.template .env
 # Copy docker-compose.template.yml in docker-compose.yml (edit it according to your needs)
 $ cp docker-compose.template.yml docker-compose.yml
 # Get official image from Docker Hub
-$ docker pull videolify/p2p:latest
+$ docker pull videolify/latest
 # Create and start containers
 $ docker-compose up -d
 ```
@@ -221,7 +220,7 @@ Make the script executable
 $ chmod +x p2pUpdate.sh
 ```
 
-Follow the commits of the videolify P2P project [here](https://github.com/miroslavpejic85/videolify/commits/master)
+Follow the commits of the videolify P2P project [here](https://github.com/jaideep25/videolify/commits/master)
 
 To update Your videolify P2P instance at latest commit, execute:
 
@@ -233,4 +232,4 @@ To update Your videolify P2P instance at latest commit, execute:
 
 ## Support
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/videolify/videolify-free-secure-video-calls-chat-screen-sharing)
+[![](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/videolify/videolify-free-secure-video-calls-chat-screen-sharing)

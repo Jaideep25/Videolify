@@ -2,7 +2,7 @@ version: "3"
 
 services:
   videolify:
-    image: videolify/p2p:latest
+    image: videolify/latest
     build:
       context: .
       dockerfile: Dockerfile

@@ -6,7 +6,17 @@
   "scripts": {
     "start": "node app/src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "npx prettier --write ."
+    "lint": "npx prettier --write .",
+    "docker-build": "docker build --tag videolify/latest .",
+    "docker-rmi": "docker images |grep '<none>' |awk '{print $3}' |xargs docker rmi",
+    "docker-push": "docker push videolify/latest",
+    "docker-pull": "docker pull videolify/latest",
+    "docker-rmc": "docker container rm videolify --force",
+    "docker-run": "docker run -d -p 3000:3000 --name videolify videolify/latest",
+    "docker-rune": "docker run -d -p 3000:3000 -v .env:/src/.env:ro --name videolify videolify/latest",
+    "docker-run-vm": "docker run -d -p 3000:3000 -v .env:/src/.env:ro -v ./app/:/src/app/:ro -v ./public/:/src/public/:ro --name videolify videolify/latest",
+    "docker-start": "docker start videolify",
+    "docker-stop": "docker stop videolify"
   },
   "repository": {
     "type": "git",
@@ -23,8 +33,8 @@
   "license": "AGPL-3.0",
   "homepage": "https://videolify.up.railway.app/",
   "dependencies": {
-    "@sentry/integrations": "^7.41.0",
-    "@sentry/node": "^7.41.0",
+    "@sentry/integrations": "^7.46.0",
+    "@sentry/node": "^7.46.0",
     "body-parser": "^1.20.2",
     "colors": "^1.4.0",
     "compression": "^1.7.4",
@@ -32,8 +42,8 @@
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "ngrok": "^3.4.1",
-    "qs": "^6.11.0",
+    "ngrok": "^4.3.3",
+    "qs": "^6.11.1",
     "socket.io": "^4.6.1",
     "swagger-ui-express": "^4.6.2",
     "uuid": "9.0.0",

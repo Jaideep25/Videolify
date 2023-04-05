@@ -52,7 +52,7 @@ const cors = require("cors");
 const path = require("path");
 const checkXSS = require("./xss.js");
 const app = express();
-const Host = require('./host');
+const Host = require("./host");
 const Logs = require("./logs");
 const log = new Logs("server");
 
@@ -85,12 +85,12 @@ io = new Server({
 // console.log(io);
 
 // Host protection (disabled by default)
-const hostProtected = process.env.HOST_PROTECTED == 'true' ? true : false;
+const hostProtected = process.env.HOST_PROTECTED == "true" ? true : false;
 const hostCfg = {
-    protected: hostProtected,
-    username: process.env.HOST_USERNAME,
-    password: process.env.HOST_PASSWORD,
-    authenticated: !hostProtected,
+  protected: hostProtected,
+  username: process.env.HOST_USERNAME,
+  password: process.env.HOST_PASSWORD,
+  authenticated: !hostProtected,
 };
 
 // Swagger config
@@ -160,7 +160,7 @@ const dir = {
 const views = {
   client: path.join(__dirname, "../../", "public/views/client.html"),
   landing: path.join(__dirname, "../../", "public/views/landing.html"),
-  login: path.join(__dirname, '../../', 'public/views/login.html'),
+  login: path.join(__dirname, "../../", "public/views/login.html"),
   newCall: path.join(__dirname, "../../", "public/views/newcall.html"),
   notFound: path.join(__dirname, "../../", "public/views/404.html"),
   permission: path.join(__dirname, "../../", "public/views/permission.html"),
@@ -211,30 +211,30 @@ app.get(["/"], (req, res) => {
   if (hostCfg.protected == true) {
     hostCfg.authenticated = false;
     res.sendFile(views.login);
-} else {
+  } else {
     res.sendFile(views.landing);
-}
+  }
 });
 
 // handle login on host protected
-app.get(['/login'], (req, res) => {
-if (hostCfg.protected == true) {
+app.get(["/login"], (req, res) => {
+  if (hostCfg.protected == true) {
     let ip = getIP(req);
     log.debug(`Request login to host from: ${ip}`, req.query);
     const { username, password } = req.query;
     if (username == hostCfg.username && password == hostCfg.password) {
-        hostCfg.authenticated = true;
-        authHost = new Host(ip, true);
-        log.debug('LOGIN OK', { ip: ip, authorized: authHost.isAuthorized(ip) });
-        res.sendFile(views.landing);
+      hostCfg.authenticated = true;
+      authHost = new Host(ip, true);
+      log.debug("LOGIN OK", { ip: ip, authorized: authHost.isAuthorized(ip) });
+      res.sendFile(views.landing);
     } else {
-        log.debug('LOGIN KO', { ip: ip, authorized: false });
-        hostCfg.authenticated = false;
-        res.sendFile(views.login);
+      log.debug("LOGIN KO", { ip: ip, authorized: false });
+      hostCfg.authenticated = false;
+      res.sendFile(views.login);
     }
-} else {
-    res.redirect('/');
-}
+  } else {
+    res.redirect("/");
+  }
 });
 
 // set new room name and join
@@ -242,14 +242,14 @@ app.get(["/newcall"], (req, res) => {
   if (hostCfg.protected == true) {
     let ip = getIP(req);
     if (allowedIP(ip)) {
-        res.sendFile(views.newCall);
+      res.sendFile(views.newCall);
     } else {
-        hostCfg.authenticated = false;
-        res.sendFile(views.login);
+      hostCfg.authenticated = false;
+      res.sendFile(views.login);
     }
-} else {
+  } else {
     res.sendFile(views.newCall);
-}
+  }
 });
 
 // if not allow video/audio
@@ -294,18 +294,18 @@ app.get("/join/", (req, res) => {
 });
 
 // Join Room by id
-app.get('/join/:roomId', function (req, res) {
+app.get("/join/:roomId", function (req, res) {
   // log.debug('Join to room', { roomId: req.params.roomId });
   if (hostCfg.authenticated) {
     res.sendFile(views.client);
-} else {
-    res.redirect('/');
-}
+  } else {
+    res.redirect("/");
+  }
 });
 
 // Not specified correctly the room id
-app.get('/join/*', function (req, res) {
-  res.redirect('/');
+app.get("/join/*", function (req, res) {
+  res.redirect("/");
 });
 
 /**
@@ -451,8 +451,8 @@ async function ngrokStart() {
     // server settings
     log.debug("settings", {
       host_protected: hostCfg.protected,
-            host_username: hostCfg.username,
-            host_password: hostCfg.password,
+      host_username: hostCfg.username,
+      host_password: hostCfg.password,
       iceServers: iceServers,
       ngrok: {
         ngrok_enabled: ngrokEnabled,
@@ -497,8 +497,8 @@ server.listen(port, null, () => {
     // server settings
     log.debug("settings", {
       host_protected: hostCfg.protected,
-            host_username: hostCfg.username,
-            host_password: hostCfg.password,
+      host_username: hostCfg.username,
+      host_password: hostCfg.password,
       iceServers: iceServers,
       server: host,
       test_ice_servers: testStunTurn,
@@ -853,7 +853,7 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Relay Kick out peer from room
    */
-  socket.on('kickOut', async (cfg) => {
+  socket.on("kickOut", async (cfg) => {
     // Prevent XSS injection
     const config = checkXSS(cfg);
     let room_id = config.room_id;
@@ -878,7 +878,7 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Relay File info
    */
-  socket.on('fileInfo', async (cfg) => {
+  socket.on("fileInfo", async (cfg) => {
     // Prevent XSS injection
     const config = checkXSS(cfg);
     // log.debug('File info', config);
@@ -922,7 +922,7 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Abort file sharing
    */
-  socket.on('fileAbort', async (cfg) => {
+  socket.on("fileAbort", async (cfg) => {
     // Prevent XSS injection
     const config = checkXSS(cfg);
     let room_id = config.room_id;
@@ -943,7 +943,7 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Relay video player action
    */
-  socket.on('videoPlayer', async (cfg) => {
+  socket.on("videoPlayer", async (cfg) => {
     // Prevent XSS injection
     const config = checkXSS(cfg);
     // log.debug('Video player', config);
@@ -991,7 +991,7 @@ io.sockets.on("connect", async (socket) => {
   /**
    * Whiteboard actions for all user in the same room
    */
-  socket.on('wbCanvasToJson', async (cfg) => {
+  socket.on("wbCanvasToJson", async (cfg) => {
     // Prevent XSS injection
     const config = checkXSS(cfg);
     // log.debug('Whiteboard send canvas', config);
@@ -999,7 +999,7 @@ io.sockets.on("connect", async (socket) => {
     await sendToRoom(room_id, socket.id, "wbCanvasToJson", config);
   });
 
-  socket.on('whiteboardAction', async (cfg) => {
+  socket.on("whiteboardAction", async (cfg) => {
     // Prevent XSS injection
     const config = checkXSS(cfg);
     log.debug("Whiteboard", config);
@@ -1111,29 +1111,29 @@ io.sockets.on("connect", async (socket) => {
  * @returns string ip
  */
 function getIP(req) {
-  return req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  return req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 }
 
 /**
-* Check if auth ip
-* @param {string} ip
-* @returns boolean
-*/
+ * Check if auth ip
+ * @param {string} ip
+ * @returns boolean
+ */
 function allowedIP(ip) {
   return authHost != null && authHost.isAuthorized(ip);
 }
 
 /**
-* Remove hosts auth ip on socket disconnect
-* @param {object} socket
-*/
+ * Remove hosts auth ip on socket disconnect
+ * @param {object} socket
+ */
 function removeIP(socket) {
   if (hostCfg.protected == true) {
-      let ip = socket.handshake.address;
-      if (ip && allowedIP(ip)) {
-          authHost.deleteIP(ip);
-          hostCfg.authenticated = false;
-          log.debug('Remove IP from auth', { ip: ip });
-      }
+    let ip = socket.handshake.address;
+    if (ip && allowedIP(ip)) {
+      authHost.deleteIP(ip);
+      hostCfg.authenticated = false;
+      log.debug("Remove IP from auth", { ip: ip });
+    }
   }
 }

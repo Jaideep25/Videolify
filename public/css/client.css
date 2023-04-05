@@ -62,7 +62,7 @@
   --btn-bg: white;
   --btn-color: black;
   --btn-opc: 1;
-  --wb-bg: #FFF;
+  --wb-bg: #fff;
   --wb-hbg: #000000;
   --my-settings-label-color: white;
   --hover-color: #009dff;
@@ -823,9 +823,13 @@ em-emoji-picker {
 }
 
 #mySettingsTable {
-  margin-top: 20px;
+  /* margin-top: 5px; */
   width: 100%;
   color: #fff;
+  border-collapse: collapse;
+  border-radius: 5px;
+  border-style: hidden;
+  box-shadow: 0 0 0 1px #666;
 }
 #mySettingsTable td,
 th {
@@ -852,8 +856,8 @@ th {
 
 #tabRoomSecurity button,
 #tabRoomParticipants button {
-    width: 100%;
-    margin-bottom: 5px;
+  width: 100%;
+  margin-bottom: 5px;
 }
 
 #myPeerNameSetBtn,
@@ -862,12 +866,12 @@ th {
 #ejectEveryoneBtn,
 #lockRoomBtn,
 #unlockRoomBtn {
-    padding: 10px;
-    border: var(--border);
-    font-size: 0.9rem;
-    border-radius: 5px;
-    color: #fff;
-    background-color: transparent;
+  padding: 10px;
+  border: var(--border);
+  font-size: 0.9rem;
+  border-radius: 5px;
+  color: #fff;
+  background-color: transparent;
 }
 #speechRecognitionIcon,
 #speechRecognitionStart,
@@ -885,17 +889,17 @@ th {
 #unlockRoomBtn:hover,
 #speechRecognitionStart:hover,
 #speechRecognitionStop:hover {
-    color: var(--hover-color);
-    transform: var(--btns-hover-scale);
-    transition: all 0.3s ease-in-out;
+  color: var(--hover-color);
+  transform: var(--btns-hover-scale);
+  transition: all 0.3s ease-in-out;
 }
 
 #muteEveryoneBtn:hover,
 #hideEveryoneBtn:hover,
 #ejectEveryoneBtn:hover {
-    color: #ff2d00;
-    transform: var(--btns-hover-scale);
-    transition: all 0.3s ease-in-out;
+  color: #ff2d00;
+  transform: var(--btns-hover-scale);
+  transition: all 0.3s ease-in-out;
 }
 
 /* Style the tab */

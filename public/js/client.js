@@ -75,6 +75,8 @@ const chatInputEmoji = {
 const className = {
   user: "fas fa-user",
   clock: "fas fa-clock",
+  hideMeOn: "fas fa-user-slash",
+  hideMeOff: "fas fa-user",
   audioOn: "fas fa-microphone",
   audioOff: "fas fa-microphone-slash",
   videoOn: "fas fa-video",
@@ -82,7 +84,7 @@ const className = {
   screenOn: "fas fa-desktop",
   screenOff: "fas fa-stop-circle",
   handPulsate: "fas fa-hand-paper pulsate",
-  privacy: "far fa-circle",
+  privacy: "fas fa-circle",
   snapShot: "fas fa-camera-retro",
   pinUnpin: "fas fa-map-pin",
   zoomIn: "fas fa-magnifying-glass-plus",
@@ -169,6 +171,8 @@ const userLimitsActive = false; // Limit users per room
 const usersCountLimit = 2; // Limit 2 users per room if userLimitsActive true
 
 const useAvatarApi = true; // if false the cam-Off avatar = avatarImg
+
+let isHideMeActive = false; // Hide myself from the meeting view
 
 let notifyBySound = true; // turn on - off sound notifications
 
@@ -282,6 +286,7 @@ let initSpeakerSelect;
 // buttons bar
 let buttonsBar;
 let shareRoomBtn;
+let hideMeBtn;
 let audioBtn;
 let videoBtn;
 let swapCameraBtn;
@@ -381,6 +386,7 @@ let whiteboardImgUrlBtn;
 let whiteboardTextBtn;
 let whiteboardLineBtn;
 let whiteboardRectBtn;
+let whiteboardTriangleBtn;
 let whiteboardCircleBtn;
 let whiteboardSaveBtn;
 let whiteboardEraserBtn;
@@ -456,6 +462,7 @@ function getHtmlElementsById() {
   // buttons Bar
   buttonsBar = getId("buttonsBar");
   shareRoomBtn = getId("shareRoomBtn");
+  hideMeBtn = getId("hideMeBtn");
   audioBtn = getId("audioBtn");
   videoBtn = getId("videoBtn");
   swapCameraBtn = getId("swapCameraBtn");
@@ -513,7 +520,7 @@ function getHtmlElementsById() {
   myPeerNameSetBtn = getId("myPeerNameSetBtn");
   switchSounds = getId("switchSounds");
   switchPushToTalk = getId("switchPushToTalk");
-  switchAudioPitchBar = getId('switchAudioPitchBar');
+  switchAudioPitchBar = getId("switchAudioPitchBar");
   audioInputSelect = getId("audioSource");
   audioOutputSelect = getId("audioOutput");
   videoSelect = getId("videoSource");
@@ -546,6 +553,7 @@ function getHtmlElementsById() {
   whiteboardTextBtn = getId("whiteboardTextBtn");
   whiteboardLineBtn = getId("whiteboardLineBtn");
   whiteboardRectBtn = getId("whiteboardRectBtn");
+  whiteboardTriangleBtn = getId("whiteboardTriangleBtn");
   whiteboardCircleBtn = getId("whiteboardCircleBtn");
   whiteboardSaveBtn = getId("whiteboardSaveBtn");
   whiteboardEraserBtn = getId("whiteboardEraserBtn");
@@ -594,6 +602,7 @@ function setButtonsToolTip() {
   setTippy(initScreenShareBtn, "Toggle screen sharing", "top");
   // main buttons
   setTippy(shareRoomBtn, "Invite people to join", "right-start");
+  setTippy(hideMeBtn, "Hide me", "right-start");
   setTippy(audioBtn, "Pause the audio", "right-start");
   setTippy(videoBtn, "Pause the video", "right-start");
   setTippy(screenShareBtn, "Start screen sharing", "right-start");
@@ -633,6 +642,7 @@ function setButtonsToolTip() {
     "If Active, When SpaceBar is pressed the microphone will be activated, on keyup will be deactivated, like a walkie-talkie.",
     "right"
   );
+  setTippy(switchSounds, "Toggle room notify sounds", "right");
   // tab btns
   setTippy(tabDevicesBtn, "Devices", "top");
   setTippy(tabBandwidthBtn, "Bandwidth", "top");
@@ -652,6 +662,7 @@ function setButtonsToolTip() {
   setTippy(whiteboardTextBtn, "Insert text", "bottom");
   setTippy(whiteboardLineBtn, "Insert line", "bottom");
   setTippy(whiteboardRectBtn, "Insert rectangle", "bottom");
+  setTippy(whiteboardTriangleBtn, "Insert triangle", "bottom");
   setTippy(whiteboardCircleBtn, "Insert circle", "bottom");
   setTippy(whiteboardSaveBtn, "Download the board", "bottom");
   setTippy(whiteboardEraserBtn, "Remove object", "bottom");
@@ -667,11 +678,7 @@ function setButtonsToolTip() {
   // video URL player
   setTippy(videoUrlCloseBtn, "Close video player", "right-start");
   setTippy(videoAudioCloseBtn, "Close video player", "right-start");
-  setTippy(
-    msgerVideoUrlBtn,
-    "Share a video/audio to all participants",
-    "top"
-  );
+  setTippy(msgerVideoUrlBtn, "Share a video/audio to all participants", "top");
 }
 
 /**
@@ -2058,7 +2065,9 @@ async function setupLocalMedia() {
   );
 
   // default | qvgaVideo | vgaVideo | hdVideo | fhdVideo | 2kVideo | 4kVideo |
-  const videoConstraints = useVideo ? await getVideoConstraints("default") : false;
+  const videoConstraints = useVideo
+    ? await getVideoConstraints("default")
+    : false;
   const audioConstraints = useAudio ? await getAudioConstraints() : false;
 
   try {
@@ -2164,8 +2173,8 @@ async function loadLocalMedia(stream) {
   setTippy(myAudioStatusIcon, "You're unmuted", "bottom");
   setTippy(myVideoToImgBtn, "Take a snapshot", "bottom");
   setTippy(myVideoFullScreenBtn, "Full screen mode", "bottom");
-  setTippy(myVideoZoomInBtn, 'Zoom-in video', 'bottom');
-  setTippy(myVideoZoomOutBtn, 'Zoom-out video', 'bottom');
+  setTippy(myVideoZoomInBtn, "Zoom-in video", "bottom");
+  setTippy(myVideoZoomOutBtn, "Zoom-out video", "bottom");
   setTippy(myVideoPinBtn, "Toggle Pin video", "bottom");
 
   // my video avatar image
@@ -2980,6 +2989,7 @@ function handleVideoPinUnpin(elemId, pnId, camId, peerId, isScreen = false) {
   let videoPinMediaContainer = getId("videoPinMediaContainer");
   if (btnPn && videoPlayer && cam) {
     btnPn.addEventListener("click", () => {
+      if (isMobileDevice) return;
       playSound("click");
       isVideoPinned = !isVideoPinned;
       if (isVideoPinned) {
@@ -2997,6 +3007,7 @@ function handleVideoPinUnpin(elemId, pnId, camId, peerId, isScreen = false) {
       } else {
         if (pinnedVideoPlayerId != videoPlayer.id) {
           isVideoPinned = true;
+          if (isScreenEnabled) return;
           return userLog(
             "toast",
             "Another video seems pinned, unpin it before to pin this one",
@@ -3088,18 +3099,22 @@ function handleVideoZoomInOut(
     setTransform();
   });
 
-  zoomIn.addEventListener('click', () => {
-      if (isVideoOf(id)) return userLog('toast', 'Zoom in works only when video is on');
-      if (isVideoPrivacyMode(video)) return userLog('toast', 'Can\'t zoom if video on privacy mode');
-      zoom = zoom + 0.1;
-      setTransform();
+  zoomIn.addEventListener("click", () => {
+    if (isVideoOf(id))
+      return userLog("toast", "Zoom in works only when video is on");
+    if (isVideoPrivacyMode(video))
+      return userLog("toast", "Can't zoom if video on privacy mode");
+    zoom = zoom + 0.1;
+    setTransform();
   });
 
-  zoomOut.addEventListener('click', () => {
-      if (isVideoOf(id)) return userLog('toast', 'Zoom out works only when video is on');
-      if (isVideoPrivacyMode(video)) return userLog('toast', 'Can\'t zoom if video on privacy mode');
-      zoom = zoom - 0.1;
-      setTransform();
+  zoomOut.addEventListener("click", () => {
+    if (isVideoOf(id))
+      return userLog("toast", "Zoom out works only when video is on");
+    if (isVideoPrivacyMode(video))
+      return userLog("toast", "Can't zoom if video on privacy mode");
+    zoom = zoom - 0.1;
+    setTransform();
   });
 
   function isVideoOf(id) {
@@ -3148,10 +3163,7 @@ function handleVideoToImg(videoStream, videoToImgBtn, peer_id = null) {
   let video = getId(videoStream);
   videoBtn.addEventListener("click", () => {
     if (video.classList.contains("videoCircle")) {
-      return userLog(
-        "toast",
-        "Can't take snapshot, privacy mode is ON"
-      );
+      return userLog("toast", "Can't take snapshot, privacy mode is ON");
     }
     if (peer_id !== null) {
       // handle remote video snapshot
@@ -3241,6 +3253,7 @@ function refreshMyVideoAudioStatus(localMediaStream) {
  */
 function manageLeftButtons() {
   setShareRoomBtn();
+  setHideMeButton();
   setAudioBtn();
   setVideoBtn();
   setSwapCameraBtn();
@@ -3264,6 +3277,16 @@ function manageLeftButtons() {
 function setShareRoomBtn() {
   shareRoomBtn.addEventListener("click", async (e) => {
     shareRoomUrl();
+  });
+}
+
+/**
+ * Hide myself from room view
+ */
+function setHideMeButton() {
+  hideMeBtn.addEventListener("click", (e) => {
+    isHideMeActive = !isHideMeActive;
+    handleHideMe(isHideMeActive);
   });
 }
 
@@ -3642,6 +3665,9 @@ function setMyWhiteboardBtn() {
   whiteboardRectBtn.addEventListener("click", (e) => {
     whiteboardAddObj("rect");
   });
+  whiteboardTriangleBtn.addEventListener("click", (e) => {
+    whiteboardAddObj("triangle");
+  });
   whiteboardCircleBtn.addEventListener("click", (e) => {
     whiteboardAddObj("circle");
   });
@@ -3710,6 +3736,8 @@ function setMySettingsBtn() {
     updateMyPeerName();
   });
   // Sounds
+  userLog("toast", "Notifications ~ " + (notifyBySound ? "ON" : "OFF"));
+  playSound("switch");
   switchSounds.addEventListener("change", (e) => {
     notifyBySound = e.currentTarget.checked;
   });
@@ -3720,14 +3748,16 @@ function setMySettingsBtn() {
     // Push to talk
     switchPushToTalk.addEventListener("change", (e) => {
       isPushToTalkActive = e.currentTarget.checked;
-      userLog("toast", "Push to talk active - " + isPushToTalkActive);
+      userLog("toast", "Push to talk ~ " + (isPushToTalkActive ? "ON" : "OFF"));
+      playSound("switch");
     });
   }
 
-  switchAudioPitchBar.addEventListener('change', (e) => {
+  switchAudioPitchBar.addEventListener("change", (e) => {
     isAudioPitchBar = e.currentTarget.checked;
-    userLog('toast', 'Audio pitch bar active - ' + isAudioPitchBar);
-});
+    userLog("toast", "Audio pitch bar ~ " + (isAudioPitchBar ? "ON" : "OFF"));
+    playSound("switch");
+  });
 
   // make chat room draggable for desktop
   if (!isMobileDevice) dragElement(mySettings, mySettingsHeader);
@@ -4514,15 +4544,24 @@ async function swapCamera() {
  * Stop Local Video Track
  */
 async function stopLocalVideoTrack() {
-  if (useVideo || !isScreenStreaming)
-    localMediaStream.getVideoTracks()[0].stop();
+  if (useVideo || !isScreenStreaming) {
+    const localVideoTrack = localMediaStream.getVideoTracks()[0];
+    if (localVideoTrack) {
+      console.log("stopLocalVideoTrack", localVideoTrack);
+      localVideoTrack.stop();
+    }
+  }
 }
 
 /**
  * Stop Local Audio Track
  */
 async function stopLocalAudioTrack() {
-  localMediaStream.getAudioTracks()[0].stop();
+  const localAudioTrack = localMediaStream.getAudioTracks()[0];
+  if (localAudioTrack) {
+    console.log("stopLocalAudioTrack", localAudioTrack);
+    localAudioTrack.stop();
+  }
 }
 
 /**
@@ -5062,7 +5101,7 @@ function showCaptionDraggable() {
     buttonsBar.style.display = "none";
     isButtonsVisible = false;
   }
-  captionBtn.className = "far fa-closed-captioning";
+  captionBtn.className = "fas fa-closed-captioning";
   captionDraggable.style.top = "50%";
   captionDraggable.style.left = isMobileDevice ? "50" : "75%";
   captionDraggable.style.display = "flex";
@@ -5857,6 +5896,25 @@ async function emitPeerStatus(element, status) {
     element: element,
     status: status,
   });
+}
+
+/**
+ * Handle hide myself from room view
+ * @param {boolean} isHideMeActive
+ */
+function handleHideMe(isHideMeActive) {
+  const myVideoWrap = getId("myVideoWrap");
+  const myVideoPinBtn = getId("myVideoPinBtn");
+  if (isHideMeActive && isVideoPinned) myVideoPinBtn.click();
+  myVideoWrap.style.display = isHideMeActive ? "none" : "inline-block";
+  hideMeBtn.className = isHideMeActive
+    ? className.hideMeOn
+    : className.hideMeOff;
+  hideMeBtn.style.color = isHideMeActive ? "red" : "black";
+  isHideMeActive ? playSound("off") : playSound("on");
+  if (Object.keys(peerConnections).length === 1) {
+    resizeVideoMedia();
+  }
 }
 
 /**
@@ -6817,6 +6875,20 @@ function whiteboardAddObj(type) {
         strokeWidth: wbCanvas.freeDrawingBrush.width,
       });
       addWbCanvasObj(rect);
+      break;
+    case "triangle":
+      const triangle = new fabric.Triangle({
+        top: 0,
+        left: 0,
+        width: 150,
+        height: 100,
+        fill: "transparent",
+        stroke: wbCanvas.freeDrawingBrush.color,
+        strokeWidth: wbCanvas.freeDrawingBrush.width,
+      });
+      addWbCanvasObj(triangle);
+      break;
+    default:
       break;
   }
 }

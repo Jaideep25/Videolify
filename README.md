@@ -1,5 +1,7 @@
 # Videolify
 
+[![Deploy to Railyard](https://app.railyard.run/deploy/badge)](https://app.railyard.run/deploy?repo=https://github.com/Jaideep25/Videolify)
+
 🚀 `A free WebRTC browser-based video call, chat and screen sharing` 🚀
 
 <br>
